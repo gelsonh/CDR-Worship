@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CDR_Worship</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet" />
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/site.css" />
+    <link href="~/dist/css/style.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/card.css" />
+    <link rel="stylesheet" href="~/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+
+    <link rel="stylesheet" href="~/assets/css/attachment.css" />
+    <link rel="stylesheet" href="~/assets/css/themes.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*     <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
+</head>
+<body>
+    <header>
+
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/assets/img/CDRLogo.png" alt="Logo" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  text-dark" asp-area="" asp-controller="SongDocuments" asp-action="Index">Letras</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  text-dark" asp-area="" asp-controller="ChordDocuments" asp-action="Index">Acordes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  text-dark" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Lista</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+    </header>
+    <div class="">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="py-3 fixed-bottom">
+        <div class="container-xxl text-center">
+            <span class="build-by-text text-dark">Build by</span>
+
+            <span class="build-by-text text-dark">Gelson Hernandez</span>
+            <br />
+            <span class="build-by-text text-dark"> &copy; 2024 - CDR Worship -  </span>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/js/script.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dist/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/dist/js/pages/datatable/datatable-api.init.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Inicializar tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+        });
+    </script>
+
+  @*   <script>
+        // URL del archivo PDF
+        const pdfUrl = 'ruta/al/archivo/documento.pdf';
+
+        // Elemento contenedor del PDF
+        const container = document.getElementById('pdf-container');
+
+        // Inicializar PDF.js
+        const loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+        loadingTask.promise.then(pdf => {
+            // Iterar sobre todas las páginas del PDF
+            for (let i = 1; i <= pdf.numPages; i++) {
+                // Renderizar la página actual
+                pdf.getPage(i).then(page => {
+                    const canvas = document.createElement('canvas');
+                    container.appendChild(canvas);
+                    const context = canvas.getContext('2d');
+
+                    const viewport = page.getViewport({ scale: 1 });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            }
+        }).catch(error => {
+            console.error('Error al cargar el PDF:', error);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Inicializar tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Cargar y renderizar el PDF
+            loadAndRenderPDF();
+        });
+
+        function loadAndRenderPDF() {
+            // URL del archivo PDF
+            const pdfUrl = 'ruta/al/archivo/documento.pdf';
+
+            // Elemento contenedor del PDF
+            const container = document.getElementById('pdf-container');
+
+            // Inicializar PDF.js
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+            loadingTask.promise.then(pdf => {
+                // Iterar sobre todas las páginas del PDF
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    // Renderizar la página actual
+                    pdf.getPage(i).then(page => {
+                        const canvas = document.createElement('canvas');
+                        container.appendChild(canvas);
+                        const context = canvas.getContext('2d');
+
+                        const viewport = page.getViewport({ scale: 1 });
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        page.render(renderContext);
+                    });
+                }
+            }).catch(error => {
+                console.error('Error al cargar el PDF:', error);
+            });
+        }
+    </script> *@
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

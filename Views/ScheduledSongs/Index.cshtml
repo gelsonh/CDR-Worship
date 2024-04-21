@@ -1,0 +1,82 @@
+﻿@model IEnumerable<CDR_Worship.Models.ScheduledSong>
+
+@using CDR_Worship.Models
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    /* Estilos para la lista */
+    .lista-moderna {
+        list-style-type: none; /* Elimina los puntos de viñeta */
+        padding: 0;
+        margin: 0;
+    }
+
+        .lista-moderna li {
+            background-color: #f2f2f2; /* Color de fondo para cada elemento */
+            margin: 10px 0; /* Espaciado entre elementos */
+            padding: 10px; /* Espaciado interno para cada elemento */
+            border-left: 5px solid #009688; /* Borde izquierdo colorido */
+            transition: transform 0.3s ease; /* Transición suave para el hover */
+        }
+
+            .lista-moderna li:hover {
+                transform: translateX(10px); /* Desplaza el elemento hacia la derecha al pasar el mouse */
+            }
+</style>
+
+<section id="list" class="section-page">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col">
+                <h2 class="text-center display-1 my-5">Programacion del Domingo</h2>
+            </div>
+
+            <p>
+                <a asp-action="Create" class="btn btn-success">Agregar Nueva Canción</a>
+            </p>
+
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre de la Canción</th>
+                        <th>Descripción</th>
+                        <th>Cantante Principal</th>
+                        <th>Corista</th>
+                        <th>Guitarra 1</th>
+                        <th>Guitarra 2</th>
+                        <th>Bajista</th>
+                        <th>Baterista</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var song in Model)
+                    {
+                        <tr>
+                            <td>@song.Name</td>
+                            <td>@song.Description</td>
+                            <td>@song.LeadSinger?.MemberName</td>
+                            <td>@song.BackingVocalist?.MemberName</td>
+                            <td>@song.LeadGuitarist?.MemberName</td>
+                            <td>@song.SecondGuitarist?.MemberName</td>
+                            <td>@song.Bassist?.MemberName</td>
+                            <td>@song.Drummer?.MemberName</td>
+                            <td>@song.StartDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary">Editar</a>
+                                <a asp-action="Details" asp-route-id="@song.Id" class="btn btn-info">Detalles</a>
+                                <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,188 @@
+﻿@model IEnumerable<CDR_Worship.Models.SongDocument>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<style>
+    td.details-control {
+        background: url("~/dist/js/pages/datatable/details_open.png") no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url("~/dist/js/pages/datatable/details_close.png") no-repeat center center;
+    }
+
+</style>
+
+<section id="upload" class="section-page">
+    <div class="container-xxl">
+        <h2 class="text-center display-1 mb-2">Subir Documentos de Letras de Canciones</h2>
+
+        <div class="card">
+            <div class="border-bottom title-part-padding">
+                <h4 class="card-title mb-0">Aquí puedes subir documentos de letras de canciones.</h4>
+            </div>
+            <div class="card-body">
+                <div class="border-bottom title-part-padding d-flex justify-content-between">
+                    <h6 class="card-subtitle mb-3">Documentos de Letras de Canciones</h6>
+                    <a href="@Url.Action("Create", "SongDocuments")" class="mt-auto">Subir Nuevo Documento</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered text-inputs-searching text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Nombre de la Canción</th>
+                                <th>Artista/s</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí puedes iterar sobre los documentos de letras de canciones -->
+                            @foreach (var songDocument in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            @foreach (var attachment in songDocument.SongAttachments)
+                                            {
+                                                <li>
+                                                    <i class="bi bi-file-earmark"></i>
+                                                    @attachment.FileName
+                                                </li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>@songDocument.SongName</td>
+                                    <td>@songDocument.Description</td>
+                                    <td class="d-flex justify-content-center align-items-center">
+                                        <a class="view-document mx-2" href="@Url.Action("ViewDocument", "SongDocuments", new { id = songDocument.Id })" title="Ver" target="_blank">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="@Url.Action("Download", "SongDocuments", new { id = songDocument.Id })" title="Descargar" class="mx-2 text-decoration-none">
+                                            <i class="bi bi-file-earmark-arrow-down"></i>
+                                        </a>
+
+                                        @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@songDocument.Id" data-toggle="tooltip" title="Editar" class="mx-2 text-decoration-none">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@songDocument.Id" data-toggle="tooltip" title="Eliminar" class="mt-2 text-decoration-none">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* <h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SongName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChordDocumentId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SongName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChordDocumentId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ *@

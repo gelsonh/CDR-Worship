@@ -1,0 +1,121 @@
+﻿@inject IChordDocumentService _chordDocumentService
+@inject IFileService _fileService
+
+@model IEnumerable<CDR_Worship.Models.ChordDocument>
+
+@using CDR_Worship.Models.Enums
+@using CDR_Worship.Services
+@using CDR_Worship.Services.Interfaces
+
+
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<style>
+    td.details-control {
+        background: url("~/dist/js/pages/datatable/details_open.png") no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url("~/dist/js/pages/datatable/details_close.png") no-repeat center center;
+    }
+
+
+</style>
+
+<section id="download" class="section-page">
+    <div class="container-xxl">
+        <!-- Upload -->
+        <h2 class="text-center display-1 mb-2">Canciones solo con sus Acordes</h2>
+
+        <!-- Individual column searching (text inputs) -->
+        <div class="row">
+            <div class="col-12">
+                <!-- start Individual column searching (text inputs) -->
+                <div class="card">
+                    <div class="border-bottom title-part-padding">
+                        <h4 class="card-title mb-0">Aqui podras buscar las canciones con sus acordes.</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="border-bottom title-part-padding d-flex justify-content-between">
+                            <h6 class="card-subtitle mb-3">Canciones y Acordes</h6>
+                            <a asp-action="Create" asp-controller="ChordDocuments" class="mt-auto">Subir Nueva Canción</a>
+                        </div>
+
+                        <div class="table-responsive">
+
+
+
+                            <table class="table table-striped table-bordered text-inputs-searching text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Documento</th>
+                                        <th>Nombre de la Cancion</th>
+                                        <th>Artista/s</th>
+                                        <th>Acorde</th>                                  
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var chordDocument in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <ul class="list-unstyled">
+                                                    @foreach (var attachment in chordDocument.ChordAttachments)
+                                                    {
+                                                        <li>
+                                                            <i class="bi bi-file-earmark"></i> <!-- Icono de archivo genérico -->
+                                                            @attachment.FileName <!-- Nombre del archivo adjunto -->
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </td>
+
+                                            <td>@chordDocument.SongName</td>
+                                            <td>@chordDocument.Description</td>
+                                            <td>@chordDocument.Chord!.ChordName</td>
+                                         
+                                            <td class="d-flex justify-content-center align-items-center">
+                                                <a class="view-document mx-2" href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })" title="Ver" target="_blank">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+
+                                                <a href="@Url.Action("Download", "ChordDocuments", new { id = chordDocument.Id })" title="Descargar" class="mx-2 text-decoration-none">
+                                                    <i class="bi bi-file-earmark-arrow-down"></i>
+                                                </a>
+
+
+                                                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                                                {
+                                                    <a asp-action="Edit" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Editar" class="mx-2 text-decoration-none">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a asp-action="Delete" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Eliminar" class="mt-2 text-decoration-none">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                            
+                                           
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+
+        </div>
+    </div>
+</section>

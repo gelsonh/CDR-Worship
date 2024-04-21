@@ -1,0 +1,27 @@
+:root {
+  --gh-gray-150: hsla(120, 4%, 91%, 1);
+  --gh-gray-200: hsla(120, 3%, 86%, 1);
+  --gh-gray-300: hsla(120, 2%, 81%, 1);
+  --gh-gray-400: hsla(146, 6%, 78%, 1);
+  --gh-gray-500: hsla(152, 10%, 74%, 1);
+  --gh-gray-600: hsla(154, 15%, 67%, 1);
+  --gh-gray-700: hsla(141, 7%, 48%, 1);
+  --gh-gray-800: hsla(136, 6%, 37%, 1);
+  --gh-gray-850: hsla(110, 4%, 26%, 1);
+  --gh-gray-900: hsla(120, 1%, 25%, 1);
+}
+
+[data-cf-theme="gray"] {
+  --gh-theme-core: var(--gh-gray-core);
+  --gh-theme-100: var(--gh-gray-100);
+  --gh-theme-150: var(--gh-gray-150);
+  --gh-theme-200: var(--gh-gray-200);
+  --gh-theme-300: var(--gh-gray-300);
+  --gh-theme-400: var(--gh-gray-400);
+  --gh-theme-500: var(--gh-gray-500);
+  --gh-theme-600: var(--gh-gray-600);
+  --gh-theme-700: var(--gh-gray-700);
+  --gh-theme-800: var(--gh-gray-800);
+  --gh-theme-850: var(--gh-gray-850);
+  --gh-theme-900: var(--gh-gray-900);
+}

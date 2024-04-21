@@ -1,0 +1,110 @@
+﻿@model CDR_Worship.Models.ScheduledSong
+
+@using CDR_Worship.Models
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<section id="download" class="section-page">
+    <div class="container-xxl">
+
+        <h1>Create</h1>
+
+        <h4>ScheduledSong</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="form-group mt-2">
+                        <label asp-for="Name" class="control-label">Nombre de la Cancion:</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                     
+                    <div class="form-group mt-2">
+                        <label asp-for="Description" class="control-label">Description:</label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+
+                    <!-- ... otros campos del formulario ... -->
+
+                    <div class="form-group mt-2">
+                        <label asp-for="LeadSingerId" class="control-label">Cantante Principal:</label>
+                        <select asp-for="LeadSingerId" class="form-control" asp-items="ViewBag.LeadSingers">
+                            <option value="">Seleccionar Cantante Principal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label asp-for="BackingVocalistId" class="control-label">Corista:</label>
+                        <select asp-for="BackingVocalistId" class="form-control" asp-items="ViewBag.BackingVocalists">
+                            <option value="">Seleccionar El Corista</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label asp-for="LeadGuitaristId" class="control-label">Guitarra 1:</label>
+                        <select asp-for="LeadGuitaristId" class="form-control" asp-items="ViewBag.LeadGuitarists">
+                            <option value="">Seleccionar Guitarra 1</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label asp-for="SecondGuitaristId" class="control-label">Guitarra 2:</label>
+                        <select asp-for="SecondGuitaristId" class="form-control" asp-items="ViewBag.SecondGuitarists">
+                            <option value="">Seleccionar Guitarra 2</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label asp-for="BassistId" class="control-label">Bajista:</label>
+                        <select asp-for="BassistId" class="form-control" asp-items="ViewBag.Bassists">
+                            <option value="">Seleccionar El Bajista</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label asp-for="DrummerId" class="control-label">Baterista:</label>
+                        <select asp-for="DrummerId" class="form-control" asp-items="ViewBag.Drummers">
+                            <option value="">Seleccionar El Baterista</option>
+                        </select>
+                    </div>
+
+                    
+
+
+
+                    <div class="form-group mt-2">
+                        <label asp-for="StartDate" class="control-label">Fecha:</label>
+                        <input asp-for="StartDate" type="date" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group mt-2">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+    }
+}

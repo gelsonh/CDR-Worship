@@ -1,0 +1,146 @@
+﻿@model CDR_Worship.Models.ChordDocument
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ChordDocument</h4>
+<hr />
+
+
+ 
+@* <form asp-action="AddChordAttachment" asp-controller="ChordDocuments" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="SongDocumentId" />
+    <input type="hidden" asp-for="Created" />
+    <input type="hidden" asp-for="Updated" />
+    <input type="hidden" asp-for="ChordId" />
+
+    <select name="ChordDocumentId" id="chordSelect">
+        // Usar el SelectList que creaste en el controlador
+        @foreach (var chord in (SelectList)ViewData["ChordId"]!)
+        {
+            <option value="@chord.Value">@chord.Text</option>
+        }
+    </select>
+
+    <label class="btn btn-outline-primary btn-sm">
+        <input name="FormFile" type="file" class="form-control-file" id="fileID" />
+    </label>
+    <label>
+        Nombre de la canción:
+        <input name="SongName" type="text" />
+    </label>
+    <label>
+        Descripción del documento:
+        <input name="Description" type="text" />
+    </label>
+    <div id="fileNameDisplay"></div>
+    <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+</form> *@
+
+
+@* 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var fileInput = document.getElementById('fileID');
+        var fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        if (fileInput && fileNameDisplay) {
+            fileInput.addEventListener('change', function () {
+                fileNameDisplay.textContent = fileInput.files[0].name;
+            });
+        } else {
+            console.error('Element with ID "fileID" or "fileNameDisplay" not found.');
+        }
+
+
+    });
+
+    document.querySelectorAll('.chord-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const chordAttachmentId = this.dataset.chordAttachmentId;
+            const selectedChord = this.value;
+            updateChord(chordAttachmentId, selectedChord);
+        });
+    });
+
+
+
+
+</script>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GetChordAsync", "Chords")',
+                type: 'GET',
+                success: function (data) {
+                    $.each(data, function (index, chord) {
+                        $('#chordSelect').append($('<option>', {
+                            value: chord,
+                            text: chord
+                        }));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+
+}
+ *@
+
+ <div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="SongName" class="control-label"></label>
+                <input asp-for="SongName" class="form-control" />
+                <span asp-validation-for="SongName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Updated" class="control-label"></label>
+                <input asp-for="Updated" class="form-control" />
+                <span asp-validation-for="Updated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SongDocumentId" class="control-label"></label>
+                <input asp-for="SongDocumentId" class="form-control" />
+                <span asp-validation-for="SongDocumentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div> 
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
