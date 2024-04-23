@@ -2,16 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using CDR_Worship.Data;
 using CDR_Worship.Models;
+using CDR_Worship.Services.Interfaces;
 
 namespace CDR_Worship.Controllers
 {
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public MembersController(ApplicationDbContext context)
+        public MembersController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Members

@@ -208,6 +208,14 @@ namespace CDR_Worship.Data
             // Agrega más coristas según sea necesario
         };
 
+                var backingVocalistTwo = new List<Member>
+        {
+            new Member { MemberName = "Carlos Cruz", Role = BandMembers.BackingVocalist.ToString() },
+            new Member { MemberName = "Arevalo Andy", Role = BandMembers.BackingVocalist.ToString() },
+            new Member { MemberName = "Deyshla Jimenez", Role = BandMembers.BackingVocalist.ToString() }, 
+            // Agrega más coristas según sea necesario
+        };
+
                 var leadGuitarists = new List<Member>
         {
             new Member { MemberName = "Carlos Cruz", Role = BandMembers.LeadGuitarist.ToString() },
@@ -232,16 +240,19 @@ namespace CDR_Worship.Data
             // Agrega más bateristas según sea necesario
         };
 
-                // Agregar los miembros a la base de datos
-                context.Members.AddRange(leadSingers);
-                context.Members.AddRange(backingVocalists);
-                context.Members.AddRange(leadGuitarists);
-                context.Members.AddRange(secondGuitarists);
-                context.Members.AddRange(bassists);
-                context.Members.AddRange(drummers);
+                if (!context.Members.Any())
+                {
+                    // Agregar los miembros a la base de datos
+                    context.Members.AddRange(leadSingers);
+                    context.Members.AddRange(backingVocalists);
+                    context.Members.AddRange(leadGuitarists);
+                    context.Members.AddRange(secondGuitarists);
+                    context.Members.AddRange(bassists);
+                    context.Members.AddRange(drummers);
 
-                // Guardar los cambios en la base de datos
-                await context.SaveChangesAsync();
+                    // Guardar los cambios en la base de datos
+                    await context.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -252,70 +263,6 @@ namespace CDR_Worship.Data
                 throw;
             }
         }
-
-
-        //public static async Task SeedDefaultMembersAsync(ApplicationDbContext context)
-        //{
-        //    try
-        //    {
-        //        // Crear instancias de las personas que estarán tocando en la banda
-        //        var leadSingers = new List<Member>
-        //{
-        //    new Member {  MemberName = "Carlos Cruz" },
-        //    new Member {  MemberName = "Arevalo Andy" },
-        //    new Member { MemberName = "Deyshla Jimenez" }
-        //    // Agrega más cantantes principales según sea necesario
-        //};
-
-        //        var backingVocalists = new List<Member>
-        //{
-        //    new Member { MemberName = "Carlos Cruz" },
-        //    new Member { MemberName = "Arevalo Andy" },
-        //    new Member { MemberName = "Deyshla Jimenez" },
-
-        //    // Agrega más coristas según sea necesario
-        //};
-
-        //        var leadGuitarists = new List<Member>
-        //{
-        //    new Member { MemberName = "Carlos Cruz" },
-        //    // Agrega más guitarristas principales según sea necesario
-        //};
-
-        //        var secondGuitarists = new List<Member>
-        //{
-        //    new Member { MemberName = "Gelson Hernandez" },
-        //    // Agrega más guitarristas principales según sea necesario
-        //};
-
-        //        var bassists = new List<Member>
-        //{
-        //    new Member { MemberName = "Franky Resto" },
-        //    // Agrega más bajistas según sea necesario
-        //};
-
-        //        var drummers = new List<Member>
-        //{
-        //    new Member { MemberName = "Derek Jimenez" },
-        //    // Agrega más bateristas según sea necesario
-        //};
-
-
-
-        //        // Verificar las canciones programadas existentes en la base de datos
-        //        //var dbScheduledSongs = context.ScheduledSongs.ToList();
-
-        //        await context.SaveChangesAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("*************  ERROR  *************");
-        //        Console.WriteLine("Error Seeding Scheduled Songs.");
-        //        Console.WriteLine(ex.Message);
-        //        Console.WriteLine("***********************************");
-        //        throw;
-        //    }
-        //}
 
 
 

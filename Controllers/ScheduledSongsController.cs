@@ -47,8 +47,6 @@ namespace CDR_Worship.Controllers
         }
 
 
-
-
         // GET: ScheduledSongs
         public async Task<IActionResult> Index()
         {
@@ -62,6 +60,8 @@ namespace CDR_Worship.Controllers
 
                 // Pasar la lista de miembros y la lista de canciones programadas a la vista
                 ViewBag.Members = allMembers;
+
+
                 return View(scheduledSongs);
             }
             catch (Exception ex)
@@ -103,10 +103,10 @@ namespace CDR_Worship.Controllers
                 // Establecer una fecha de inicio predeterminada (por ejemplo, la fecha actual)
                 newScheduledSong.StartDate = DateTime.Today;
 
-
                 // Obtener la lista de miembros para los diferentes roles de la banda
                 var LeadSingers = await _scheduledSongService.GetLeadSingersAsync();
                 var BackingVocalists = await _scheduledSongService.GetBackingVocalistsAsync();
+                var BackingVocalistTwo = await _scheduledSongService.GetBackingVocalistTwoAsync();
                 var LeadGuitarists = await _scheduledSongService.GetLeadGuitaristsAsync();
                 var SecondGuitarists = await _scheduledSongService.GetSecondGuitaristsAsync();
                 var Bassists = await _scheduledSongService.GetBassistsAsync();
@@ -114,6 +114,8 @@ namespace CDR_Worship.Controllers
 
                 ViewBag.LeadSingers = new SelectList(LeadSingers, "Id", "MemberName");
                 ViewBag.BackingVocalists = new SelectList(BackingVocalists, "Id", "MemberName");
+                ViewBag.BackingVocalistTwo = new SelectList(BackingVocalistTwo, "Id", "MemberName");
+
                 ViewBag.LeadGuitarists = new SelectList(LeadGuitarists, "Id", "MemberName");
                 ViewBag.SecondGuitarists = new SelectList(SecondGuitarists, "Id", "MemberName");
                 ViewBag.Bassists = new SelectList(Bassists, "Id", "MemberName");
@@ -136,7 +138,7 @@ namespace CDR_Worship.Controllers
         // POST: ScheduledSongs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
+        public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId,  BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
         {
             try
             {
@@ -154,6 +156,8 @@ namespace CDR_Worship.Controllers
                 // Si el modelo no es válido, repoblar los SelectList para los roles de la banda
                 ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
                 ViewBag.BackingVocalists = new SelectList(await _scheduledSongService.GetBackingVocalistsAsync(), "Id", "MemberName");
+                ViewBag.BackingVocalistTwo = new SelectList(await _scheduledSongService.GetBackingVocalistTwoAsync(), "Id", "MemberName");
+
                 ViewBag.LeadGuitarists = new SelectList(await _scheduledSongService.GetLeadGuitaristsAsync(), "Id", "MemberName");
                 ViewBag.SecondGuitarists = new SelectList(await _scheduledSongService.GetSecondGuitaristsAsync(), "Id", "MemberName");
                 ViewBag.Bassists = new SelectList(await _scheduledSongService.GetBassistsAsync(), "Id", "MemberName");

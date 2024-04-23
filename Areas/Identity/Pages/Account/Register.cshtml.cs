@@ -110,6 +110,11 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [DataType(DataType.Upload)]
+            [Display(Name = "Profile Picture")]
+            public IFormFile ProfilePicture { get; set; }
+
         }
 
 

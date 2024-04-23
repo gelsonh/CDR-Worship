@@ -1,5 +1,4 @@
 ﻿
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -80,6 +79,7 @@ namespace CDR_Worship.Models
 
         public int? LeadSingerId { get; set; }
         public int? BackingVocalistId { get; set; }
+        public int? BackingVocalistTwoId { get; set; }
         public int? LeadGuitaristId { get; set; }
         public int? SecondGuitaristId { get; set; }
         public int? BassistId { get; set; }
@@ -98,6 +98,9 @@ namespace CDR_Worship.Models
 
         [ForeignKey("BackingVocalistId")]
         public virtual Member? BackingVocalist { get; set; }
+
+        [ForeignKey("BackingVocalistTwoId")]
+        public virtual Member? BackingVocalistTwo { get; set; }
 
         [ForeignKey("LeadGuitaristId")]
         public virtual Member? LeadGuitarist { get; set; }

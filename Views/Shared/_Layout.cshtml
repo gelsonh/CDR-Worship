@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="~/assets/css/card.css" />
     <link rel="stylesheet" href="~/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
 
+
     <link rel="stylesheet" href="~/assets/css/attachment.css" />
     <link rel="stylesheet" href="~/assets/css/themes.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -87,6 +88,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/dist/libs/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="~/dist/js/pages/datatable/datatable-api.init.js"></script>
+
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
@@ -99,86 +102,7 @@
         });
     </script>
 
-  @*   <script>
-        // URL del archivo PDF
-        const pdfUrl = 'ruta/al/archivo/documento.pdf';
-
-        // Elemento contenedor del PDF
-        const container = document.getElementById('pdf-container');
-
-        // Inicializar PDF.js
-        const loadingTask = pdfjsLib.getDocument(pdfUrl);
-
-        loadingTask.promise.then(pdf => {
-            // Iterar sobre todas las páginas del PDF
-            for (let i = 1; i <= pdf.numPages; i++) {
-                // Renderizar la página actual
-                pdf.getPage(i).then(page => {
-                    const canvas = document.createElement('canvas');
-                    container.appendChild(canvas);
-                    const context = canvas.getContext('2d');
-
-                    const viewport = page.getViewport({ scale: 1 });
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-                    page.render(renderContext);
-                });
-            }
-        }).catch(error => {
-            console.error('Error al cargar el PDF:', error);
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            // Inicializar tooltip
-            $('[data-toggle="tooltip"]').tooltip();
-
-            // Cargar y renderizar el PDF
-            loadAndRenderPDF();
-        });
-
-        function loadAndRenderPDF() {
-            // URL del archivo PDF
-            const pdfUrl = 'ruta/al/archivo/documento.pdf';
-
-            // Elemento contenedor del PDF
-            const container = document.getElementById('pdf-container');
-
-            // Inicializar PDF.js
-            const loadingTask = pdfjsLib.getDocument(pdfUrl);
-
-            loadingTask.promise.then(pdf => {
-                // Iterar sobre todas las páginas del PDF
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    // Renderizar la página actual
-                    pdf.getPage(i).then(page => {
-                        const canvas = document.createElement('canvas');
-                        container.appendChild(canvas);
-                        const context = canvas.getContext('2d');
-
-                        const viewport = page.getViewport({ scale: 1 });
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-
-                        const renderContext = {
-                            canvasContext: context,
-                            viewport: viewport
-                        };
-                        page.render(renderContext);
-                    });
-                }
-            }).catch(error => {
-                console.error('Error al cargar el PDF:', error);
-            });
-        }
-    </script> *@
-
+ 
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

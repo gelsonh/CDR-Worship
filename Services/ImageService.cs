@@ -50,9 +50,6 @@ namespace CDR_Worship.Services
             switch (defaultImage)
             {
                 case DefaultImage.UserImage:
-                case DefaultImage.SongUserImage:
-                case DefaultImage.SongImage:
-                case DefaultImage.CategoryImage:
                     return _defaultImageFilePath;
                 default:
                     throw new ArgumentException("Invalid default image type.");

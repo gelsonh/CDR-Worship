@@ -29,7 +29,6 @@ namespace CDR_Worship.Services
         }
 
 
-
         public async Task<byte[]> GetPdfDataByIdAsync(int id, string attachmentType)
         {
             try
@@ -126,35 +125,68 @@ namespace CDR_Worship.Services
             }
         }
 
-
         public async Task<List<Member>> GetLeadSingersAsync()
         {
-            // Lógica para obtener los cantantes principales desde tu base de datos
-            return await _context.Members.Where(m => m.Role == BandMembers.LeadSinger.ToString()).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.LeadSinger.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
         }
+
         public async Task<List<Member>> GetBackingVocalistsAsync()
         {
-            return await _context.Members.Where(m => m.Role == BandMembers.BackingVocalist.ToString()).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.BackingVocalist.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
+        }
+
+
+        public async Task<List<Member>> GetBackingVocalistTwoAsync()
+        {
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.BackingVocalistTwo.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
         }
 
         public async Task<List<Member>> GetLeadGuitaristsAsync()
         {
-            return await _context.Members.Where(m => m.Role == BandMembers.LeadGuitarist.ToString()).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.LeadGuitarist.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
         }
 
         public async Task<List<Member>> GetSecondGuitaristsAsync()
         {
-            return await _context.Members.Where(m => m.Role == BandMembers.SecondGuitarist.ToString()).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.SecondGuitarist.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
         }
 
         public async Task<List<Member>> GetBassistsAsync()
         {
-            return await _context.Members.Where(m => m.Role == BandMembers.Bassist.ToString()).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.Bassist.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
         }
 
         public async Task<List<Member>> GetDrummersAsync()
         {
-            return await _context.Members.Where(m => m.Role == BandMembers.Drummer.ToString()).ToListAsync();
+            return await _context.Members
+                                 .Where(m => m.Role == BandMembers.Drummer.ToString())
+                                 .GroupBy(m => m.MemberName)
+                                 .Select(group => group.First())
+                                 .ToListAsync();
         }
 
     }

@@ -17,11 +17,11 @@ namespace CDR_Worship.Services.Interfaces
 
         public Task<List<Member>> GetMembersByRoleAsync(BandMembers role);
      
-
-
         public Task<List<Member>> GetLeadSingersAsync();
 
         public Task<List<Member>> GetBackingVocalistsAsync();
+
+        public Task<List<Member>> GetBackingVocalistTwoAsync();
 
 
         public Task<List<Member>> GetLeadGuitaristsAsync();

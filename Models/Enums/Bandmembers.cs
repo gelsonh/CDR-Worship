@@ -4,6 +4,7 @@
     {
         LeadSinger,
         BackingVocalist,
+        BackingVocalistTwo,
         LeadGuitarist,
         SecondGuitarist,
         Bassist,

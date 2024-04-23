@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CDR_Worship.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,5 +28,9 @@ namespace CDR_Worship.Models
         public byte[]? ImageFileData { get; set; }
 
         public string? ImageFileType { get; set; }
+
+
+       
+
     }
 }
