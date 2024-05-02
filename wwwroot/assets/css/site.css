@@ -80,15 +80,17 @@ section {
   flex-direction: column;
 }
 
+
 #home {
-    background-image: url('/assets/img/CDRW-LongVersion.jpg');
-    background-size: auto 100%; /* Esto ajustará la imagen para que su altura sea del 100% del contenedor y su anchura se escale proporcionalmente */
+    background-image: url("/img/CDRW-Normal.jpg");
+    background-size: 100% 100vh; /* Esto ajustará la imagen para que su altura sea del 100% del contenedor y su anchura se escale proporcionalmente */
     background-position: center; /* Esto asegurará que la imagen esté centrada horizontalmente */
     background-repeat: no-repeat;
     position: relative;
+    height: 100vh;
 }
 
-#homeCover {
+/*#homeCover {
     backdrop-filter: brightness(0.8) blur(0.00rem);
     height: 100%;
     width: 100%;
@@ -96,7 +98,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+}*/
 
 
 .btn-primary {
