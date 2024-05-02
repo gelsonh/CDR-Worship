@@ -100,21 +100,21 @@ section {
 
 
 /* Media query para tablets */
-@media (min-width: 1024px) and (max-width: 1336px) {
-    #home {
+/*@media (min-width: 1024px) and (max-width: 1336px) {
+    #home {*/
         /* Ajustes para #home en tablets */
-        height: 50vh; /* Ajusta la altura a la mitad de la ventana gráfica */
-        width: 80%; /* Ajusta el ancho al 80% del contenedor */
-        background-size: auto 100%; /* Ajusta la imagen para que su altura sea del 100% y su anchura se escale proporcionalmente */
-    }
+        /*height: 50vh;*/ /* Ajusta la altura a la mitad de la ventana gráfica */
+        /*width: 80%;*/ /* Ajusta el ancho al 80% del contenedor */
+        /*background-size: auto 100%;*/ /* Ajusta la imagen para que su altura sea del 100% y su anchura se escale proporcionalmente */
+    /*}
 
-    #homeCover {
+    #homeCover {*/
         /* Ajustes para #homeCover en tablets */
-        backdrop-filter: brightness(1.0) blur(0.00rem); /* Puedes ajustar el brillo si es necesario */
-        height: 50vh; /* Ajusta la altura a la mitad de la ventana gráfica */
-        width: 80%; /* Ajusta el ancho al 80% del contenedor */
-    }
-}
+        /*backdrop-filter: brightness(1.0) blur(0.00rem);*/ /* Puedes ajustar el brillo si es necesario */
+        /*height: 50vh;*/ /* Ajusta la altura a la mitad de la ventana gráfica */
+        /*width: 80%;*/ /* Ajusta el ancho al 80% del contenedor */
+    /*}
+}*/
 
 
 .btn-primary {
