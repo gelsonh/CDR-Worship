@@ -16,21 +16,62 @@ namespace CDR_Worship.Data
         private const string? _moderatorRole = "Moderator";
 
 
+        //public static string GetConnectionString(IConfiguration configuration)
+        //{
+        //    var connectionString = configuration.GetConnectionString("DefaultConnection");
+        //    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+        //    return string.IsNullOrEmpty(databaseUrl) ? connectionString! : GetConnectionString(databaseUrl);
+        //}
+
+
+        //private static string GetConnectionString(string databaseUrl)
+        //{
+        //    //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI.
+        //    var databaseUri = new Uri(databaseUrl);
+        //    var userInfo = databaseUri.UserInfo.Split(':');
+        //    //Provides a simple way to create and manage the contents of connection strings used by the NpgsqlConnection class.
+        //    var builder = new NpgsqlConnectionStringBuilder
+        //    {
+        //        Host = databaseUri.Host,
+        //        Port = databaseUri.Port,
+        //        Username = userInfo[0],
+        //        Password = userInfo[1],
+        //        Database = databaseUri.LocalPath.TrimStart('/'),
+        //        SslMode = SslMode.Prefer,
+        //        TrustServerCertificate = true
+        //    };
+        //    return builder.ToString();
+        //}
 
         public static string GetConnectionString(IConfiguration configuration)
         {
+            // Intenta obtener la cadena de conexión directamente desde la configuración.
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-            return string.IsNullOrEmpty(databaseUrl) ? connectionString! : BuildConnectionString(databaseUrl);
-        }
 
+            // Si no se encuentra, intenta obtener la cadena de conexión de la variable de entorno.
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+                if (!string.IsNullOrEmpty(databaseUrl))
+                {
+                    connectionString = BuildConnectionString(databaseUrl);
+                }
+            }
+
+            // Si aún no se encuentra, lanza una excepción.
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            }
+
+            return connectionString;
+        }
 
         private static string BuildConnectionString(string databaseUrl)
         {
-            //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI.
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
-            //Provides a simple way to create and manage the contents of connection strings used by the NpgsqlConnection class.
+
             var builder = new NpgsqlConnectionStringBuilder
             {
                 Host = databaseUri.Host,
@@ -41,8 +82,10 @@ namespace CDR_Worship.Data
                 SslMode = SslMode.Prefer,
                 TrustServerCertificate = true
             };
+
             return builder.ToString();
         }
+
 
         public static DateTime GetPostGresDate(DateTime date)
         {
