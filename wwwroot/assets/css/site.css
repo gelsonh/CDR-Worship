@@ -98,6 +98,21 @@ section {
   align-items: center;
 }
 
+
+/* Media query para tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #home {
+        /* Ajustes para #home en tablets */
+        background-size: contain; /* Cambia a 'contain' para asegurar que la imagen se vea completa */
+    }
+
+    #homeCover {
+        /* Ajustes para #homeCover en tablets */
+        backdrop-filter: brightness(0.9) blur(0.00rem); /* Puedes ajustar el brillo si es necesario */
+    }
+}
+
+
 .btn-primary {
   --bs-btn-bg: var(--gh-theme-600);
   --bs-btn-border-color: var(--gh-theme-600);
