@@ -100,10 +100,10 @@ section {
 
 
 /* Media query para tablets */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 1024px) and (max-width: 1336px) {
     #home {
         /* Ajustes para #home en tablets */
-        background-size: cover; /* Cambia a 'contain' para asegurar que la imagen se vea completa */
+        background-size: contain; /* Cambia a 'contain' para asegurar que la imagen se vea completa */
 
     }
 
