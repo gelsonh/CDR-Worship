@@ -103,7 +103,8 @@ section {
 @media (min-width: 768px) and (max-width: 1024px) {
     #home {
         /* Ajustes para #home en tablets */
-        background-size: contain; /* Cambia a 'contain' para asegurar que la imagen se vea completa */
+        background-size: cover; /* Cambia a 'contain' para asegurar que la imagen se vea completa */
+
     }
 
     #homeCover {
