@@ -6,10 +6,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["CDR-Worship.csproj", "./"]
+COPY ["CDR-Worship.csproj", "."]
 RUN dotnet restore "./CDR-Worship.csproj"
 COPY . .
-WORKDIR "/src/"
+WORKDIR "/src/."
 RUN dotnet build "CDR-Worship.csproj" -c Release -o /app/build
 
 FROM build AS publish
