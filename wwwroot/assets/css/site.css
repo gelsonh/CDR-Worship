@@ -82,8 +82,8 @@ section {
 
 #home {
   background-image: url('/assets/img/CDRW-LongVersion.jpg');
-  background-size: cover;
-  background-position: top;
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
   position: relative;
   
