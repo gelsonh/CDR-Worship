@@ -136,8 +136,7 @@ namespace CDR_Worship.Controllers
 
 
         // POST: ScheduledSongs/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]     
         public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId,  BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
         {
             try

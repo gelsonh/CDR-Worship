@@ -17,7 +17,7 @@ namespace CDR_Worship.Models
         [Required]
         public string? Name { get; set; }
 
-        [Required]
+     
         public string? Description { get; set; }
 
 
@@ -93,25 +93,24 @@ namespace CDR_Worship.Models
         public virtual Member? Member { get; set; }
 
         // Propiedades de navegación para los roles de los miembros
-        [ForeignKey("LeadSingerId")]
+     
         public virtual Member? LeadSinger { get; set; }
 
-        [ForeignKey("BackingVocalistId")]
+       
         public virtual Member? BackingVocalist { get; set; }
 
-        [ForeignKey("BackingVocalistTwoId")]
+      
         public virtual Member? BackingVocalistTwo { get; set; }
 
-        [ForeignKey("LeadGuitaristId")]
         public virtual Member? LeadGuitarist { get; set; }
 
-        [ForeignKey("SecondGuitaristId")]
+      
         public virtual Member? SecondGuitarist { get; set; }
 
-        [ForeignKey("BassistId")]
+ 
         public virtual Member? Bassist { get; set; }
 
-        [ForeignKey("DrummerId")]
+    
         public virtual Member? Drummer { get; set; }
 
 
