@@ -82,7 +82,7 @@ section {
 
 
 #home {
-    background-image: url("/img/CDRW-Normal.jpg");
+    background-image: url("/assets/img/CDRW-Normal.jpg");
     background-size: 100% 100vh; /* Esto ajustará la imagen para que su altura sea del 100% del contenedor y su anchura se escale proporcionalmente */
     background-position: center; /* Esto asegurará que la imagen esté centrada horizontalmente */
     background-repeat: no-repeat;
