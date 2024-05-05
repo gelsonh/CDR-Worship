@@ -148,22 +148,22 @@ footer {
     
 }
 
-/*.navbar {
-  position: fixed;  Fixed position to keep it on top 
-  width: 100%;  Full width 
-  top: 0;  Align to the top of the viewport 
-  padding: 10px;  Add padding for better visibility 
-  z-index: 999;  Ensure it's above other content 
-  display: flex;  Use flexbox for easier alignment 
-  justify-content: space-between;  Space items evenly along the navbar 
-  align-items: center;  Center items vertically 
+.navbar {
+  position: fixed;  
+  width: 100%;   
+  top: 0; 
+  padding: 10px;  
+  z-index: 999;  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;
   background-color: var(--gh-theme-200);
-}*/
+}
 
-/*.navbar img {
+.navbar img {
   width: 90px;
   height: auto;
-}*/
+}
 
 .wave-group {
   position: relative;
