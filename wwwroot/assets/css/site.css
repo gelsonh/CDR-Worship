@@ -144,26 +144,27 @@ img {
 }
 
 footer {
-  background-color: var(--gh-theme-200);
+    background-color: var(--gh-theme-200);  
+    
 }
 
 /*.navbar {
-  position: fixed;*/ /* Fixed position to keep it on top */
-  /*width: 100%;*/ /* Full width */
-  /*top: 0;*/ /* Align to the top of the viewport */
-  /*padding: 10px;*/ /* Add padding for better visibility */
-  /*z-index: 999;*/ /* Ensure it's above other content */
-  /*display: flex;*/ /* Use flexbox for easier alignment */
-  /*justify-content: space-between;*/ /* Space items evenly along the navbar */
-  /*align-items: center;*/ /* Center items vertically */
-  /*background-color: var(--gh-theme-200);
+  position: fixed;  Fixed position to keep it on top 
+  width: 100%;  Full width 
+  top: 0;  Align to the top of the viewport 
+  padding: 10px;  Add padding for better visibility 
+  z-index: 999;  Ensure it's above other content 
+  display: flex;  Use flexbox for easier alignment 
+  justify-content: space-between;  Space items evenly along the navbar 
+  align-items: center;  Center items vertically 
+  background-color: var(--gh-theme-200);
 }*/
 
 /*.navbar img {
   width: 90px;
   height: auto;
-}
-*/
+}*/
+
 .wave-group {
   position: relative;
 }
@@ -237,6 +238,10 @@ footer {
   width: 50%;
 }
 
+
+
+
+
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .mainTitle {
@@ -267,4 +272,12 @@ footer {
 
 /* XX-Large devices (larger desktops, 1400px and up) */
 @media (min-width: 1400px) {
+}
+
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
 }
