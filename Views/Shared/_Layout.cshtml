@@ -18,7 +18,7 @@
     <!-- Favicon icon -->
     <link rel="icon"
           type="image/png"
-          sizes="16x16"
+          sizes="32x32"
           href="~/favicon.ico" />
 
 
@@ -70,28 +70,86 @@
                                 <a class="nav-link  text-dark" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Lista</a>
                             </li>
 
-                            
+
                         </ul>
-                        <ul class="navbar-nav ml-auto d-flex">
+                        <ul class="navbar-nav ml-auto d-flex mx-3">
                             @if (SignInManager.IsSignedIn(User))
                             {
-
                                 <li class="nav-item">
                                     @if (User.Identity!.IsAuthenticated)
                                     {
                                         var user = await UserManager.GetUserAsync(User);
 
-                                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @user?.FirstName</a>
+                                        <a class="nav-link dropdown-toggle waves-effect waves-dark"
+                                           href="#"
+                                           data-bs-toggle="dropdown"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <i class="bi bi-boombox"></i>
+                                           @*  <img src="../../assets/images/users/1.jpg"
+                                                 alt="user"
+                                                 class="rounded-circle"
+                                                 width="36" /> *@
+                                            <span class="ms-2 font-weight-medium">@user?.FirstName</span>
+                                        </a>
+                                        <div class="
+                        dropdown-menu dropdown-menu-end
+                        user-dd
+                        animated
+                        flipInY mx-2
+                                  ">
+                                            <div class="
+                            d-flex
+                            no-block
+                            align-items-center
+                            p-3
+                            bg-info
+                            text-white
+                            mb-2
+                                      ">
+                                                <div class="">
+                                                    
+                                                    @* <img src="../../assets/images/users/1.jpg"
+                                                         alt="user"
+                                                         class="rounded-circle"
+                                                         width="60" /> *@
+                                                </div>
+                                                <div class="ms-2">
+                                                    <h4 class="mb-0 text-white">@user?.FirstName @user?.LastName</h4>
+                                                    <p class="mb-0">@user?.Email</p>
+                                                </div>
+                                            </div>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="feather-sm bi bi-person text-info me-1 ms-1"></i>
+                                                My Profile
+                                            </a>
+                                          
+                                            <a class="dropdown-item" href="#">
+                                                <i class="feather-sm bi bi-bell text-success me-1 ms-1"></i>
+                                                Notification
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="feather-sm bi bi-person-gear text-warning me-1 ms-1"></i>
+                                                Account Setting
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                <i class="feather-sm bi bi-box-arrow-left text-danger me-1 ms-1"></i>
+                                                Logout
+                                            </a>
+
+                                            <div class="dropdown-divider"></div>
+                                            <div class="ps-4 p-2">
+                                                <a href="#" class="btn d-block w-100 btn-info rounded-pill">View Profile</a>
+                                            </div>
+                                        </div>
                                     }
-                                </li>
-                                <li class="nav-item">
-                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                    </form>
                                 </li>
                             }
                         </ul>
-                        
+
+
                     </div>
 
                 </div>
@@ -102,6 +160,9 @@
             <partial name="_LoginPartial" />
         }
     </header>
+
+
+
 
     <div class="">
         <main role="main" class="">
@@ -143,3 +204,8 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+
+
+

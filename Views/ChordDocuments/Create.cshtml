@@ -1,13 +1,11 @@
 ﻿@model CDR_Worship.Models.ChordDocument
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "_Layout";
+    ViewData["Title"] = "Create";   
 
 }
 
 <style>
-
 
     .cardAttachment {
         border-radius: 10px;
@@ -47,7 +45,7 @@
             color: #a3a3a3;
         }
 
-    .btn {
+    .btn-File {
         text-decoration: none;
         background-color: #005af0;
         color: #ffffff;
@@ -57,7 +55,7 @@
         transition: 0.3s;
     }
 
-        .btn:hover {
+        .btn-File:hover {
             text-decoration: none;
             background-color: #ffffff;
             color: #005af0;
@@ -78,107 +76,70 @@
 
 </style>
 
-<div class="container-xxl mt-5">
+<div class="section-page">
+    <div class="container-xxl mt-5">
 
-    <h2>Puedes subir las canciones con su acordes</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create" asp-controller="ChordDocuments" enctype="multipart/form-data" method="post">
+        <h2>Puedes subir las canciones con su acordes</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" asp-controller="ChordDocuments" enctype="multipart/form-data" method="post">
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="SongDocumentId" />
-                <input type="hidden" asp-for="Created" />
-                <input type="hidden" asp-for="Updated" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="SongDocumentId" />
+                    <input type="hidden" asp-for="Created" />
+                    <input type="hidden" asp-for="Updated" />
 
 
 
-                <div class="form-group my-3">
-                    <div class="cardAttachment">
-                        <h3>Upload Files</h3>
-                        <div class="drop_box">
-                            <header>
-                                <h4>Select File here</h4>
-                            </header>
-                            <label class="btn btn-outline-primary btn-sm">
-                                <input name="FormFile" type="file" class="form-control-file" id="fileID" />
-                            </label>
+                    <div class="form-group my-3">
+                        <div class="cardAttachment">
+                            <h3>Upload Files</h3>
+                            <div class="drop_box">
+                                <header>
+                                    <h4>Select File here</h4>
+                                </header>
+                                <label class="btn-File btn-outline-primary btn-sm">
+                                    <input name="FormFile" type="file" class="form-control-file" id="fileID" />
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
-                @*    <div class="form-group my-3">
-                <div class="d-flex justify-content-center align-items-center">
-                <div class="file-upload-design">
-                <svg viewBox="0 0 640 512" height="1em">
-                <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
-                </svg>
-                <div id="fileNameDisplay"></div>
-                <span class="browse-button">Browse file</span>
-                </div>
-                <input id="fileID" type="file" name="FormFile" />
-                </div>
-                </div> *@
-
-                @*  <div class="form-group my-3 file-upload-form">
-                <div class="d-flex justify-content-center align-items-center">
-                <label class="file-upload-label browse-button">
-                <div class="file-upload-design">
-                <svg viewBox="0 0 640 512" height="1em">
-                <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"></path>
-                </svg>
-                <span class="">Browse file</span>
-                </div>
-                <input id="fileID" type="file" name="FormFile" />
-                <div id="fileNameDisplay"></div>
-
-                </label>
-
-                </div>
-                </div> *@
+                    <div class="form-group mt-4">
+                        <label asp-for="SongName" class="control-label">Nombre de la Cancion</label>
+                        <input asp-for="SongName" class="form-control" />
+                        <span asp-validation-for="SongName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group my-3">
+                        <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
 
 
-                <div class="form-group mt-4">
-                    <label asp-for="SongName" class="control-label">Nombre de la Cancion</label>
-                    <input asp-for="SongName" class="form-control" />
-                    <span asp-validation-for="SongName" class="text-danger"></span>
-                </div>
-                <div class="form-group my-3">
-                    <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="ChordId" class="control-label">Acordes</label>
+                        <select asp-for="ChordId" class="form-control" asp-items="@ViewBag.ChordId">
+                            <option value="">Selecciona el Acorde</option>
+                        </select>
+                    </div>
 
+                
 
-                <div class="form-group">
-                    <label asp-for="ChordId" class="control-label">Acordes</label>
-                    <select asp-for="ChordId" class="form-control" asp-items="@ViewBag.ChordId">
-                        <option value="">Selecciona el Acorde</option>
-                    </select>
-                </div>
-
-                @*  <div class="form-group my-3">
-                <label class="btn btn-outline-primary btn-sm">
-                <input name="FormFile" type="file" class="form-control-file" id="fileID" style="display: none;" accept=".doc,.docx,.pdf" onchange="displayFileName()" />
-                Choose File
-                </label>
-                </div> *@
-
-                <div class="form-group mt-3">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <a asp-action="Index">Back to List</a>
         </div>
     </div>
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
 </div>
-
-
-
 
 
 @section Scripts {
