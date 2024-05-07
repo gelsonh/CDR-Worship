@@ -209,6 +209,17 @@ namespace CDR_Worship.Data
                                  new Chord() {  ChordName =  nameof(CDRChord.Fsostenido) },
                                     new Chord() {  ChordName =  nameof(CDRChord. Csostenido) },
                                        new Chord() {  ChordName =  nameof(CDRChord.Bb) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Cm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Dm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Em) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Fm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Gm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Am) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Bm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.FsostenidoM) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.CsostenidoM) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Bbm)
+                                       }
 
         };
 

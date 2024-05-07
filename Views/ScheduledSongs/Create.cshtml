@@ -6,7 +6,7 @@
     ViewData["Title"] = "Create";
 }
 
-<section id="download" class="section-page">
+<div id="download" class="section-page">
     <div class="container-xxl">
 
         <h1>Create</h1>
@@ -18,7 +18,7 @@
                 <form asp-action="Create" asp-controller="ScheduledSongs" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Description" />
-                  
+
 
 
                     <div class="form-group mt-2">
@@ -26,11 +26,11 @@
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                     
-                 @*    <div class="form-group mt-2">
-                        <label asp-for="Description" class="control-label">Description:</label>
-                        <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
+
+                    @*    <div class="form-group mt-2">
+                    <label asp-for="Description" class="control-label">Description:</label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
                     </div> *@
 
 
@@ -58,36 +58,33 @@
                         </select>
                     </div>
 
-                    <div class="form-group mt-2">
-                        <label asp-for="LeadGuitaristId" class="control-label">Guitarra 1:</label>
-                        <select asp-for="LeadGuitaristId" class="form-control" asp-items="ViewBag.LeadGuitarists">
-                            <option value="">Seleccionar Guitarra 1</option>
-                        </select>
+                    @*  <div class="form-group mt-2">
+                    <label asp-for="LeadGuitaristId" class="control-label">Guitarra 1:</label>
+                    <select asp-for="LeadGuitaristId" class="form-control" asp-items="ViewBag.LeadGuitarists">
+                    <option value="">Seleccionar Guitarra 1</option>
+                    </select>
                     </div>
 
                     <div class="form-group mt-2">
-                        <label asp-for="SecondGuitaristId" class="control-label">Guitarra 2:</label>
-                        <select asp-for="SecondGuitaristId" class="form-control" asp-items="ViewBag.SecondGuitarists">
-                            <option value="">Seleccionar Guitarra 2</option>
-                        </select>
+                    <label asp-for="SecondGuitaristId" class="control-label">Guitarra 2:</label>
+                    <select asp-for="SecondGuitaristId" class="form-control" asp-items="ViewBag.SecondGuitarists">
+                    <option value="">Seleccionar Guitarra 2</option>
+                    </select>
                     </div>
 
                     <div class="form-group mt-2">
-                        <label asp-for="BassistId" class="control-label">Bajista:</label>
-                        <select asp-for="BassistId" class="form-control" asp-items="ViewBag.Bassists">
-                            <option value="">Seleccionar El Bajista</option>
-                        </select>
+                    <label asp-for="BassistId" class="control-label">Bajista:</label>
+                    <select asp-for="BassistId" class="form-control" asp-items="ViewBag.Bassists">
+                    <option value="">Seleccionar El Bajista</option>
+                    </select>
                     </div>
 
                     <div class="form-group mt-2">
-                        <label asp-for="DrummerId" class="control-label">Baterista:</label>
-                        <select asp-for="DrummerId" class="form-control" asp-items="ViewBag.Drummers">
-                            <option value="">Seleccionar El Baterista</option>
-                        </select>
-                    </div>
-
-                    
-
+                    <label asp-for="DrummerId" class="control-label">Baterista:</label>
+                    <select asp-for="DrummerId" class="form-control" asp-items="ViewBag.Drummers">
+                    <option value="">Seleccionar El Baterista</option>
+                    </select>
+                    </div> *@
 
 
                     <div class="form-group mt-2">
@@ -106,7 +103,7 @@
         </div>
 
     </div>
-</section>
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -114,7 +111,6 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
 
     }
 }

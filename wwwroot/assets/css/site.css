@@ -93,22 +93,22 @@ img {
   --bs-btn-active-border-color: var(--gh-theme-700);
 }
 
-/*.section-page {
+.section-page {
   padding-top: 5rem;
   padding-bottom: 8rem;
   position: relative;
   overflow: visible;
   margin-top: -3rem;
-}*/
+}
 
 
 footer {
-    position: fixed; /* Cambiar de relative a fixed */
+    position: fixed; /* Cambiar de fixed a relative */
     bottom: 0;
     width: 100%;
-    
     background-color: var(--gh-theme-200);
 }
+
 
 .navbar {
   position: fixed;  
@@ -141,6 +141,14 @@ footer {
     font-weight: 1.2rem;
     letter-spacing: 0.1rem;
   }
+
+    .section-page {
+        padding-top: 4rem;
+        padding-bottom: 6rem;
+        position: relative;
+        overflow: visible;
+        margin-top: -3rem;
+    }
 }
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
@@ -149,6 +157,8 @@ footer {
     font-weight: 1.2rem;
     letter-spacing: 0.1rem;
   }
+
+   
 }
 
 /* X-Large devices (large desktops, 1200px and up) */

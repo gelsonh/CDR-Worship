@@ -11,6 +11,16 @@
         B,
         Fsostenido,
         Csostenido,
-        Bb
+        Bb,
+        Cm,
+        Dm,
+        Em,
+        Fm,
+        Gm,
+        Am,
+        Bm,
+        FsostenidoM,
+        CsostenidoM,
+        Bbm,
     }
 }
