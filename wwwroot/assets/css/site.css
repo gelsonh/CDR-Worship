@@ -35,12 +35,11 @@
 
 /* Element Overrides */
 body {
-  font-family: var(--gh-body-font);
-  font-size: var(--gh-font-size);
-  font-weight: var(--gh-font-weight);
-  line-height: var(--gh-line-height);
-  color: var(--gh-dark-color);
-  background: var(--gh-background-color);
+    font-family: var(--gh-body-font);
+    font-size: var(--gh-font-size);
+    font-weight: var(--gh-font-weight);
+    line-height: var(--gh-line-height);
+    color: var(--gh-dark-color);
 }
 
 h6,
@@ -68,41 +67,27 @@ a {
 }
 
 main {
-  margin-bottom: 5rem;
+   /* flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;*/
 }
 
 /* Div Center */
-section {
+/*section {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-/*#home {
-  background-image: url('/assets/img/CDRW-LongVersion.jpg');
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  position: relative;
 }*/
 
-/*#homeCover {
-  backdrop-filter: brightness(1.00) blur(0.00rem);
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}*/
 
+/* Estilo base para la imagen */
 img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto; /* Esto mantiene la proporción de la imagen */
 }
-
 
 .btn-primary {
   --bs-btn-bg: var(--gh-theme-600);
@@ -112,40 +97,21 @@ img {
   --bs-btn-active-bg: var(--gh-theme-700);
   --bs-btn-active-border-color: var(--gh-theme-700);
 }
-.mainTitle {
-  font-size: 4rem;
-  color: white;
-  /*margin: 0;*/
-  text-align: center;
-}
 
-.mainSubTitle {
-  font-size: 1.4rem;
-  color: white;
-  margin: 0;
-  text-align: center;
-}
-
-.section-page {
+/*.section-page {
   padding-top: 5rem;
   padding-bottom: 8rem;
   position: relative;
   overflow: visible;
   margin-top: -3rem;
-}
+}*/
 
-.section-page:nth-child(even),
-.section-page:nth-child(even) > .container::after {
-  background-color: var(--gh-theme-100);
-}
-.section-page:nth-child(odd),
-.section-page:nth-child(odd) > .container::after {
-  background-color: var(--gh-theme-150);
-}
 
 footer {
-    background-color: var(--gh-theme-200);  
-    
+    position: fixed; /* Cambiar de relative a fixed */
+    bottom: 0;
+    width: 100%;
+    background-color: var(--gh-theme-200);
 }
 
 .navbar {
@@ -164,83 +130,6 @@ footer {
   width: 90px;
   height: auto;
 }
-
-.wave-group {
-  position: relative;
-}
-
-.wave-group .input {
-  font-size: 16px;
-  padding: 10px 10px 10px 5px;
-  display: block;
-  width: 200px;
-  border: none;
-  border-bottom: 1px solid #515151;
-  background: transparent;
-}
-
-.wave-group .input:focus {
-  outline: none;
-}
-
-.wave-group .label {
-  color: #999;
-  font-size: 18px;
-  font-weight: normal;
-  position: absolute;
-  pointer-events: none;
-  left: 5px;
-  top: 10px;
-  display: flex;
-}
-
-.wave-group .label-char {
-  transition: 0.2s ease all;
-  transition-delay: calc(var(--index) * 0.05s);
-}
-
-.wave-group .input:focus ~ label .label-char,
-.wave-group .input:valid ~ label .label-char {
-  transform: translateY(-20px);
-  font-size: 14px;
-  color: var(--gh-theme-600);
-}
-
-.wave-group .bar {
-  position: relative;
-  display: block;
-  width: 200px;
-}
-
-.wave-group .bar:before,
-.wave-group .bar:after {
-  content: "";
-  height: 2px;
-  width: 0;
-  bottom: 1px;
-  position: absolute;
-  background: var(--gh-theme-600);
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
-}
-
-.wave-group .bar:before {
-  left: 50%;
-}
-
-.wave-group .bar:after {
-  right: 50%;
-}
-
-.wave-group .input:focus ~ .bar:before,
-.wave-group .input:focus ~ .bar:after {
-  width: 50%;
-}
-
-
-
-
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
@@ -275,9 +164,3 @@ footer {
 }
 
 
-.container-principal {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-}
