@@ -66,12 +66,7 @@ a {
   color: white;
 }
 
-main {
-   /* flex: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;*/
-}
+
 
 /* Div Center */
 /*section {
@@ -86,7 +81,7 @@ main {
 /* Estilo base para la imagen */
 img {
     width: 100%;
-    height: auto; /* Esto mantiene la proporción de la imagen */
+    height:auto;
 }
 
 .btn-primary {
@@ -111,6 +106,7 @@ footer {
     position: fixed; /* Cambiar de relative a fixed */
     bottom: 0;
     width: 100%;
+    
     background-color: var(--gh-theme-200);
 }
 

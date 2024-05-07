@@ -28,7 +28,8 @@
             }
 </style>
 
-<section id="list" class="section-page">
+<div id="list" class="section-page">
+
     <div class="container-xxl">
         <div class="row">
             <div class="col">
@@ -45,11 +46,11 @@
                         <th>Nombre de la Canción</th>                     
                         <th>Cantante Principal</th>
                         <th>Corista</th>
-                        <th>Corista 2</th>
-                        <th>Guitarra 1</th>
+                        <th>Corista</th>
+                       @*  <th>Guitarra 1</th>
                         <th>Guitarra 2</th>
                         <th>Bajista</th>
-                        <th>Baterista</th>
+                        <th>Baterista</th> *@
                         <th>Fecha</th>
                         <th>Detalles</th>
                     </tr>
@@ -62,10 +63,10 @@
                             <td>@song.LeadSinger?.MemberName</td>
                             <td>@song.BackingVocalist?.MemberName</td>
                             <td>@song.BackingVocalistTwo?.MemberName</td>
-                            <td>@song.LeadGuitarist?.MemberName</td>
+                           @*  <td>@song.LeadGuitarist?.MemberName</td>
                             <td>@song.SecondGuitarist?.MemberName</td>
                             <td>@song.Bassist?.MemberName</td>
-                            <td>@song.Drummer?.MemberName</td>
+                            <td>@song.Drummer?.MemberName</td> *@
                             <td>@song.StartDate.ToString("dd/MM/yyyy")</td>
                             <td>
 
@@ -85,7 +86,6 @@
             </table>
         </div>
      </div>
-
-    
-</section>
+  
+</div>
 
