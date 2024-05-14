@@ -43,10 +43,9 @@
                     <div class="card-body">
                         <div class="border-bottom title-part-padding d-flex justify-content-between">
                             <h6 class="card-subtitle mb-3">Canciones</h6>
-                            @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin, Moderator"))
-                            {
+                          
                                 <a asp-action="Create" asp-controller="ChordDocuments" class="mt-auto">Subir Nueva Canción</a>
-                            }
+                            
                         </div>
 
                         <div class="table-responsive">

@@ -36,12 +36,11 @@
                 <h2 class="text-center display-1 my-4">Programacion del Domingo</h2>
             </div>
 
-            @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin, Moderator"))
-            {
+           
                 <p>
                     <a asp-action="Create" class="btn btn-success">Agregar Nueva Programacion</a>
                 </p>
-            }
+            
 
 
             <table class="table table-bordered table-striped table-hover">
