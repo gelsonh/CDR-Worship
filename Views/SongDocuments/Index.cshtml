@@ -29,7 +29,10 @@
             <div class="card-body">
                 <div class="border-bottom title-part-padding d-flex justify-content-between">
                     <h6 class="card-subtitle mb-3">Canciones</h6>
-                    <a href="@Url.Action("Create", "SongDocuments")" class="mt-auto">Subir Nuevo Documento</a>
+                    @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin, Moderator"))
+                    {
+                        <a href="@Url.Action("Create", "SongDocuments")" class="mt-auto">Subir Nuevo Documento</a>
+                    }
                 </div>
 
                 <div class="table-responsive">

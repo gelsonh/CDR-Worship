@@ -25,7 +25,6 @@
         background: url("~/dist/js/pages/datatable/details_close.png") no-repeat center center;
     }
 
-
 </style>
 
 <div id="download" class="section-page">
@@ -44,7 +43,10 @@
                     <div class="card-body">
                         <div class="border-bottom title-part-padding d-flex justify-content-between">
                             <h6 class="card-subtitle mb-3">Canciones</h6>
-                            <a asp-action="Create" asp-controller="ChordDocuments" class="mt-auto">Subir Nueva Canción</a>
+                            @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin, Moderator"))
+                            {
+                                <a asp-action="Create" asp-controller="ChordDocuments" class="mt-auto">Subir Nueva Canción</a>
+                            }
                         </div>
 
                         <div class="table-responsive">
@@ -57,7 +59,7 @@
                                         <th>Documento</th>
                                         <th>Nombre de la Cancion</th>
                                         <th>Artista/s</th>
-                                        <th>Acorde</th>                                  
+                                        <th>Acorde</th>
                                         <th>Detalles</th>
                                     </tr>
                                 </thead>
@@ -80,7 +82,7 @@
                                             <td>@chordDocument.SongName</td>
                                             <td>@chordDocument.Description</td>
                                             <td>@chordDocument.Chord!.ChordName</td>
-                                         
+
                                             <td class="d-flex justify-content-center align-items-center">
                                                 <a class="view-document mx-2" href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })" title="Ver" target="_blank">
                                                     <i class="bi bi-eye"></i>
@@ -101,8 +103,8 @@
                                                     </a>
                                                 }
                                             </td>
-                                            
-                                           
+
+
                                         </tr>
                                     }
 
@@ -113,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-              
+
             </div>
 
         </div>

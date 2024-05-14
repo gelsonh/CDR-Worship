@@ -142,14 +142,19 @@ footer {
     letter-spacing: 0.1rem;
   }
 
-    .section-page {
+  .section-page {
         padding-top: 4rem;
         padding-bottom: 6rem;
         position: relative;
         overflow: visible;
         margin-top: -3rem;
     }
+
+  
+
+
 }
+
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .mainSubTitle {
