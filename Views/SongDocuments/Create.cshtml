@@ -78,65 +78,67 @@
 
 </style>
 
-<div class="container-xxl mt-5">
+<div class="section-page">
 
-    <h2>Documento para los Vocalistas</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create" asp-controller="SongDocuments" enctype="multipart/form-data" method="post">
+    <div class="container-xxl mt-5">
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="ChordDocumentId" />
-                <input type="hidden" asp-for="Created" />
-                <input type="hidden" asp-for="Updated" />
+        <h2>Documento para los Vocalistas</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" asp-controller="SongDocuments" enctype="multipart/form-data" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ChordDocumentId" />
+                    <input type="hidden" asp-for="Created" />
+                    <input type="hidden" asp-for="Updated" />
 
 
 
-                <div class="form-group my-3">
-                    <div class="cardAttachment">
-                        <h3>Upload Files</h3>
-                        <div class="drop_box">
-                            <header>
-                                <h4>Select File here</h4>
-                            </header>
-                            <label class="btn btn-outline-primary btn-sm">
-                                <input name="FormFile" type="file" class="form-control-file" id="fileID" />
-                            </label>
+                    <div class="form-group my-3">
+                        <div class="cardAttachment">
+                            <h3>Upload Files</h3>
+                            <div class="drop_box">
+                                <header>
+                                    <h4>Select File here</h4>
+                                </header>
+                                <label class="btn btn-outline-primary btn-sm">
+                                    <input name="FormFile" type="file" class="form-control-file" id="fileID" />
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="fileNameDisplay"></div>
+                    <div id="fileNameDisplay"></div>
 
 
-                <div class="form-group mt-4">
-                    <label asp-for="SongName" class="control-label">Nombre de la Cancion</label>
-                    <input asp-for="SongName" class="form-control" />
-                    <span asp-validation-for="SongName" class="text-danger"></span>
-                </div>
-                <div class="form-group my-3">
-                    <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                    <div class="form-group mt-4">
+                        <label asp-for="SongName" class="control-label">Nombre de la Cancion</label>
+                        <input asp-for="SongName" class="form-control" />
+                        <span asp-validation-for="SongName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group my-3">
+                        <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group mt-3">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
+
+                    <div class="form-group mt-3">
+                        <input type="submit" value="Create" class="btn btn-primary" /> |
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <div>
-        <a asp-action="Index">Back to List</a>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
