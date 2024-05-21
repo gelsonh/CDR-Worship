@@ -1,23 +1,41 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
 
+
+@{
+    ViewData["Title"] = "Home Page";
 }
 
-
 <style>
-    .background-container {
-        background-image: url('/assets/img/CDRW-Home.jpg');
-        background-size: cover; /* Para cubrir completamente el contenedor */
-        background-position: center; /* Para centrar la imagen */
-        /* Ajusta la altura y otros estilos según sea necesario */
+    /* Estilos generales */
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
     }
 
+    /* Estilos para la imagen de fondo */
+    .hero-image {
+        width: 100%;
+        height: 75vh; /* Ocupa toda la altura de la ventana */
+        object-fit: cover; /* Ajusta la imagen para cubrir completamente el contenedor */
+        position: relative;     
+    
+    }
+
+    /* Estilos para el contenedor de la imagen */
+    .hero-container {
+        position: relative;
+        height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la ventana */
+    }
+ 
 </style>
 
-<div class="background-container">
-    <img src="/assets/img/CDRW-Home.jpg" />
+<div class="hero-container">
+
+    <!-- Imagen de fondo -->
+    <img src="/assets/img/CDRW-Home.jpg" class="hero-image" alt="Home Image" />
 </div>
 
-
-
+<!-- Footer -->
 

@@ -7,35 +7,84 @@
 
 
 <style>
-    td.details-control {
+    .details-control {
         background: url("~/dist/js/pages/datatable/details_open.png") no-repeat center center;
         cursor: pointer;
     }
 
-    tr.shown td.details-control {
+    tr.shown .details-control {
         background: url("~/dist/js/pages/datatable/details_close.png") no-repeat center center;
     }
 
+    .section-page {
+        padding: 2rem 0;
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        font-weight: normal;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+    }
+
+    .view-document {
+        color: #007bff;
+        transition: color 0.3s ease;
+    }
+
+        .view-document:hover {
+            color: #0056b3;
+        }
+
+    .bi {
+        font-size: 1.25rem;
+    }
 </style>
 
 <div id="upload" class="section-page">
-    <div class="container-xxl my-5">
-        <h2 class="text-center display-1 my-4"> Las Letras de las Canciones</h2>
-
+    <div class="container-xxl mt-5">
+        <h2 class="text-center display-1 my-4">Las Letras de las Canciones</h2>
         <div class="card">
-            <div class="border-bottom title-part-padding">
+            <div class="border-bottom p-4">
                 <h4 class="card-title mb-0">Aquí puedes descargar o ver documentos de las canciones.</h4>
             </div>
             <div class="card-body">
-                <div class="border-bottom title-part-padding d-flex justify-content-between">
-                    <h6 class="card-subtitle mb-3">Canciones</h6>
-                 
-                        <a href="@Url.Action("Create", "SongDocuments")" class="mt-auto">Subir Nuevo Documento</a>
-                    
+                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                {
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                        <h6 class="card-subtitle mb-0">Canciones</h6>
+                        <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-primary btn-sm">Subir Nuevo Documento</a>
+                    </div>
+                }
+
+                <!-- Selector de cantidad de filas -->
+                <div class="d-flex justify-content-end mb-3">
+                    <label for="rowCount" class="form-label me-2">Mostrar:</label>
+                    <select id="rowCount" class="form-select form-select-sm w-auto">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered text-inputs-searching text-nowrap">
+                    <table class="table table-striped table-bordered text-nowrap">
                         <thead>
                             <tr>
                                 <th>Documento</th>
@@ -44,7 +93,7 @@
                                 <th>Detalles</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="songTableBody">
                             <!-- Aquí puedes iterar sobre los documentos de letras de canciones -->
                             @foreach (var songDocument in Model)
                             {
@@ -72,10 +121,10 @@
 
                                         @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                                         {
-                                            <a asp-action="Edit" asp-route-id="@songDocument.Id" data-toggle="tooltip" title="Editar" class="mx-2 text-decoration-none">
+                                            <a asp-action="Edit" asp-route-id="@songDocument.Id" title="Editar" class="mx-2 text-decoration-none">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a asp-action="Delete" asp-route-id="@songDocument.Id" data-toggle="tooltip" title="Eliminar" class="mt-2 text-decoration-none">
+                                            <a asp-action="Delete" asp-route-id="@songDocument.Id" title="Eliminar" class="mx-2 text-decoration-none">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         }
@@ -85,106 +134,50 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* <h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SongName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChordDocumentId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SongName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChordDocumentId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
-    </tbody>
-</table>
- *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,22 +2,27 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
+
+
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
     <div class="container-fluid">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/assets/img/CDRLogo.png" alt="Logo" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/assets/img/CDRLogo.png" alt="Logo" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- Aquí puedes agregar otros elementos de navegación si es necesario -->
+            </ul>
+            <ul class="navbar-nav ms-auto">
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item">
                         @if (User.Identity!.IsAuthenticated)
                         {
                             var user = await UserManager.GetUserAsync(User);
-
                             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @user?.FirstName</a>
                         }
                     </li>
@@ -29,7 +34,6 @@
                 }
                 else
                 {
-
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
                     </li>

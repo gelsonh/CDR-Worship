@@ -260,28 +260,32 @@ namespace CDR_Worship.Controllers
             }
         }
 
-
         // GET: ChordDocuments/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             // Obtener el documento de acorde desde tu contexto
             var chordDocument = await _context.ChordDocuments.FindAsync(id);
-
             if (chordDocument == null)
             {
                 return NotFound();
             }
 
-            // Obtener la lista de los acordes desde tu servicio
+            // Obtener una lista de los acordes disponibles
             var chords = await _chordDocumentService.GetUniqueChordsAsync();
 
-            // Crear un SelectList con los datos de los acordes
-            ViewData["ChordId"] = new SelectList(chords, "Id", "Name", chordDocument.Id);
+            // Crear una lista desplegable con los acordes
+            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
 
             // Pasar el documento de acorde a tu vista
             return View(chordDocument);
         }
+
 
 
         // POST: ChordDocuments/Edit/5

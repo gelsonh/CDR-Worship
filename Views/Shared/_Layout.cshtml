@@ -4,6 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,16 +35,17 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/assets/css/site.css" />
     <link rel="stylesheet" href="~/dist/css/style.min.css" />
-    <link rel="stylesheet" href="~/assets/css/card.css" />
-    <link rel="stylesheet" href="~/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-
+@*     <link rel="stylesheet" href="~/assets/css/card.css" /> *@
 
     <link rel="stylesheet" href="~/assets/css/attachment.css" />
     <link rel="stylesheet" href="~/assets/css/themes.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @*     <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
 </head>
+
+
 <body>
+
     <header>
 
         @if (User.Identity!.IsAuthenticated)
@@ -70,85 +72,47 @@
                                 <a class="nav-link  text-dark" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Lista</a>
                             </li>
 
-
                         </ul>
-                        <ul class="navbar-nav ml-auto d-flex mx-3">
+
+                        <ul class="navbar-nav ms-auto d-flex align-items-center mx-3">
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                <li class="nav-item">
+                                <li class="nav-item dropdown">
                                     @if (User.Identity!.IsAuthenticated)
                                     {
                                         var user = await UserManager.GetUserAsync(User);
-
-                                        <a class="nav-link dropdown-toggle waves-effect waves-dark"
-                                           href="#"
-                                           data-bs-toggle="dropdown"
-                                           aria-haspopup="true"
-                                           aria-expanded="false">
+                                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-boombox"></i>
-                                           @*  <img src="../../assets/images/users/1.jpg"
-                                                 alt="user"
-                                                 class="rounded-circle"
-                                                 width="36" /> *@
-                                            <span class="ms-2 font-weight-medium">@user?.FirstName</span>
+                                            <span class="ms-2">@user?.FirstName</span>
                                         </a>
-                                        <div class="
-                        dropdown-menu dropdown-menu-end
-                        user-dd
-                        animated
-                        flipInY mx-2
-                                  ">
-                                            <div class="
-                            d-flex
-                            no-block
-                            align-items-center
-                            p-3
-                            bg-info
-                            text-white
-                            mb-2
-                                      ">
-                                                <div class="">
-                                                    
-                                                    @* <img src="../../assets/images/users/1.jpg"
-                                                         alt="user"
-                                                         class="rounded-circle"
-                                                         width="60" /> *@
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                            <li class="dropdown-header bg-info text-white">
+                                                <div class="d-flex align-items-center p-3">
+                                                    <i class="bi bi-person-circle icon-large me-3"></i>
+                                                    <div>
+                                                        <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
+                                                        <small>@user?.Email</small>
+                                                    </div>
                                                 </div>
-                                                <div class="ms-2">
-                                                    <h4 class="mb-0 text-white">@user?.FirstName @user?.LastName</h4>
-                                                    <p class="mb-0">@user?.Email</p>
-                                                </div>
-                                            </div>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="feather-sm bi bi-person text-info me-1 ms-1"></i>
-                                                My Profile
-                                            </a>
-                                          
-                                            <a class="dropdown-item" href="#">
-                                                <i class="feather-sm bi bi-bell text-success me-1 ms-1"></i>
-                                                Notification
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="feather-sm bi bi-person-gear text-warning me-1 ms-1"></i>
-                                                Account Setting
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                                <i class="feather-sm bi bi-box-arrow-left text-danger me-1 ms-1"></i>
-                                                Logout
-                                            </a>
-
-                                            <div class="dropdown-divider"></div>
-                                            <div class="ps-4 p-2">
-                                                <a href="#" class="btn d-block w-100 btn-info rounded-pill">View Profile</a>
-                                            </div>
-                                        </div>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-person text-info me-2"></i>My Profile</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-bell text-success me-2"></i>Notification</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear text-warning me-2"></i>Account Setting</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                    <i class="bi bi-box-arrow-left text-danger me-2"></i>Logout
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><div class="dropdown-item ps-4"><a href="#" class="btn btn-info w-100">View Profile</a></div></li>
+                                        </ul>
                                     }
                                 </li>
                             }
                         </ul>
-
 
                     </div>
 
@@ -156,11 +120,12 @@
             </nav>
         }
         else
-        {
-            <partial name="_LoginPartial" />
-        }
-    </header>
 
+        {
+             <partial name="_LoginPartial" /> 
+        } 
+
+    </header>
 
     <div class="">
         <main role="main" class="">
@@ -168,35 +133,57 @@
         </main>
     </div>
 
-    <footer class="py-4">
+    <footer class="py-4 mt-auto">
         <div class="container-xxl text-center">
             <span class="build-by-text text-dark">Build by</span>
             <span class="build-by-text text-dark">Gelson Hernandez</span>
             <br />
-            <span class="build-by-text text-dark"> &copy; 2024 - CDR Worship -  </span>
+            <span class="build-by-text text-dark">&copy; 2024 - CDR Worship -</span>
             <br />
             <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
-         
         </div>
     </footer>
+
+
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/js/script.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/dist/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="~/dist/js/pages/datatable/datatable-api.init.js"></script>
-
-
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-
 
     <script>
         $(document).ready(function () {
             // Inicializar tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rowCountSelect = document.getElementById('rowCount');
+            const tableBody = document.getElementById('songTableBody');
+            const allRows = Array.from(tableBody.getElementsByTagName('tr'));
+
+            // Función para mostrar filas basadas en la cantidad seleccionada
+            function updateTable() {
+                const rowCount = parseInt(rowCountSelect.value);
+                allRows.forEach((row, index) => {
+                    if (index < rowCount) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Evento para cambiar la cantidad de filas mostradas
+            rowCountSelect.addEventListener('change', updateTable);
+
+            // Inicializar tabla con la cantidad de filas seleccionada
+            updateTable();
         });
     </script>
 

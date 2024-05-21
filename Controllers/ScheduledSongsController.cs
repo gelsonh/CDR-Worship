@@ -178,7 +178,6 @@ namespace CDR_Worship.Controllers
 
 
 
-
         // GET: ScheduledSongs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -192,8 +191,13 @@ namespace CDR_Worship.Controllers
             {
                 return NotFound();
             }
+
+            // Aquí podrías cargar cualquier otra información adicional que necesites en la vista, como una lista de cantantes, etc.
+            // ViewBag.LeadSingers = new SelectList(_context.LeadSingers, "Id", "MemberName");
+
             return View(scheduledSong);
         }
+
 
         // POST: ScheduledSongs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
