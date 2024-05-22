@@ -13,7 +13,7 @@
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;900&display=swap"
           rel="stylesheet" />
 
     <!-- Favicon icon -->
@@ -21,7 +21,6 @@
           type="image/png"
           sizes="32x32"
           href="~/favicon.ico" />
-
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -35,24 +34,21 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/assets/css/site.css" />
     <link rel="stylesheet" href="~/dist/css/style.min.css" />
-@*     <link rel="stylesheet" href="~/assets/css/card.css" /> *@
-
     <link rel="stylesheet" href="~/assets/css/attachment.css" />
     <link rel="stylesheet" href="~/assets/css/themes.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @*     <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
 </head>
 
-
-<body>
+<body class="@ViewData["BodyClass"]">
 
     <header>
-
         @if (User.Identity!.IsAuthenticated)
         {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm" id="main-navbar">
                 <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/assets/img/CDRLogo.png" alt="Logo" /></a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/assets/img/CDRLogo.png" alt="Logo" />
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -63,13 +59,13 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  text-dark" asp-area="" asp-controller="SongDocuments" asp-action="Index">Letras</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="SongDocuments" asp-action="Index">Letras de Canciones</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  text-dark" asp-area="" asp-controller="ChordDocuments" asp-action="Index">Acordes</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ChordDocuments" asp-action="Index">Guía de Acordes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  text-dark" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Lista</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Agenda Dominical</a>
                             </li>
 
                         </ul>
@@ -91,40 +87,41 @@
                                                     <i class="bi bi-person-circle icon-large me-3"></i>
                                                     <div>
                                                         <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
-                                                        <small>@user?.Email</small>
+                                                      @*   <small>@user?.Email</small> *@
                                                     </div>
                                                 </div>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-person text-info me-2"></i>My Profile</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-bell text-success me-2"></i>Notification</a></li>
+                                            <li><a class="dropdown-item"><i class="bi bi-person text-info me-2"></i>Mi Perfil</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-bell text-success me-2"></i>Notificaciones</a></li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear text-warning me-2"></i>Account Setting</a></li>
+                                            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-gear text-warning me-2"></i>Configuración de la Cuenta</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
                                                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                                    <i class="bi bi-box-arrow-left text-danger me-2"></i>Logout
+                                                    <i class="bi bi-box-arrow-left text-danger me-2"></i>Cerrar Sesión
                                                 </a>
                                             </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><div class="dropdown-item ps-4"><a href="#" class="btn btn-info w-100">View Profile</a></div></li>
+                                         @*    <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <div class="dropdown-item ps-4">
+                                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-info w-100">Ver Perfil</a>
+                                                </div>
+                                            </li> *@
+
                                         </ul>
                                     }
                                 </li>
                             }
                         </ul>
-
                     </div>
-
                 </div>
             </nav>
         }
         else
-
         {
-             <partial name="_LoginPartial" /> 
-        } 
-
+            <partial name="_LoginPartial" />
+        }
     </header>
 
     <div class="">
@@ -133,9 +130,9 @@
         </main>
     </div>
 
-    <footer class="py-4 mt-auto">
+    <footer class="py-2 mt-auto">
         <div class="container-xxl text-center">
-            <span class="build-by-text text-dark">Build by</span>
+            <span class="build-by-text text-dark">Creado por</span>
             <span class="build-by-text text-dark">Gelson Hernandez</span>
             <br />
             <span class="build-by-text text-dark">&copy; 2024 - CDR Worship -</span>
@@ -145,8 +142,6 @@
     </footer>
 
 
-
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/js/script.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -154,38 +149,69 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            // Inicializar tooltip
-            $('[data-toggle="tooltip"]').tooltip();
-
-        });
-    </script>
-
-    <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Inicializar tooltip
+            if ($.fn.tooltip) {
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+
+            // Comprobar si el selector de fila y la tabla están presentes antes de manipularlos
             const rowCountSelect = document.getElementById('rowCount');
             const tableBody = document.getElementById('songTableBody');
-            const allRows = Array.from(tableBody.getElementsByTagName('tr'));
+            if (rowCountSelect && tableBody) {
+                const allRows = Array.from(tableBody.getElementsByTagName('tr'));
 
-            // Función para mostrar filas basadas en la cantidad seleccionada
-            function updateTable() {
-                const rowCount = parseInt(rowCountSelect.value);
-                allRows.forEach((row, index) => {
-                    if (index < rowCount) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
+                function updateTable() {
+                    const rowCount = parseInt(rowCountSelect.value);
+                    allRows.forEach((row, index) => {
+                        if (index < rowCount) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+
+                rowCountSelect.addEventListener('change', updateTable);
+                updateTable();
+            }
+
+            // Comprobar si el navbar está presente antes de manipularlo
+            const navbar = document.getElementById('main-navbar');
+            if (navbar) {
+                if (document.querySelector('.home-page')) {
+                    navbar.classList.add('navbar-transparent');
+                } else {
+                    navbar.classList.remove('navbar-transparent');
+                }
+            }
+
+            // Añadir funcionalidad de búsqueda a la tabla
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput && tableBody) {
+                searchInput.addEventListener('keyup', function () {
+                    const value = searchInput.value.toLowerCase();
+                    Array.from(tableBody.getElementsByTagName('tr')).forEach(function (row) {
+                        row.style.display = row.textContent.toLowerCase().includes(value) ? '' : 'none';
+                    });
                 });
             }
 
-            // Evento para cambiar la cantidad de filas mostradas
-            rowCountSelect.addEventListener('change', updateTable);
+            // Ordenar la tabla alfabéticamente por nombre de la canción
+            function sortTable() {
+                const rows = Array.from(tableBody.getElementsByTagName('tr'));
+                rows.sort((a, b) => {
+                    const songNameA = a.cells[1].textContent.toLowerCase();
+                    const songNameB = b.cells[1].textContent.toLowerCase();
+                    return songNameA.localeCompare(songNameB);
+                });
+                rows.forEach(row => tableBody.appendChild(row));
+            }
 
-            // Inicializar tabla con la cantidad de filas seleccionada
-            updateTable();
+            sortTable(); // Ordenar la tabla cuando se cargue la página
         });
     </script>
+
 
 
 
@@ -193,7 +219,17 @@
 </body>
 </html>
 
+<style>
+    .navbar {
+        background-color: #ffffff !important;
+    }
 
-
-
-
+    .navbar-transparent {
+        background-color: transparent !important;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+</style>

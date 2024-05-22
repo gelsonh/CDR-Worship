@@ -1,41 +1,42 @@
 ﻿
 
-
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-    /* Estilos generales */
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-    }
+  <style>
+        /* Estilos generales */
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
 
-    /* Estilos para la imagen de fondo */
-    .hero-image {
-        width: 100%;
-        height: 75vh; /* Ocupa toda la altura de la ventana */
-        object-fit: cover; /* Ajusta la imagen para cubrir completamente el contenedor */
-        position: relative;     
-    
-    }
+        /* Estilos para la imagen de fondo */
+        .hero-image {
+            background-image: url('/assets/img/CDRW-Home.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            position: relative;
+        }
 
-    /* Estilos para el contenedor de la imagen */
-    .hero-container {
-        position: relative;
-        height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la ventana */
-    }
- 
-</style>
+        /* Asegurando que el contenido dentro de .hero-container se vea correctamente */
+        .hero-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
 
-<div class="hero-container">
+       
+    </style>
 
-    <!-- Imagen de fondo -->
-    <img src="/assets/img/CDRW-Home.jpg" class="hero-image" alt="Home Image" />
+<div class="hero-image">
+    <div class="hero-container home-page">
+        <!-- Aquí puedes agregar más contenido si es necesario -->
+    </div>
 </div>
-
-<!-- Footer -->
 

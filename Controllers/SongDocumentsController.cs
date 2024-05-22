@@ -31,6 +31,9 @@ namespace CDR_Worship.Controllers
             {
                 var songDocuments = await _songDocumentService.GetAllSongDocumentsAsync();
 
+                var sortedSongDocuments = songDocuments.OrderBy(cd => cd.SongName);
+
+
                 return View(songDocuments);
             }
 

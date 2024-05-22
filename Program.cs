@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using CDR_Worship.Services.Interfaces;
 using CDR_Worship.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,10 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ISongDocumentService, SongDocumentService>();
 builder.Services.AddScoped<IChordDocumentService, ChordDocumentService>();
 builder.Services.AddScoped<IScheduledSongsService, ScheduledSongsService>();
+builder.Services.AddScoped<IEmailSender, EmailService>();
 
+// Bind the email settings to the EmailSettings object
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddControllersWithViews();
 

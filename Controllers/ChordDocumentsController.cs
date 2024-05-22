@@ -35,6 +35,9 @@ namespace CDR_Worship.Controllers
                 // Obtener todos los documentos de acorde
                 var chordDocuments = await _chordDocumentService.GetAllChordDocumentsAsync();
 
+                var sortedChordDocuments = chordDocuments.OrderBy(cd => cd.SongName);
+
+
                 // Pasar los documentos de acorde a la vista
                 return View(chordDocuments);
             }

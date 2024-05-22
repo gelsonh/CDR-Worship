@@ -58,14 +58,22 @@ a {
     flex: 1;
     padding-bottom: 2rem; /* Espacio extra para evitar solapamiento con el footer */
 }
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Establece el alto mínimo del cuerpo para ocupar toda la ventana del navegador */
+    margin: 0; /* Elimina el margen predeterminado del cuerpo */
+    padding: 0; /* Elimina el relleno predeterminado del cuerpo */
+}
+
+.content {
+    flex: 1; /* El contenido ocupará todo el espacio disponible */
+}
 
 footer {
-    flex-shrink: 0;
-    width: 100%;
-    background-color: var(--gh-theme-200);
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    position: relative; /* Cambiado de fixed a relative */
+    background-color: #ffffff;  /* Color de fondo del footer */
+    padding: 20px; /* Añade espacio alrededor del contenido del footer */
+    margin-top: auto; /* Coloca el footer al final de la página */
 }
 
 /* Div Center */
@@ -150,7 +158,7 @@ footer {
 }
 
 .icon-large {
-    font-size: 4rem; /* Ajusta el tamaño según tus necesidades */
+    font-size: 3rem; /* Ajusta el tamaño según tus necesidades */
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -185,6 +193,21 @@ footer {
         letter-spacing: 0.1rem;
     }
 }
+
+/* Media query para iPad Pro 13" horizontal (1366x1024) */
+@media (min-width: 1366px) and (max-width: 1366px) and (min-height: 1024px) and (max-height: 1024px) {
+    .hero-image {
+        background-size: 100%; /* Ajusta el tamaño para cubrir completamente el contenedor */
+    }
+}
+
+/* Media query para iPad Pro 13" vertical (1024x1366) */
+@media (min-width: 1024px) and (max-width: 1024px) and (min-height: 1366px) and (max-height: 1366px) {
+    .hero-image {
+        background-size: 100%; /* Ajusta el tamaño para cubrir completamente el contenedor */
+    }
+}
+
 
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {

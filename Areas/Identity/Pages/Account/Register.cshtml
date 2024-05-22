@@ -37,48 +37,49 @@
 <body>
 
     <div class="container-xxl my-5">
-        <h1 class="text-center"> @ViewData["Title"]</h1>
+        <h1 class="text-center"> @ViewData[""]</h1>
         <!-- Agrega la clase 'my-5' para los márgenes superior e inferior -->
         <div class="row justify-content-center">
             <!-- Agrega 'justify-content-center' para centrar el contenido horizontalmente -->
             <div class="col-md-4">
                 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <h2 class="text-center">Create a new account.</h2>
+                    <h2 class="text-center">Crea una nueva cuenta.</h2>
                     <hr />
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="first name" />
-                        <label asp-for="Input.FirstName">FirstName</label>
+                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="nombre" />
+                        <label asp-for="Input.FirstName">Nombre</label>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="last name" />
-                        <label asp-for="Input.LastName">LastName</label>
+                        <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="apellido" />
+                        <label asp-for="Input.LastName">Apellido</label>
                         <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label asp-for="Input.Email">Email</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
+                        <label asp-for="Input.Email">Correo Electrónico</label>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.Password">Password</label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="contraseña" />
+                        <label asp-for="Input.Password">Contraseña</label>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="confirmar contraseña" />
+                        <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="file" asp-for="Input.ProfilePicture" class="form-control" aria-required="true" />
-                        <label asp-for="Input.ProfilePicture">Profile Picture</label>
+                        <label asp-for="Input.ProfilePicture">Foto de Perfil</label>
                         <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
                     </div>
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrarse</button>
                 </form>
+
             </div>
         </div>
     </div>
