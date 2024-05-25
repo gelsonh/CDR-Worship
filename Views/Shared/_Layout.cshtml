@@ -73,47 +73,42 @@
                         <ul class="navbar-nav ms-auto d-flex align-items-center mx-3">
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown custom-dropdown">
                                     @if (User.Identity!.IsAuthenticated)
                                     {
                                         var user = await UserManager.GetUserAsync(User);
-                                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a class="nav-link dropdown-toggle d-flex align-items-center custom-dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-boombox"></i>
                                             <span class="ms-2">@user?.FirstName</span>
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                            <li class="dropdown-header bg-info text-white">
+                                        <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu" aria-labelledby="userDropdown">
+                                            <li class="dropdown-header custom-dropdown-header">
                                                 <div class="d-flex align-items-center p-3">
-                                                    <i class="bi bi-person-circle icon-large me-3"></i>
+                                                    <i class="bi bi-person-circle custom-icon me-3"></i>
                                                     <div>
                                                         <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
-                                                      @*   <small>@user?.Email</small> *@
+                                                        @* <small>@user?.Email</small> *@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item"><i class="bi bi-person text-info me-2"></i>Mi Perfil</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-bell text-success me-2"></i>Notificaciones</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-gear text-warning me-2"></i>Configuración de la Cuenta</a></li>
-                                            <li><hr class="dropdown-divider"></li>
+                                            <li><hr class="dropdown-divider custom-divider"></li>
+                                            <li><a class="dropdown-item custom-dropdown-item" href="#"><i class="bi bi-person custom-icon me-2"></i>Mi Perfil</a></li>
+                                            <li><hr class="dropdown-divider custom-divider"></li>
+                                            <li><a class="dropdown-item custom-dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-gear custom-icon me-2"></i>Configuración de la Cuenta</a></li>
+                                            <li><hr class="dropdown-divider custom-divider"></li>
                                             <li>
-                                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                                    <i class="bi bi-box-arrow-left text-danger me-2"></i>Cerrar Sesión
+                                                <a class="dropdown-item custom-dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                    <i class="bi bi-box-arrow-left custom-icon me-2"></i>Cerrar Sesión
                                                 </a>
                                             </li>
-                                         @*    <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <div class="dropdown-item ps-4">
-                                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-info w-100">Ver Perfil</a>
-                                                </div>
-                                            </li> *@
-
                                         </ul>
                                     }
                                 </li>
                             }
                         </ul>
+
+
+
                     </div>
                 </div>
             </nav>
@@ -143,10 +138,12 @@
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/assets/js/script.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <!-- Otros scripts aquí -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -198,24 +195,24 @@
             }
 
             // Ordenar la tabla alfabéticamente por nombre de la canción
-            function sortTable() {
-                const rows = Array.from(tableBody.getElementsByTagName('tr'));
-                rows.sort((a, b) => {
-                    const songNameA = a.cells[1].textContent.toLowerCase();
-                    const songNameB = b.cells[1].textContent.toLowerCase();
-                    return songNameA.localeCompare(songNameB);
-                });
-                rows.forEach(row => tableBody.appendChild(row));
-            }
+            if (tableBody) {
+                function sortTable() {
+                    const rows = Array.from(tableBody.getElementsByTagName('tr'));
+                    rows.sort((a, b) => {
+                        const songNameA = a.cells[1].textContent.toLowerCase();
+                        const songNameB = b.cells[1].textContent.toLowerCase();
+                        return songNameA.localeCompare(songNameB);
+                    });
+                    rows.forEach(row => tableBody.appendChild(row));
+                }
 
-            sortTable(); // Ordenar la tabla cuando se cargue la página
+                sortTable(); // Ordenar la tabla cuando se cargue la página
+            }
         });
     </script>
 
-
-
-
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
 
@@ -232,4 +229,65 @@
         left: 0;
         z-index: 1000;
     }
+    /* Custom Dropdown Styles */
+    .custom-dropdown {
+        position: relative;
+    }
+
+    .custom-dropdown-toggle {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333;
+    }
+
+        .custom-dropdown-toggle:hover {
+            color: #007bff;
+        }
+
+    .custom-dropdown-menu {
+        border-radius: 0.75rem;
+        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border: none;
+        padding: 0.5rem 0;
+        width: 250px;
+    }
+
+    .custom-dropdown-header {
+        background-color: #007bff;
+        color: #ffffff;
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+        padding: 1rem;
+    }
+
+    .custom-dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        color: #333;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .custom-dropdown-item:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+    .custom-icon {
+        font-size: 1.5rem;
+    }
+
+    .custom-divider {
+        margin: 0.5rem 0;
+    }
+
+    /* Optional: Adjust dropdown arrow */
+    .nav-link.dropdown-toggle::after {
+        margin-left: 0.5rem;
+        vertical-align: middle;
+    }
+
+
 </style>

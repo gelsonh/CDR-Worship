@@ -194,19 +194,26 @@ footer {
     }
 }
 
-/* Media query para iPad Pro 13" horizontal (1366x1024) */
-@media (min-width: 1366px) and (max-width: 1366px) and (min-height: 1024px) and (max-height: 1024px) {
+/* Media query para iPad Pro 13" 2024 horizontal */
+@media (min-width: 2064px) and (max-height: 2752px) {
     .hero-image {
-        background-size: 100%; /* Ajusta el tamaño para cubrir completamente el contenedor */
+        background-image: url('/assets/img/CDRW-Normal.jpg');
+        background-size: cover; /* Ajusta el tamaño para cubrir completamente el contenedor */
+        background-position: center; /* Centra la imagen */
     }
 }
 
-/* Media query para iPad Pro 13" vertical (1024x1366) */
-@media (min-width: 1024px) and (max-width: 1024px) and (min-height: 1366px) and (max-height: 1366px) {
+/* Media query para iPad Pro 13" 2024 vertical */
+@media (min-width: 2752px) and (max-height: 2064px) {
     .hero-image {
-        background-size: 100%; /* Ajusta el tamaño para cubrir completamente el contenedor */
+        background-image: url('/assets/img/CDRW-Normal.jpg');
+        background-size: cover; /* Ajusta el tamaño para cubrir completamente el contenedor */
+        background-position: center; /* Centra la imagen */
     }
 }
+
+
+
 
 
 /* X-Large devices (large desktops, 1200px and up) */

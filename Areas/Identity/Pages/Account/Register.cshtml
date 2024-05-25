@@ -32,59 +32,128 @@
           crossorigin="anonymous" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" />
-</head>
+@*     <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" />
+ *@</head>
 <body>
 
+    <style>
+
+        /* Custom Card Styles */
+        .card {
+            border-radius: 1rem;
+            background-color: #ffffff;
+        }
+
+            .card .card-body {
+                padding: 2rem;
+            }
+
+                .card .card-body h2 {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: #333;
+                }
+
+        /* Form Styles */
+        .form-floating .form-control {
+            border-radius: 0.5rem;
+        }
+
+        .form-floating label {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.25rem;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        /* Shadow and Border Radius */
+        .shadow-lg {
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+        }
+
+        .border-0 {
+            border: none;
+        }
+
+        .rounded-lg {
+            border-radius: 1rem;
+        }
+
+        /* Optional: Add custom focus styles */
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
+
+    </style>
+
+
     <div class="container-xxl my-5">
-        <h1 class="text-center"> @ViewData[""]</h1>
-        <!-- Agrega la clase 'my-5' para los márgenes superior e inferior -->
+        
         <div class="row justify-content-center">
-            <!-- Agrega 'justify-content-center' para centrar el contenido horizontalmente -->
-            <div class="col-md-4">
-                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <h2 class="text-center">Crea una nueva cuenta.</h2>
-                    <hr />
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="nombre" />
-                        <label asp-for="Input.FirstName">Nombre</label>
-                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="apellido" />
-                        <label asp-for="Input.LastName">Apellido</label>
-                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
-                        <label asp-for="Input.Email">Correo Electrónico</label>
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="contraseña" />
-                        <label asp-for="Input.Password">Contraseña</label>
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="confirmar contraseña" />
-                        <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                    </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card-body p-4">
+                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <h2 class="text-center mb-4">Registro</h2>
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="Nombre" />
+                                <label asp-for="Input.FirstName">Nombre</label>
+                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Apellido" />
+                                <label asp-for="Input.LastName">Apellido</label>
+                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
+                                <label asp-for="Input.Email">Correo Electrónico</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
+                                <label asp-for="Input.Password">Contraseña</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirmar Contraseña" />
+                                <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <div class="button-container" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                <!-- Botón de registro -->
+                                <button id="registerSubmit" type="submit" class="btn btn-lg btn-primary w-100">
+                                    Registrarse
+                                </button>
 
-                    <div class="form-floating mb-3">
-                        <input type="file" asp-for="Input.ProfilePicture" class="form-control" aria-required="true" />
-                        <label asp-for="Input.ProfilePicture">Foto de Perfil</label>
-                        <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
-                    </div>
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registrarse</button>
-                </form>
+                                <!-- Botón para volver a la lista -->
+                                <a href="@Url.Action("Index", "Home")" class="btn btn-danger w-100">
+                                    Cancelar 
+                                </a>
+                            </div>
 
+
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-   
+    </div>
 
 
 </body>
