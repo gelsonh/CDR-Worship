@@ -30,22 +30,22 @@ namespace CDR_Worship.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                // Obtener todos los documentos de acorde
-                var chordDocuments = await _chordDocumentService.GetAllChordDocumentsAsync();
+           try
+    {
+        // Obtener todos los documentos de acorde
+        var chordDocuments = await _chordDocumentService.GetAllChordDocumentsAsync();
 
-                var sortedChordDocuments = chordDocuments.OrderBy(cd => cd.SongName);
+        // Ordenar los documentos de acorde por nombre de la canción
+        var sortedChordDocuments = chordDocuments.OrderBy(cd => cd.SongName);
 
-
-                // Pasar los documentos de acorde a la vista
-                return View(chordDocuments);
-            }
-            catch (Exception ex)
-            {
-                // Manejar la excepción según sea necesario (registrándola, mostrando un mensaje de error, etc.)
-                return StatusCode(500, "Error al cargar los documentos de acorde: " + ex.Message);
-            }
+        // Pasar los documentos de acorde ordenados a la vista
+        return View(sortedChordDocuments);
+    }
+    catch (Exception ex)
+    {
+        // Manejar la excepción según sea necesario (registrándola, mostrando un mensaje de error, etc.)
+        return StatusCode(500, "Error al cargar los documentos de acorde: " + ex.Message);
+    }
         }
 
         [HttpPost]

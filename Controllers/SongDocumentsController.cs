@@ -34,7 +34,7 @@ namespace CDR_Worship.Controllers
                 var sortedSongDocuments = songDocuments.OrderBy(cd => cd.SongName);
 
 
-                return View(songDocuments);
+                return View(sortedSongDocuments);
             }
 
             catch (Exception ex)
