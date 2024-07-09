@@ -15,34 +15,6 @@ namespace CDR_Worship.Data
         private const string? _adminRole = "Admin";
         private const string? _moderatorRole = "Moderator";
 
-
-        //public static string GetConnectionString(IConfiguration configuration)
-        //{
-        //    var connectionString = configuration.GetConnectionString("DefaultConnection");
-        //    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-        //    return string.IsNullOrEmpty(databaseUrl) ? connectionString! : GetConnectionString(databaseUrl);
-        //}
-
-
-        //private static string GetConnectionString(string databaseUrl)
-        //{
-        //    //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI.
-        //    var databaseUri = new Uri(databaseUrl);
-        //    var userInfo = databaseUri.UserInfo.Split(':');
-        //    //Provides a simple way to create and manage the contents of connection strings used by the NpgsqlConnection class.
-        //    var builder = new NpgsqlConnectionStringBuilder
-        //    {
-        //        Host = databaseUri.Host,
-        //        Port = databaseUri.Port,
-        //        Username = userInfo[0],
-        //        Password = userInfo[1],
-        //        Database = databaseUri.LocalPath.TrimStart('/'),
-        //        SslMode = SslMode.Prefer,
-        //        TrustServerCertificate = true
-        //    };
-        //    return builder.ToString();
-        //}
-
         public static string GetConnectionString(IConfiguration configuration)
         {
             // Intenta obtener la cadena de conexión directamente desde la configuración.
@@ -206,8 +178,8 @@ namespace CDR_Worship.Data
                         new Chord() {  ChordName =  nameof(CDRChord.G) },
                            new Chord() {  ChordName =  nameof(CDRChord.A) },
                               new Chord() {  ChordName =  nameof(CDRChord.B) },
-                                 new Chord() {  ChordName =  nameof(CDRChord.Fsostenido) },
-                                    new Chord() {  ChordName =  nameof(CDRChord. Csostenido) },
+                                 new Chord() {  ChordName =  nameof(CDRChord.Fsos) },
+                                    new Chord() {  ChordName =  nameof(CDRChord. Csos) },
                                        new Chord() {  ChordName =  nameof(CDRChord.Bb) },
                                        new Chord() {  ChordName =  nameof(CDRChord.Cm) },
                                        new Chord() {  ChordName =  nameof(CDRChord.Dm) },
@@ -216,10 +188,13 @@ namespace CDR_Worship.Data
                                        new Chord() {  ChordName =  nameof(CDRChord.Gm) },
                                        new Chord() {  ChordName =  nameof(CDRChord.Am) },
                                        new Chord() {  ChordName =  nameof(CDRChord.Bm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.FsostenidoM) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.CsostenidoM) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Bbm)
-                                       }
+                                       new Chord() {  ChordName =  nameof(CDRChord.Fsosm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Csosm) },
+                                       new Chord() {  ChordName =  nameof(CDRChord.Bbm)},
+                                       new Chord() {  ChordName = nameof(CDRChord.Gb)},
+                                       new Chord() {  ChordName = nameof(CDRChord.Gsos)},
+                                       new Chord() { ChordName = nameof(CDRChord.Gsosm)}
+                                       
 
         };
 
@@ -317,9 +292,5 @@ namespace CDR_Worship.Data
                 throw;
             }
         }
-
-
-
     }
-
 }

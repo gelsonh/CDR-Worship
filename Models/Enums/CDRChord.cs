@@ -9,8 +9,8 @@
         G,
         A,
         B,
-        Fsostenido,
-        Csostenido,
+        Fsos,
+        Csos,
         Bb,
         Cm,
         Dm,
@@ -19,8 +19,11 @@
         Gm,
         Am,
         Bm,
-        FsostenidoM,
-        CsostenidoM,
+        Fsosm,
+        Csosm,
         Bbm,
+        Gb,
+        Gsos,
+        Gsosm
     }
 }
