@@ -11,11 +11,10 @@
     <title>@ViewData["Title"] - CDR_Worship</title>
 
     <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;900&display=swap"
-        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="32x32" href="~/favicon.ico" />
@@ -27,109 +26,50 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Google Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="~/assets/css/site.css" />
-    <link rel="stylesheet" href="~/dist/css/style.min.css" />
     <link rel="stylesheet" href="~/assets/css/attachment.css" />
     <link rel="stylesheet" href="~/assets/css/themes.css" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
 </head>
 
 <body class="@ViewData["BodyClass"]">
 
     <header>
-        @if (User.Identity!.IsAuthenticated)
-        {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm" id="main-navbar">
-                <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="~/assets/img/CDRLogo.png" alt="Logo" />
+          
+            <div class="navbar-custom">
+                <div class="logo"> <a asp-controller="Home" asp-action="Index">
+                        <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" />
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="SongDocuments"
-                                    asp-action="Index">Letras de Canciones</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ChordDocuments"
-                                    asp-action="Index">Guía de Acordes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ScheduledSongs"
-                                    asp-action="Index">Agenda Dominical</a>
-                            </li>
-
-                        </ul>
-
-                        <ul class="navbar-nav ms-auto d-flex align-items-center mx-3">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <li class="nav-item dropdown custom-dropdown">
-                                    @if (User.Identity!.IsAuthenticated)
-                                    {
-                                        var user = await UserManager.GetUserAsync(User);
-                                        <a class="nav-link dropdown-toggle d-flex align-items-center custom-dropdown-toggle"
-                                            href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
-                                            <i class="bi bi-boombox"></i>
-                                            <span class="ms-2">@user?.FirstName</span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu"
-                                            aria-labelledby="userDropdown">
-                                            <li class="dropdown-header custom-dropdown-header">
-                                                <div class="d-flex align-items-center p-3">
-                                                    <i class="bi bi-person-circle custom-icon me-3"></i>
-                                                    <div>
-                                                        <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
-                                                        @* <small>@user?.Email</small> *@
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <hr class="dropdown-divider custom-divider">
-                                            </li>
-                                            <li><a class="dropdown-item custom-dropdown-item" href="#"><i
-                                                        class="bi bi-person custom-icon me-2"></i>Mi Perfil</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider custom-divider">
-                                            </li>
-                                            <li><a class="dropdown-item custom-dropdown-item" asp-area="Identity"
-                                                    asp-page="/Account/Manage/Index"><i
-                                                        class="bi bi-gear custom-icon me-2"></i>Configuración de la Cuenta</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider custom-divider">
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item custom-dropdown-item" asp-area="Identity"
-                                                    asp-page="/Account/Logout"
-                                                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                                    <i class="bi bi-box-arrow-left custom-icon me-2"></i>Cerrar Sesión
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    }
-                                </li>
-                            }
-                        </ul>
-
-
-
-                    </div>
                 </div>
-            </nav>
-        }
-        else
-        {
-            <partial name="_LoginPartial" />
-        }
+                <ul class="links">
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" title="Home">Home</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="SongDocuments" asp-action="Index">Cantantes</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="ChordDocuments" asp-action="Index">Acordes</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Agenda</a>
+                    </li>
+                </ul>
+                   
+            </div>
+          
     </header>
 
     <div class="">
@@ -150,19 +90,17 @@
     </footer>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <!-- Otros scripts aquí -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Inicializar tooltip
+            // Inicializar tooltip en Tabla
             if ($.fn.tooltip) {
                 $('[data-toggle="tooltip"]').tooltip();
             }
@@ -176,26 +114,12 @@
                 function updateTable() {
                     const rowCount = parseInt(rowCountSelect.value);
                     allRows.forEach((row, index) => {
-                        if (index < rowCount) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
+                        row.style.display = index < rowCount ? '' : 'none';
                     });
                 }
 
                 rowCountSelect.addEventListener('change', updateTable);
                 updateTable();
-            }
-
-            // Comprobar si el navbar está presente antes de manipularlo
-            const navbar = document.getElementById('main-navbar');
-            if (navbar) {
-                if (document.querySelector('.home-page')) {
-                    navbar.classList.add('navbar-transparent');
-                } else {
-                    navbar.classList.remove('navbar-transparent');
-                }
             }
 
             // Añadir funcionalidad de búsqueda a la tabla
@@ -208,103 +132,50 @@
                     });
                 });
             }
-
-            // Ordenar la tabla alfabéticamente por nombre de la canción
-            /* if (tableBody) {
-                 function sortTable() {
-                     const rows = Array.from(tableBody.getElementsByTagName('tr'));
-                     rows.sort((a, b) => {
-                         const songNameA = a.cells[1].textContent.toLowerCase();
-                         const songNameB = b.cells[1].textContent.toLowerCase();
-                         return songNameA.localeCompare(songNameB);
-                     });
-                     rows.forEach(row => tableBody.appendChild(row));
-                 }
-
-                 sortTable(); // Ordenar la tabla cuando se cargue la página 
-                  }
-               */
-
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            // Inicializar tooltip en Tabla
+            if ($.fn.tooltip) {
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+
+            // Comprobar si el selector de fila y la tabla están presentes antes de manipularlos
+            const rowCountSelect = $('#rowCount');
+            const tableBody = $('#songTableBody');
+            if (rowCountSelect.length && tableBody.length) {
+                const allRows = tableBody.find('tr');
+
+                function updateTable() {
+                    const rowCount = parseInt(rowCountSelect.val());
+                    allRows.each(function (index, row) {
+                        $(row).toggle(index < rowCount);
+                    });
+                }
+
+                rowCountSelect.on('change', updateTable);
+                updateTable();
+            }
+
+            // Añadir funcionalidad de búsqueda a la tabla
+            const searchInput = $('#searchInput');
+            if (searchInput.length && tableBody.length) {
+                searchInput.on('keyup', function () {
+                    const value = searchInput.val().toLowerCase();
+                    tableBody.find('tr').each(function () {
+                        const row = $(this);
+                        row.toggle(row.text().toLowerCase().includes(value));
+                    });
+                });
+            }
+        });
+    </script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 
 </html>
-
-<style>
-    .navbar {
-        background-color: #ffffff !important;
-    }
-
-    .navbar-transparent {
-        background-color: transparent !important;
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-    }
-
-    /* Custom Dropdown Styles */
-    .custom-dropdown {
-        position: relative;
-    }
-
-    .custom-dropdown-toggle {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #333;
-    }
-
-    .custom-dropdown-toggle:hover {
-        color: #007bff;
-    }
-
-    .custom-dropdown-menu {
-        border-radius: 0.75rem;
-        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
-        border: none;
-        padding: 0.5rem 0;
-        width: 250px;
-    }
-
-    .custom-dropdown-header {
-        background-color: #007bff;
-        color: #ffffff;
-        border-top-left-radius: 0.75rem;
-        border-top-right-radius: 0.75rem;
-        padding: 1rem;
-    }
-
-    .custom-dropdown-item {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1.5rem;
-        color: #333;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .custom-dropdown-item:hover {
-        background-color: #f1f1f1;
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .custom-icon {
-        font-size: 1.5rem;
-    }
-
-    .custom-divider {
-        margin: 0.5rem 0;
-    }
-
-    /* Optional: Adjust dropdown arrow */
-    .nav-link.dropdown-toggle::after {
-        margin-left: 0.5rem;
-        vertical-align: middle;
-    }
-</style>

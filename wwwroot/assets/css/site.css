@@ -1,9 +1,9 @@
 :root {
   /* fonts */
-  --gh-title-font: "Bebas Neue", sans-serif;
-  --gh-subtitle-font: "Fira Sans", sans-serif;
-  --gh-heading-font: "Bebas Neue", sans-serif;
-  --gh-body-font: "Roboto", sans-serif;
+  --gh-title-font: "Nunito", sans-serif;
+  --gh-subtitle-font: "Nunito", sans-serif;
+  --gh-heading-font: "Nunito", sans-serif;
+  --gh-body-font: "Nunito", sans-serif;
   /* basic colors */
   --gh-dark-color: #333;
   --gh-light-color: #605e5c;
@@ -26,7 +26,10 @@
   --gh-theme-800: var(--gh-gray-800);
   --gh-theme-850: var(--gh-gray-850);
   --gh-theme-900: var(--gh-gray-900);
+
+  /* New Style */
 }
+
 
 /* Element Overrides */
 body {
@@ -60,82 +63,34 @@ h1,
   letter-spacing: 0.1rem;
 }
 
-a {
-  text-decoration: none;
-  color: white;
-}
-
 .main-content {
   flex: 1;
-  padding-bottom: 2rem; /* Espacio extra para evitar solapamiento con el footer */
+  padding-bottom: 2rem;
 }
+
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Establece el alto m�nimo del cuerpo para ocupar toda la ventana del navegador */
-  margin: 0; /* Elimina el margen predeterminado del cuerpo */
-  padding: 0; /* Elimina el relleno predeterminado del cuerpo */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
-
 /* .content {
     flex: 1; 
 } */
 
-footer {
-  background-color: #ffffff; /* Color de fondo del footer */
-  padding: 20px; /* A�ade espacio alrededor del contenido del footer */
-  margin-top: auto; /* Coloca el footer al final de la pagina */
-}
-
-.btn-primary {
+/* .btn-primary {
   --bs-btn-bg: var(--gh-theme-600);
   --bs-btn-border-color: var(--gh-theme-600);
   --bs-btn-hover-bg: var(--gh-theme-700);
   --bs-btn-hover-border-color: var(--gh-theme-700);
   --bs-btn-active-bg: var(--gh-theme-700);
   --bs-btn-active-border-color: var(--gh-theme-700);
-}
+} */
 
-.navbar {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  padding: 10px;
-  z-index: 999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--gh-theme-200);
-}
-
-.navbar img {
-  width: 90px;
-  height: auto;
-}
-
-.navbar-nav .nav-link {
-  font-weight: 500;
-  color: #343a40;
-  transition: color 0.3s ease-in-out;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #0056b3;
-}
-
-.dropdown-menu {
-  border-radius: 10px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.dropdown-header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.icon-large {
+/* .icon-large {
   font-size: 3rem;
-}
+} */
 
 @keyframes fadeIn {
   from {
@@ -181,5 +136,3 @@ footer {
 /* XX-Large devices (larger desktops, 1400px and up) */
 @media (min-width: 1400px) {
 }
-
-
