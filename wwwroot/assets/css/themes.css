@@ -9,6 +9,17 @@
   --gh-gray-800: hsla(136, 6%, 37%, 1);
   --gh-gray-850: hsla(110, 4%, 26%, 1);
   --gh-gray-900: hsla(120, 1%, 25%, 1);
+
+  --gh-blue-red-150: hsla(210, 100%, 91%, 1); /* Azul claro */
+  --gh-blue-red-200: hsla(0, 100%, 86%, 1); /* Rojo claro */
+  --gh-blue-red-300: hsla(210, 100%, 81%, 1); /* Azul más oscuro */
+  --gh-blue-red-400: hsla(0, 100%, 78%, 1); /* Rojo más oscuro */
+  --gh-blue-red-500: hsla(210, 100%, 74%, 1); /* Azul medio */
+  --gh-blue-red-600: hsla(0, 100%, 67%, 1); /* Rojo medio */
+  --gh-blue-red-700: hsla(210, 100%, 48%, 1); /* Azul oscuro */
+  --gh-blue-red-800: hsla(0, 100%, 37%, 1); /* Rojo oscuro */
+  --gh-blue-red-850: hsla(210, 100%, 26%, 1); /* Azul muy oscuro */
+  --gh-blue-red-900: hsla(0, 100%, 25%, 1); /* Rojo muy oscuro */
 }
 
 [data-cf-theme="gray"] {
@@ -24,4 +35,18 @@
   --gh-theme-800: var(--gh-gray-800);
   --gh-theme-850: var(--gh-gray-850);
   --gh-theme-900: var(--gh-gray-900);
+}
+
+[data-cf-theme="blue-red"] {
+  --gh-theme-core: var(--gh-blue-red-core);
+  --gh-theme-150: var(--gh-blue-red-150);
+  --gh-theme-200: var(--gh-blue-red-200);
+  --gh-theme-300: var(--gh-blue-red-300);
+  --gh-theme-400: var(--gh-blue-red-400);
+  --gh-theme-500: var(--gh-blue-red-500);
+  --gh-theme-600: var(--gh-blue-red-600);
+  --gh-theme-700: var(--gh-blue-red-700);
+  --gh-theme-800: var(--gh-blue-red-800);
+  --gh-theme-850: var(--gh-blue-red-850);
+  --gh-theme-900: var(--gh-blue-red-900);
 }

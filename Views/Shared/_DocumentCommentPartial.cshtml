@@ -1,0 +1,30 @@
+@model IEnumerable<CDR_Worship.Models.DocumentComment>
+
+<div id="comments-section" class="mt-5">
+    <h3>Comments</h3>
+    <div id="comments-list">
+        @foreach (var comment in Model)
+        {
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">@comment.User?.UserName</h5>
+                    <p class="card-text">@comment.Comment</p>
+                    <p class="card-text"><small class="text-muted">@comment.Created.ToString("g")</small></p>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") ||
+    User.IsInRole("Moderator")))
+    {
+        <div id="comment-form" class="mt-3">
+            <form asp-action="Create" asp-controller="DocumentComments" method="post">
+                <div class="form-group">
+                    <textarea name="Comment" placeholder="Write a comment" class="form-control mb-2" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    }
+</div>
