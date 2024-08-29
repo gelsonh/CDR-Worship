@@ -47,13 +47,17 @@
 <body class="@ViewData["BodyClass"]">
 
     <header>
-          
-            <div class="navbar-custom">
-                <div class="logo"> <a asp-controller="Home" asp-action="Index">
-                        <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" />
-                    </a>
-                </div>
-                <ul class="links">
+
+
+        <div class="navbar-custom">
+            <div class="logo">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" />
+                </a>
+            </div>
+            <ul class="links">
+                @if (User.Identity!.IsAuthenticated)
+                {
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="Index" title="Home">Home</a>
                     </li>
@@ -66,10 +70,72 @@
                     <li>
                         <a asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Agenda</a>
                     </li>
-                </ul>
-                   
+                }
+                else
+                {
+                    <partial name="_LoginPartial" />
+                }
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item dropdown custom-dropdown">
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            var user = await UserManager.GetUserAsync(User);
+                            <a class="nav-link dropdown-toggle d-flex align-items-center custom-dropdown-toggle " href="#"
+                                id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="material-symbols-outlined">
+                                    emoji_people
+                                </span>
+                                <span class="ms-2">@user?.FirstName</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu" aria-labelledby="userDropdown">
+                                <li class="dropdown-header custom-dropdown-header">
+                                    <div class="d-flex align-items-center p-3">
+                                        <i class="bi bi-person-circle custom-icon me-3"></i>
+                                        <div>
+                                            <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider custom-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item custom-dropdown-item" href="#">
+                                        <i class="bi bi-person custom-icon me-2"></i>Mi Perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider custom-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item custom-dropdown-item" asp-area="Identity"
+                                        asp-page="/Account/Manage/Index">
+                                        <i class="bi bi-gear custom-icon me-2"></i>Configuración de la Cuenta
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider custom-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item custom-dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <i class="bi bi-box-arrow-left custom-icon me-2"></i>Cerrar Sesión
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                }
+
+            </ul>
+
+            <div class="toggle_btn">
+                <i class="fa-regular fa-bars"></i>
             </div>
-          
+        </div>
+
     </header>
 
     <div class="">
@@ -99,40 +165,40 @@
     <!-- Otros scripts aquí -->
 
     @* <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Inicializar tooltip en Tabla
-            if ($.fn.tooltip) {
-                $('[data-toggle="tooltip"]').tooltip();
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+    // Inicializar tooltip en Tabla
+    if ($.fn.tooltip) {
+    $('[data-toggle="tooltip"]').tooltip();
+    }
 
-            // Comprobar si el selector de fila y la tabla están presentes antes de manipularlos
-            const rowCountSelect = document.getElementById('rowCount');
-            const tableBody = document.getElementById('songTableBody');
-            if (rowCountSelect && tableBody) {
-                const allRows = Array.from(tableBody.getElementsByTagName('tr'));
+    // Comprobar si el selector de fila y la tabla están presentes antes de manipularlos
+    const rowCountSelect = document.getElementById('rowCount');
+    const tableBody = document.getElementById('songTableBody');
+    if (rowCountSelect && tableBody) {
+    const allRows = Array.from(tableBody.getElementsByTagName('tr'));
 
-                function updateTable() {
-                    const rowCount = parseInt(rowCountSelect.value);
-                    allRows.forEach((row, index) => {
-                        row.style.display = index < rowCount ? '' : 'none';
-                    });
-                }
+    function updateTable() {
+    const rowCount = parseInt(rowCountSelect.value);
+    allRows.forEach((row, index) => {
+    row.style.display = index < rowCount ? '' : 'none';
+    });
+    }
 
-                rowCountSelect.addEventListener('change', updateTable);
-                updateTable();
-            }
+    rowCountSelect.addEventListener('change', updateTable);
+    updateTable();
+    }
 
-            // Añadir funcionalidad de búsqueda a la tabla
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput && tableBody) {
-                searchInput.addEventListener('keyup', function () {
-                    const value = searchInput.value.toLowerCase();
-                    Array.from(tableBody.getElementsByTagName('tr')).forEach(function (row) {
-                        row.style.display = row.textContent.toLowerCase().includes(value) ? '' : 'none';
-                    });
-                });
-            }
-        });
+    // Añadir funcionalidad de búsqueda a la tabla
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && tableBody) {
+    searchInput.addEventListener('keyup', function () {
+    const value = searchInput.value.toLowerCase();
+    Array.from(tableBody.getElementsByTagName('tr')).forEach(function (row) {
+    row.style.display = row.textContent.toLowerCase().includes(value) ? '' : 'none';
+    });
+    });
+    }
+    });
     </script> *@
 
     <script>
