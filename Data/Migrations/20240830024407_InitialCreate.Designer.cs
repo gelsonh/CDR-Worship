@@ -9,18 +9,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace CDR_Worship.Data.Migrations
+namespace CDR_Worship.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240312024108_AddICollectionChordDocumentToScheduledSong")]
-    partial class AddICollectionChordDocumentToScheduledSong
+    [Migration("20240830024407_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -141,6 +141,9 @@ namespace CDR_Worship.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("File")
+                        .HasColumnType("bytea");
+
                     b.Property<string>("FileContentType")
                         .HasColumnType("text");
 
@@ -191,6 +194,9 @@ namespace CDR_Worship.Data.Migrations
                     b.Property<byte[]>("File")
                         .HasColumnType("bytea");
 
+                    b.Property<byte[]>("PdfData")
+                        .HasColumnType("bytea");
+
                     b.Property<int?>("ScheduledSongId")
                         .HasColumnType("integer");
 
@@ -199,6 +205,9 @@ namespace CDR_Worship.Data.Migrations
 
                     b.Property<string>("SongName")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Tempo")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("Updated")
@@ -211,6 +220,46 @@ namespace CDR_Worship.Data.Migrations
                     b.HasIndex("ScheduledSongId");
 
                     b.ToTable("ChordDocuments");
+                });
+
+            modelBuilder.Entity("CDR_Worship.Models.DocumentComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ChordDocumentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ScheduledSongId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SongDocumentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ChordDocumentId");
+
+                    b.HasIndex("ScheduledSongId");
+
+                    b.HasIndex("SongDocumentId");
+
+                    b.ToTable("DocumentComments");
                 });
 
             modelBuilder.Entity("CDR_Worship.Models.Instrument", b =>
@@ -229,6 +278,25 @@ namespace CDR_Worship.Data.Migrations
                     b.ToTable("Instruments");
                 });
 
+            modelBuilder.Entity("CDR_Worship.Models.Member", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("MemberName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Members");
+                });
+
             modelBuilder.Entity("CDR_Worship.Models.ScheduledSong", b =>
                 {
                     b.Property<int>("Id")
@@ -237,28 +305,45 @@ namespace CDR_Worship.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Archived")
-                        .HasColumnType("boolean");
+                    b.Property<int?>("BackingVocalistId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("BackingVocalistTwoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("BassistId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ChordId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("DrummerId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<byte[]>("ImageFileData")
-                        .HasColumnType("bytea");
+                    b.Property<int?>("LeadGuitaristId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("ImageFileType")
-                        .HasColumnType("text");
+                    b.Property<int?>("LeadSingerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("SecondGuitaristId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
@@ -267,6 +352,24 @@ namespace CDR_Worship.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BackingVocalistId");
+
+                    b.HasIndex("BackingVocalistTwoId");
+
+                    b.HasIndex("BassistId");
+
+                    b.HasIndex("ChordId");
+
+                    b.HasIndex("DrummerId");
+
+                    b.HasIndex("LeadGuitaristId");
+
+                    b.HasIndex("LeadSingerId");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("SecondGuitaristId");
 
                     b.ToTable("ScheduledSongs");
                 });
@@ -290,6 +393,9 @@ namespace CDR_Worship.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("bytea");
 
                     b.Property<string>("FileContentType")
                         .HasColumnType("text");
@@ -524,6 +630,96 @@ namespace CDR_Worship.Data.Migrations
                         .HasForeignKey("ScheduledSongId");
 
                     b.Navigation("Chord");
+                });
+
+            modelBuilder.Entity("CDR_Worship.Models.DocumentComment", b =>
+                {
+                    b.HasOne("CDR_Worship.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("CDR_Worship.Models.ChordDocument", "ChordDocument")
+                        .WithMany()
+                        .HasForeignKey("ChordDocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CDR_Worship.Models.ScheduledSong", "ScheduledSong")
+                        .WithMany()
+                        .HasForeignKey("ScheduledSongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CDR_Worship.Models.SongDocument", "SongDocument")
+                        .WithMany()
+                        .HasForeignKey("SongDocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChordDocument");
+
+                    b.Navigation("ScheduledSong");
+
+                    b.Navigation("SongDocument");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CDR_Worship.Models.ScheduledSong", b =>
+                {
+                    b.HasOne("CDR_Worship.Models.Member", "BackingVocalist")
+                        .WithMany()
+                        .HasForeignKey("BackingVocalistId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "BackingVocalistTwo")
+                        .WithMany()
+                        .HasForeignKey("BackingVocalistTwoId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "Bassist")
+                        .WithMany()
+                        .HasForeignKey("BassistId");
+
+                    b.HasOne("CDR_Worship.Models.Chord", "Chord")
+                        .WithMany()
+                        .HasForeignKey("ChordId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "Drummer")
+                        .WithMany()
+                        .HasForeignKey("DrummerId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "LeadGuitarist")
+                        .WithMany()
+                        .HasForeignKey("LeadGuitaristId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "LeadSinger")
+                        .WithMany()
+                        .HasForeignKey("LeadSingerId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
+
+                    b.HasOne("CDR_Worship.Models.Member", "SecondGuitarist")
+                        .WithMany()
+                        .HasForeignKey("SecondGuitaristId");
+
+                    b.Navigation("BackingVocalist");
+
+                    b.Navigation("BackingVocalistTwo");
+
+                    b.Navigation("Bassist");
+
+                    b.Navigation("Chord");
+
+                    b.Navigation("Drummer");
+
+                    b.Navigation("LeadGuitarist");
+
+                    b.Navigation("LeadSinger");
+
+                    b.Navigation("Member");
+
+                    b.Navigation("SecondGuitarist");
                 });
 
             modelBuilder.Entity("CDR_Worship.Models.SongAttachment", b =>
