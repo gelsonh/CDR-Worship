@@ -51,7 +51,7 @@ namespace CDR_Worship.Data
                 Password = userInfo[1],
                 Database = databaseUri.LocalPath.TrimStart('/'),
                 SslMode = SslMode.Prefer,
-                TrustServerCertificate = true
+                // TrustServerCertificate = true
             };
 
             return builder.ToString();
@@ -169,7 +169,7 @@ namespace CDR_Worship.Data
         {
             try
             {
-                IList<Chord> chords = new List<Chord>() {
+                IList<Chord> chords = [
             new Chord() {  ChordName =  nameof(CDRChord.C) },
                new Chord() {  ChordName =  nameof(CDRChord.D) },
                   new Chord() {  ChordName =  nameof(CDRChord.E) },
@@ -195,7 +195,7 @@ namespace CDR_Worship.Data
                                        new Chord() { ChordName = nameof(CDRChord.Gsosm)}
                                        
 
-        };
+        ];
 
 
                 // Agregar los acordes a tu contexto
