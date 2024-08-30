@@ -11,7 +11,6 @@ namespace CDR_Worship.Data
     public static class DataUtility
     {
 
-
         private const string? _adminRole = "Admin";
         private const string? _moderatorRole = "Moderator";
 

@@ -37,7 +37,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-app.UseCors("DefaultPolicy");
 
 var scope = app.Services.CreateScope();
 await DataUtility.ManageDataAsync(scope.ServiceProvider);

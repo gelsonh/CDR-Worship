@@ -5,13 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CDR_Worship.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<AppUser>(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Chord> Chords { get; set; } = default!;
         public DbSet<Instrument> Instruments { get; set; } = default!;
         public DbSet<ChordAttachment> ChordAttachments { get; set; } = default!;
@@ -20,7 +15,7 @@ namespace CDR_Worship.Data
         public DbSet<SongDocument> SongDocuments { get; set; } = default!;
         public DbSet<ScheduledSong> ScheduledSongs { get; set; } = default!;
         public DbSet<Member> Members { get; set; } = default!;
-        public DbSet<DocumentComment> DocumentComments { get; set; }
+        public DbSet<DocumentComment> DocumentComments { get; set; } = default!;
 
     }
 }
