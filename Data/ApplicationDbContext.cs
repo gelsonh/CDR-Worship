@@ -15,7 +15,7 @@ namespace CDR_Worship.Data
         public DbSet<SongDocument> SongDocuments { get; set; } = default!;
         public DbSet<ScheduledSong> ScheduledSongs { get; set; } = default!;
         public DbSet<Member> Members { get; set; } = default!;
-        public DbSet<DocumentComment> DocumentComments { get; set; } = default!;
+        // public DbSet<DocumentComment> DocumentComments { get; set; } = default!;
 
     }
 }
