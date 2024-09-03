@@ -19,7 +19,7 @@
 
 
 <div class="container custom-margin">
-    <h2 class="text-center display-1 mb-5">Programación</h2>
+    @* <h2 class="text-center display-1 mb-5">Programación</h2> *@
 
     <div class="row">
         @foreach (var song in Model)
@@ -54,14 +54,14 @@
     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
     {
         <div class="mt-3">
-            <a asp-action="Create" class="btn btn-info">Agregar Nueva Programación</a>
+            <a asp-action="Create" class="btn btn-color btn-info">Agregar Nueva Programación</a>
         </div>
     }
 
     @* <!-- Comments Section --> *@
     @* <div class="mt-5">
-        <h4>Chat</h4>
-        @await Html.PartialAsync("_DocumentCommentPartial")
+    <h4>Chat</h4>
+    @await Html.PartialAsync("_DocumentCommentPartial")
     </div> *@
 
 </div>

@@ -4,59 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<style>
-    .table-responsive {
-        max-height: 400px;
-        overflow-y: auto;
-    }
-
-
-    .box-shadow {
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
-            rgba(0, 0, 0, 0.22) 0px 15px 12px;
-        border-radius: 0.5rem;
-    }
-
-    .card-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .card-subtitle {
-        font-size: 1rem;
-        font-weight: normal;
-    }
-
-    .table th,
-    .table td {
-        vertical-align: middle;
-        text-align: center;
-    }
-
-    .left-align {
-        text-align: left !important;
-    }
-
-    .bi {
-        font-size: 1.25rem;
-    }
-
-    .custom-margin {
-        margin-top: 8rem;
-        margin-bottom: 8rem;
-    }
-
-    .btn-primary {
-        --bs-btn-bg: var(--gh-theme-600);
-        --bs-btn-border-color: var(--gh-theme-600);
-        --bs-btn-hover-bg: var(--gh-theme-700);
-        --bs-btn-hover-border-color: var(--gh-theme-700);
-        --bs-btn-active-bg: var(--gh-theme-700);
-        --bs-btn-active-border-color: var(--gh-theme-700);
-        border-radius: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-</style>
 
 
 <div class="container custom-margin">
@@ -67,7 +14,8 @@
             <h4 class="cart-title mb-0">Aquí puedes buscar las canciones</h4>
             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
             {
-                <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-primary btn-sm">Subir Nueva Canción</a>
+                <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-color btn-sm">Subir Nueva
+                    Canción</a>
             }
         </div>
 
@@ -110,12 +58,13 @@
                                 <td>@songDocument.SongName</td>
                                 <td>@songDocument.Description</td>
                                 <td style="text-align: center;">
-                                    <a class="text-decoration-none mx-2"
+                                    <a style="color: inherit;" class="text-decoration-none mx-2"
                                         href="@Url.Action("ViewDocument", "SongDocuments", new { id = songDocument.Id })"
                                         data-toggle="tooltip" title="Ver" target="_blank">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="@Url.Action("Download", "SongDocuments", new { id = songDocument.Id })"
+                                    <a style="color: inherit;"
+                                        href="@Url.Action("Download", "SongDocuments", new { id = songDocument.Id })"
                                         data-toggle="tooltip" title="Descargar" class="mx-2 text-decoration-none">
                                         <i class="bi bi-file-earmark-arrow-down"></i>
                                     </a>
@@ -123,12 +72,12 @@
                                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") ||
                                    User.IsInRole("Moderator")))
                                     {
-                                        <a asp-action="Edit" asp-route-id="@songDocument.Id" data-toggle="tooltip"
-                                            title="Editar" class="mx-2 text-decoration-none">
+                                        <a style="color: inherit;" asp-action="Edit" asp-route-id="@songDocument.Id"
+                                            data-toggle="tooltip" title="Editar" class="mx-2 text-decoration-none">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <a asp-action="Delete" asp-route-id="@songDocument.Id" data-toggle="tooltip"
-                                            title="Eliminar" class="mx-2 text-decoration-none">
+                                        <a style="color: inherit;" asp-action="Delete" asp-route-id="@songDocument.Id"
+                                            data-toggle="tooltip" title="Eliminar" class="mx-2 text-decoration-none">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     }

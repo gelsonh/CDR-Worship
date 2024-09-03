@@ -36,9 +36,14 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="~/assets/css/site.css" />
-    <link rel="stylesheet" href="~/assets/css/attachment.css" />
-    <link rel="stylesheet" href="~/assets/css/themes.css" />
+    <link rel="stylesheet" href="~/assets/css/style.css" asp-asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/table.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/attachment.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/card.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/logIn.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/signup.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/assets/css/themes.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -59,16 +64,16 @@
                 @if (User.Identity!.IsAuthenticated)
                 {
                     <li>
-                        <a asp-area="" asp-controller="Home" asp-action="Index" title="Home">Home</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" title="Home">Home</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="SongDocuments" asp-action="Index">Cantantes</a>
+                        <a class="nav-link" asp-area="" asp-controller="SongDocuments" asp-action="Index">Cantantes</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="ChordDocuments" asp-action="Index">Acordes</a>
+                        <a class="nav-link" asp-area="" asp-controller="ChordDocuments" asp-action="Index">Acordes</a>
                     </li>
                     <li>
-                        <a asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Agenda</a>
+                        <a class="nav-link" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Agenda</a>
                     </li>
                 }
                 else
@@ -82,7 +87,7 @@
                         @if (User.Identity!.IsAuthenticated)
                         {
                             var user = await UserManager.GetUserAsync(User);
-                            <a class="nav-link dropdown-toggle d-flex align-items-center custom-dropdown-toggle " href="#"
+                            <a style="color: inherit; text-decoration: none;" class="nav-link dropdown-toggle d-flex align-items-center custom-dropdown-toggle " href="#"
                                 id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="material-symbols-outlined">
                                     emoji_people

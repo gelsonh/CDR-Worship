@@ -1,3 +1,16 @@
+:root {
+  --gh-blue-red-150: hsla(210, 100%, 91%, 1); /* Azul claro */
+  --gh-blue-red-200: hsla(0, 100%, 86%, 1); /* Rojo claro */
+  --gh-blue-red-300: hsla(210, 100%, 81%, 1); /* Azul más oscuro */
+  --gh-blue-red-400: hsla(0, 100%, 78%, 1); /* Rojo más oscuro */
+  --gh-blue-red-500: hsla(210, 100%, 74%, 1); /* Azul medio */
+  --gh-blue-red-600: hsla(0, 100%, 67%, 1); /* Rojo medio */
+  --gh-blue-red-700: hsla(210, 100%, 48%, 1); /* Azul oscuro */
+  --gh-blue-red-800: hsla(0, 100%, 37%, 1); /* Rojo oscuro */
+  --gh-blue-red-850: hsla(210, 100%, 26%, 1); /* Azul muy oscuro */
+  --gh-blue-red-900: hsla(0, 100%, 25%, 1); /* Rojo muy oscuro */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,12 +23,14 @@ li {
 
 a {
   text-decoration: none;
-  color: #333;
+  /* color: #333; */
+  color: var(--gh-blue-red-600);
   font-size: 1rem;
 }
 
 a:hover {
-  color: #2284c1;
+  /* color: #2284c1; */
+  color: var(--gh-blue-red-700);
 }
 
 header {
@@ -52,6 +67,22 @@ main {
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--gh-blue-red-600);
+  font-size: 1rem;
+}
+.nav-link:hover {
+  color: var(--gh-blue-red-700);
+  text-decoration: underline;
+  text-decoration-thickness: 2px; /* Grosor de la línea */
+  text-underline-offset: 4px; /* Distancia de la línea al texto */
+}
+
+.nav-link:active {
+  color: var(--gh-blue-red-300) !important;
 }
 
 /* .nav-item.dropdown.custom-dropdown {

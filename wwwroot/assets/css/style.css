@@ -28,8 +28,27 @@
   --gh-theme-900: var(--gh-gray-900);
 
   /* New Style */
-}
 
+  --gh-theme-core: var(--gh-blue-red-core);
+  --gh-theme-150: var(--gh-blue-red-150);
+  --gh-theme-200: var(--gh-blue-red-200);
+  --gh-theme-300: var(--gh-blue-red-300);
+  --gh-theme-400: var(--gh-blue-red-400);
+  --gh-theme-500: var(--gh-blue-red-500);
+  --gh-theme-600: var(--gh-blue-red-600);
+  --gh-theme-700: var(--gh-blue-red-700);
+  --gh-theme-800: var(--gh-blue-red-800);
+  --gh-theme-850: var(--gh-blue-red-850);
+  --gh-theme-900: var(--gh-blue-red-900);
+
+  /* BTN Color */
+  /* --bs-btn-bg: var(--gh-theme-600);
+  --bs-btn-border-color: var(--gh-theme-600);
+  --bs-btn-hover-bg: var(--gh-theme-700);
+  --bs-btn-hover-border-color: var(--gh-theme-700);
+  --bs-btn-active-bg: var(--gh-theme-700);
+  --bs-btn-active-border-color: var(--gh-theme-700); */
+}
 
 /* Element Overrides */
 body {
@@ -75,22 +94,28 @@ body {
   margin: 0;
   padding: 0;
 }
-/* .content {
-    flex: 1; 
-} */
 
-/* .btn-primary {
-  --bs-btn-bg: var(--gh-theme-600);
-  --bs-btn-border-color: var(--gh-theme-600);
-  --bs-btn-hover-bg: var(--gh-theme-700);
-  --bs-btn-hover-border-color: var(--gh-theme-700);
-  --bs-btn-active-bg: var(--gh-theme-700);
-  --bs-btn-active-border-color: var(--gh-theme-700);
-} */
+.btn-color {
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: var(--gh-blue-red-500); /* Azul más claro */
+  border-color: var(--gh-blue-red-500); /* Azul más claro */
+  color: var(--gh-blue-red-800); /* Rojo más oscuro */
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+}
 
-/* .icon-large {
-  font-size: 3rem;
-} */
+.btn-color:hover {
+  background-color: var(--gh-blue-red-600); /* Rojo más oscuro */
+  border-color: var(--gh-blue-red-600); /* Rojo más oscuro */
+  color: var(--gh-blue-red-700); /* Azul más claro */
+}
+
+.btn-color:active {
+  background-color: var(--gh-blue-red-600); /* Rojo más oscuro */
+  border-color: var(--gh-blue-red-600); /* Rojo más oscuro */
+  color: var(--gh-blue-red-500); /* Azul más claro */
+}
 
 @keyframes fadeIn {
   from {
