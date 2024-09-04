@@ -49,174 +49,125 @@
 
 </head>
 
-<body class="@ViewData["BodyClass"]">
+<body>
 
     <header>
-
-
-        <div class="navbar-custom">
-            <div class="logo">
-                <a asp-controller="Home" asp-action="Index">
-                    <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" style="height: 40px;" />
                 </a>
-            </div>
-            <ul class="links">
-                @if (User.Identity!.IsAuthenticated)
-                {
-                    <li>
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" title="Home">Home</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" asp-area="" asp-controller="SongDocuments" asp-action="Index">Cantantes</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" asp-area="" asp-controller="ChordDocuments" asp-action="Index">Acordes</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" asp-area="" asp-controller="ScheduledSongs" asp-action="Index">Agenda</a>
-                    </li>
-                }
-                else
-                {
-                    <partial name="_LoginPartial" />
-                }
-
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item dropdown custom-dropdown">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
                         @if (User.Identity!.IsAuthenticated)
                         {
-                            var user = await UserManager.GetUserAsync(User);
-                            <a style="color: inherit; text-decoration: none;" class="nav-link dropdown-toggle d-flex align-items-center custom-dropdown-toggle " href="#"
-                                id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="material-symbols-outlined">
-                                    emoji_people
-                                </span>
-                                <span class="ms-2">@user?.FirstName</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu" aria-labelledby="userDropdown">
-                                <li class="dropdown-header custom-dropdown-header">
-                                    <div class="d-flex align-items-center p-3">
-                                        <i class="bi bi-person-circle custom-icon me-3"></i>
-                                        <div>
-                                            <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider custom-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item custom-dropdown-item" href="#">
-                                        <i class="bi bi-person custom-icon me-2"></i>Mi Perfil
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider custom-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item custom-dropdown-item" asp-area="Identity"
-                                        asp-page="/Account/Manage/Index">
-                                        <i class="bi bi-gear custom-icon me-2"></i>Configuración de la Cuenta
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider custom-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item custom-dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
-                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                        <i class="bi bi-box-arrow-left custom-icon me-2"></i>Cerrar Sesión
-                                    </a>
-                                </li>
-                            </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"
+                                    title="Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="SongDocuments"
+                                    asp-action="Index">Cantantes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ChordDocuments"
+                                    asp-action="Index">Acordes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ScheduledSongs"
+                                    asp-action="Index">Agenda</a>
+                            </li>
                         }
-                    </li>
-                }
-
-            </ul>
-
-            <div class="toggle_btn">
-                <i class="fa-regular fa-bars"></i>
+                        else
+                        {
+                            <partial name="_LoginPartial" />
+                        }
+                    </ul>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
+                                @if (User.Identity!.IsAuthenticated)
+                                {
+                                    var user = await UserManager.GetUserAsync(User);
+                                    <a style="color: inherit;" class="nav-link dropdown-toggle" href="#" id="userDropdown"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="material-symbols-outlined">emoji_people</span>
+                                        <span class="ms-2">@user?.FirstName</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        <li class="dropdown-header">
+                                            <div class="d-flex align-items-center p-3">
+                                                <i class="bi bi-person-circle me-3"></i>
+                                                <div>
+                                                    <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Mi Perfil</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i
+                                                    class="bi bi-gear me-2"></i>Configuración de la Cuenta</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"><i
+                                                    class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión</a></li>
+                                    </ul>
+                                }
+                            </li>
+                        </ul>
+                    }
+                </div>
             </div>
-        </div>
-
+        </nav>
     </header>
 
-    <div class="">
-        <main role="main" class="">
-            @RenderBody()
-        </main>
-    </div>
+    @RenderBody()
 
-    <footer class="py-2 mt-auto">
-        <div class="container-xxl text-center">
-            <span class="build-by-text text-dark">Creado por</span>
-            <span class="build-by-text text-dark">Gelson Hernandez</span>
+    <footer class="bg-light py-3 mt-3">
+        <div class="container text-center">
+            <span class="text-dark">Creado por Gelson Hernandez</span>
             <br />
-            <span class="build-by-text text-dark">&copy; 2024 - CDR Worship -</span>
+            <span class="text-dark">© 2024 - CDR Worship -</span>
             <br />
             <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
         </div>
     </footer>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-   <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- jQuery Validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 
-<!-- jQuery Validate -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
-<!-- Custom JS -->
-<script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Custom JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
-<!-- PDF.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <!-- Otros scripts aquí -->
 
-    @* <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Inicializar tooltip en Tabla
-    if ($.fn.tooltip) {
-    $('[data-toggle="tooltip"]').tooltip();
-    }
-
-    // Comprobar si el selector de fila y la tabla están presentes antes de manipularlos
-    const rowCountSelect = document.getElementById('rowCount');
-    const tableBody = document.getElementById('songTableBody');
-    if (rowCountSelect && tableBody) {
-    const allRows = Array.from(tableBody.getElementsByTagName('tr'));
-
-    function updateTable() {
-    const rowCount = parseInt(rowCountSelect.value);
-    allRows.forEach((row, index) => {
-    row.style.display = index < rowCount ? '' : 'none';
-    });
-    }
-
-    rowCountSelect.addEventListener('change', updateTable);
-    updateTable();
-    }
-
-    // Añadir funcionalidad de búsqueda a la tabla
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput && tableBody) {
-    searchInput.addEventListener('keyup', function () {
-    const value = searchInput.value.toLowerCase();
-    Array.from(tableBody.getElementsByTagName('tr')).forEach(function (row) {
-    row.style.display = row.textContent.toLowerCase().includes(value) ? '' : 'none';
-    });
-    });
-    }
-    });
-    </script> *@
-
+    <!-- Table -->
     <script>
         $(document).ready(function () {
             // Inicializar tooltip en Tabla
@@ -254,7 +205,6 @@
             }
         });
     </script>
-
 
     @await RenderSectionAsync("Scripts", required: false)
 

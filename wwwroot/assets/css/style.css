@@ -57,10 +57,6 @@ body {
   font-weight: var(--gh-font-weight);
   line-height: var(--gh-line-height);
   color: var(--gh-dark-color);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
 }
 
 h6,
@@ -80,19 +76,6 @@ h1,
   text-transform: uppercase;
   color: var(--gh-title-color);
   letter-spacing: 0.1rem;
-}
-
-.main-content {
-  flex: 1;
-  padding-bottom: 2rem;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
 }
 
 .btn-color {
@@ -127,6 +110,129 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.text-paragraph {
+  font-size: 1em;
+  /* 16px */
+  font-family: "Open Sans", sans-serif;
+}
+
+.main-heading {
+  font-size: 3.375em;
+  /* 54px */
+  letter-spacing: -0.03em;
+}
+
+.sub-heading {
+  font-size: 2.25em;
+  /* 36px */
+}
+
+.italic-heading {
+  font-size: 1.5em;
+  /* 24px */
+  font-style: italic;
+}
+
+.content-container {
+  width: 960px;
+  padding: 5% 12% 10% 10%;
+  background-color: #f4f4f4;
+  margin: 0 auto;
+  /*margin-top: 4rem; */
+  border-right: 1px solid #e4e4e4;
+  border-left: 1px solid #e4e4e4;
+}
+
+.centered-text {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.main-heading,
+.sub-heading,
+h3 {
+  margin: 10px 0px;
+  font-family: "Nunito", serif;
+  color: #3d4c5c;
+}
+
+.text-paragraph:first-of-type:first-letter {
+  font-size: 4em;
+  font-weight: bold;
+  float: left;
+  padding-right: 3px;
+}
+
+.text-paragraph:first-of-type:first-line {
+  line-height: 1;
+}
+
+.content-container > .text-paragraph {
+  padding: 10px 0px 10px 40px;
+}
+
+.blockquote-style {
+  background-color: #eaeaea;
+  font-family: "Nunito", serif;
+  font-style: italic;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin: 12px 0 12px 40px;
+  text-align: center;
+}
+
+/* .image-caption {}
+
+.image-container {} */
+
+.responsive-image {
+  max-width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  /* Si hay otros estilos que afectan el alineado */
+}
+
+.thank-you {
+  margin-top: 80px;
+  text-align: center;
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+  .main-heading {
+    font-size: 2.5em;
+    /* 40px */
+  }
+  .content-container {
+    width: 425px;
+  }
+
+  .sub-heading {
+    font-size: 1.75em;
+    /* 28px */
+  }
+
+  .italic-heading {
+    font-size: 1em;
+    /* 20px */
+  }
+
+  .content-container {
+    padding: 5% 5% 10% 5%;
+  }
+
+  .centered-text {
+    margin-bottom: 50px;
+  }
+
+  .blockquote-style {
+    margin: 12px 0 12px 20px;
+  }
+
 }
 
 /* Medium devices (tablets, 768px and up) */
