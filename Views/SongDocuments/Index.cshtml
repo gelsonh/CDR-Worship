@@ -11,7 +11,7 @@
     <div class="box-shadow">
 
         <div class="border-bottom p-4 d-flex justify-content-between align-items-center">
-            <h4 class="cart-title mb-0">Aquí puedes buscar las canciones</h4>
+            <h4 class="card-title mb-0">Aquí puedes buscar las canciones</h4>
             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
             {
                 <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-color btn-sm">Subir Nueva

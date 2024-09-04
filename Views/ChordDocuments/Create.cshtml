@@ -6,9 +6,10 @@
 }
 
 
-<div class="section-page">
+<div class="section-page py-5">
     <div class="container mt-5">
-        @* <h2 class="text-center mb-4 display-2">Documento con su acorde</h2> *@
+        <!-- <h2 class="text-center mb-4 display-2">Documento con su acorde</h2> -->
+
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -22,14 +23,14 @@
                             <input type="hidden" asp-for="Updated" />
 
                             <div class="form-group my-3">
-                                <div class="cardAttachment">
-                                    <h3>Subir Archivos</h3>
-                                    <div class="drop_box">
-                                        <header>
-                                            <h4>Seleccionar Archivo Aquí</h4>
-                                            <p>Arrastra y suelta o haz clic para seleccionar un archivo</p>
-                                        </header>
-                                        <label class="btn-color btn-File">
+                                <div class="card p-3">
+                                    <h3 class="h5">Subir Archivos</h3>
+                                    <div class="drop_box border border-dotted p-3 text-center">
+                                        @* <header>
+                                        <h4>Seleccionar Archivo Aquí</h4>
+                                        <p>Arrastra y suelta o haz clic para seleccionar un archivo</p>
+                                        </header> *@
+                                        <label class="btn btn-primary btn-sm btn-color">
                                             <input name="FormFile" type="file" class="form-control-file" id="fileID" />
                                             Elegir Archivo
                                         </label>
