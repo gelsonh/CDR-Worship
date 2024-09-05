@@ -17,6 +17,18 @@
   box-sizing: border-box;
 }
 
+/* Estilos generales */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+}
+
 li {
   list-style: none;
 }
@@ -48,18 +60,6 @@ a:hover {
 
 .nav-link:active {
   color: var(--gh-blue-red-300) !important;
-}
-
-/* Estilos generales */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 0;
-}
-
-main {
-  flex: 1;
 }
 
 /* Estilos para el footer */
