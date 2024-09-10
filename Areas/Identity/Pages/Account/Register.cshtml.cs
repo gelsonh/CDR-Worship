@@ -73,14 +73,14 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         {
 
             [Required]
-            [Display(Name = "FirstName")]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2}  and max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Nombre")]
+            [StringLength(50, ErrorMessage = "El {0} debe tener al menos {2} y máximo {1} caracteres.", MinimumLength = 2)]
 
             public string FirstName { get; set; }
 
             [Required]
-            [Display(Name = "LastName")]
-            [StringLength(50, ErrorMessage = "The {0} must be at least {2}  and max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Apellido")]
+            [StringLength(50, ErrorMessage = "El {0} debe tener al menos {2} y máximo {1} caracteres.", MinimumLength = 2)]
 
             public string LastName { get; set; }
             /// <summary>
@@ -89,7 +89,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Correo Electronico")]
             public string Email { get; set; }
 
             /// <summary>
@@ -97,9 +97,9 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} y máximo {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Contraseña")]
             public string Password { get; set; }
 
             /// <summary>
@@ -107,8 +107,8 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar Contraseña")]
+            [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
             public string ConfirmPassword { get; set; }
 
             [DataType(DataType.Upload)]
@@ -141,7 +141,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("El usuario creó una nueva cuenta con contraseña.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

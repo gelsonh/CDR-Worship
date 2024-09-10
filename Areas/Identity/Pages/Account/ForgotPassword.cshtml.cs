@@ -73,8 +73,8 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Restablecer contraseña",
+                    $"Por favor restablezca su contraseña mediante <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>haciendo clic aquí</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

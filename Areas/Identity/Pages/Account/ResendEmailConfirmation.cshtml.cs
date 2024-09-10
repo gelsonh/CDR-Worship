@@ -65,7 +65,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Se ha enviado un correo electrónico de verificación. Por favor, revise su correo electrónico.");
                 return Page();
             }
 
@@ -79,10 +79,10 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Confirma tu correo electrónico",
+                $"Por favor, confirme su cuenta mediante <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>haciendo clic aquí</a>.");
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(string.Empty, "Se ha enviado un correo electrónico de verificación. Por favor, revise su correo electrónico.");
             return Page();
         }
     }

@@ -38,7 +38,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                return NotFound($"Unable to load user with email '{email}'.");
+                return NotFound($"No se puede cargar el usuario con correo electrónico '{email}'.");
             }
 
             Email = email;
@@ -55,8 +55,8 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
 
             await _sender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{EmailConfirmationUrl}'>clicking here</a>.");
+                "Confirma tu correo electrónico",
+                $"Por favor, confirme su cuenta mediante <a href='{EmailConfirmationUrl}'>clicking here</a>.");
 
             return Page();
         }
