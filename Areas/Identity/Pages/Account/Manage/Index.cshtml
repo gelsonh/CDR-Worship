@@ -11,21 +11,27 @@
     <div class="col-md-6">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Por favor elige tu nombre de usuario." disabled />
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-
             @* <div class="form-floating mb-3">
-            <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Por favor ingresa tu número de teléfono."/>
-            <label asp-for="Input.PhoneNumber" class="form-label"></label>
-            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            <input asp-for="Username" class="form-control" placeholder="Por favor elige tu nombre de usuario."
+            disabled />
+            <label asp-for="Username" class="form-label"></label>
             </div> *@
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FirstName" class="form-control" placeholder="Nombre" />
+                <label asp-for="Input.FirstName" class="form-label">Nombre</label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.LastName" class="form-control" placeholder="Apellido" />
+                <label asp-for="Input.LastName" class="form-label">Apellido</label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Guardar</button>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }
