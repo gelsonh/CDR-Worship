@@ -8,21 +8,26 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CDR_Worship</title>
+    <title>@ViewData["Title"] CDR Worship</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @* <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
 </head>
+
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
 
     <div class="container">
@@ -34,12 +39,14 @@
                         <form id="account" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username"
+                                    aria-required="true" placeholder="nombre@ejemplo.com" />
                                 <label asp-for="Input.Email">Correo Electrónico</label>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="contraseña" />
+                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+                                    aria-required="true" placeholder="contraseña" />
                                 <label asp-for="Input.Password">Contraseña</label>
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
@@ -49,23 +56,39 @@
                                     @Html.DisplayNameFor(m => m.Input.RememberMe)
                                 </label>
                             </div>
-                            <div class="auth-container" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                                <!-- Botón de inicio de sesión -->
-                                <button id="login-submit" type="submit" class="btn btn-primary btn-lg w-100">
-                                    Iniciar Sesión
-                                </button>
+                            <div class="auth-container"
+                                style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+
+                                <!-- Formulario para Iniciar Sesión -->
+                                <form id="login-account" method="post">
+                                    <!-- Botón de inicio de sesión -->
+                                    <button id="account" type="submit" class="btn btn-primary btn-lg w-100">
+                                        Iniciar Sesión
+                                    </button>
+                                </form>
 
                                 <!-- Botón para volver a la lista -->
                                 <a href="@Url.Action("Index", "Home")" class="btn btn-danger w-100">
                                     Cancelar
                                 </a>
 
+                                <!-- Formulario para Demo Login -->
+                                <form id="demo-account" method="post">
+                                    <button class="btn btn-secondary w-100" type="submit" name="demoLoginEmail"
+                                        value="DemoLoginEmail">
+                                        Demo Login
+                                    </button>
+                                </form>
+
+
+
                                 <!-- Enlaces de autenticación -->
                                 <div class="auth-links text-center" style="width: 100%;">
                                     <a id="forgot-password" asp-page="./ForgotPassword" class="d-block mb-2">
                                         ¿Olvidaste tu contraseña?
                                     </a>
-                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="d-block mb-2">
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                                        class="d-block mb-2">
                                         Regístrate como nuevo usuario
                                     </a>
                                     <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="d-block">
@@ -74,7 +97,10 @@
                                 </div>
                             </div>
 
+
                         </form>
+
+
 
                     </div>
                 </div>
@@ -86,12 +112,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Incluir Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 
     <!-- Incluir los plugins de validación después de jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
 
     @await Html.PartialAsync("_ValidationScriptsPartial")
 </body>
+
 </html>

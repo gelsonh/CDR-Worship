@@ -3,11 +3,13 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using CDR_Worship.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
 
 namespace CDR_Worship.Areas.Identity.Pages.Account
 {
@@ -16,11 +18,15 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger)
+        private readonly IConfiguration _configuration;
+
+        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger, IConfiguration configuration)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _configuration = configuration;
         }
+     
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -95,16 +101,34 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-        {
-            returnUrl ??= Url.Content("~/");
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null, string demoLoginEmail = null)
+       {
+           returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+           // Asegúrate de que _signInManager está correctamente inicializado
+           ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+           if (!string.IsNullOrEmpty(demoLoginEmail))
+            {
+                string email = _configuration[demoLoginEmail] ?? Environment.GetEnvironmentVariable(demoLoginEmail);
+                string password = _configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
+                var result = await _signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid demo login attempt.");
+                    return Page();
+                }
+            }
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -122,12 +146,12 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
+                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                     return Page();
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // Si llegamos hasta aquí, algo falló, redisplay form
             return Page();
         }
     }
