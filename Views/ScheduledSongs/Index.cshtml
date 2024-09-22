@@ -19,7 +19,7 @@
 
 
 <div class="container custom-margin">
-    @* <h2 class="text-center display-1 mb-5">Programación</h2> *@
+
 
     <div class="row">
         @foreach (var song in Model)
@@ -64,4 +64,32 @@
     @await Html.PartialAsync("_DocumentCommentPartial")
     </div> *@
 
-</div>
+    @* </div> *@
+
+
+    @*
+    <style>
+    .calendar {
+    display: flex;
+    flex-wrap: wrap;
+    }
+
+    .calendar .day {
+    flex: 1 0 14.28%;
+    /*7 column*/
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    height: 100px;
+    text-align: center;
+    padding: 16px;
+    }
+    </style>
+
+
+    <div class="container">
+    <div class="calendar">
+    <div class="day">1</div>
+    <div class="day">2</div>
+    <div class="day">3</div>
+    </div>
+    </div> *@
