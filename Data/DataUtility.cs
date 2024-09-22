@@ -14,6 +14,7 @@ namespace CDR_Worship.Data
         private const string? _adminRole = "Admin";
         private const string? _moderatorRole = "Moderator";
 
+
         public static string GetConnectionString(IConfiguration configuration)
         {
             // Intenta obtener la cadena de conexión directamente desde la configuración.
@@ -85,22 +86,17 @@ namespace CDR_Worship.Data
             await SeedDefaultMembersAsync(dbContextSvc);
 
             // Seed Demo User(s)
-            //await SeedDemoUsersAsync(userManagerSvc, configurationSvc);
+            await SeedDemoUsersAsync(userManagerSvc, configurationSvc);
         }
 
-        // Admin & moderator
-        private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+        
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
-            if (!await roleManager.RoleExistsAsync(_adminRole!))
-            {
-                await roleManager.CreateAsync(new IdentityRole(_adminRole!));
-            }
-            if (!await roleManager.RoleExistsAsync(_moderatorRole!))
-            {
-                await roleManager.CreateAsync(new IdentityRole(_moderatorRole!));
-            }
+            //Seed Roles
+            await roleManager.CreateAsync(new IdentityRole(nameof(Roles.Admin)));
+            await roleManager.CreateAsync(new IdentityRole(nameof(Roles.Moderator)));
+            await roleManager.CreateAsync(new IdentityRole(nameof(Roles.DemoUser)));
         }
-
 
         private static async Task SeedAppUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
         {
@@ -164,6 +160,41 @@ namespace CDR_Worship.Data
             }
 
         }
+
+         private static async Task SeedDemoUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
+        {
+        string? demoLoginEmail = configuration["DemoLoginEmail"] ?? Environment.GetEnvironmentVariable("DemoLoginEmail");
+        string? demoLoginPassword = configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
+
+        AppUser demoUser = new AppUser()
+        {
+            UserName = demoLoginEmail,
+            Email = demoLoginEmail,
+            FirstName = "Demo",
+            LastName = "User",
+            EmailConfirmed = true,
+        };
+
+        try
+        {
+            AppUser? appUser = await userManager.FindByEmailAsync(demoLoginEmail!);
+
+            if (appUser == null)
+            {
+                await userManager.CreateAsync(demoUser, demoLoginPassword!);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("************* ERROR *************");
+            Console.WriteLine("Error Seeding Demo Login User.");
+            Console.WriteLine(ex.Message);
+            Console.WriteLine("*********************************");
+
+            throw;
+        }
+    }
+
 
         public static async Task SeedDefaultChordsAsync(ApplicationDbContext context)
         {
