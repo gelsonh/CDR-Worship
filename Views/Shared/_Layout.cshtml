@@ -78,8 +78,7 @@
                                     asp-action="Index">Acordes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="ScheduledSongs"
-                                    asp-action="Index">Agenda</a>
+                                <a class="nav-link" asp-area="" asp-controller="Calendars" asp-action="Index">Calendario</a>
                             </li>
                         }
                         else
@@ -134,26 +133,31 @@
         </nav>
     </header>
 
-    @RenderBody()
+    <div class="container">
+        @RenderBody()
+    </div>
 
-    <footer class="bg-light py-3 mt-3">
-        <div class="container text-center">
-            <span class="text-dark">Creado por Gelson Hernandez</span>
-            <br />
-            <span class="text-dark">© 2024 - CDR Worship -</span>
-            <br />
-            <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
-        </div>
+    <footer class="footer mt-auto bg-light py-3 sticky-footer">
+    <div class="container-fluid text-center">
+    <span class="text-dark">Creado por Gelson Hernandez</span>
+    <br />
+    <span class="text-dark">© 2024 - CDR Worship -</span>
+    <br />
+    <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
+    </div>
     </footer>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <!-- jQuery Validate -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    *@
 
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -170,41 +174,47 @@
     <!-- Table -->
     <script>
         $(document).ready(function () {
-            // Inicializar tooltip en Tabla
+            // Initialize tooltips in the table if the tooltip plugin is available
             if ($.fn.tooltip) {
                 $('[data-toggle="tooltip"]').tooltip();
             }
 
-            // Comprobar si el selector de fila y la tabla están presentes antes de manipularlos
+            // Check if the row count selector and table body exist before manipulating them
             const rowCountSelect = $('#rowCount');
             const tableBody = $('#songTableBody');
             if (rowCountSelect.length && tableBody.length) {
                 const allRows = tableBody.find('tr');
 
+                // Update the table to show only the specified number of rows based on the selected row count
                 function updateTable() {
                     const rowCount = parseInt(rowCountSelect.val());
                     allRows.each(function (index, row) {
-                        $(row).toggle(index < rowCount);
+                        $(row).toggle(index < rowCount); // Show or hide rows based on the selected number
                     });
                 }
 
+                // Update the table whenever the row count changes
                 rowCountSelect.on('change', updateTable);
-                updateTable();
+                updateTable(); // Initial call to set the table based on the current selection
             }
 
-            // Añadir funcionalidad de búsqueda a la tabla
+            // Add search functionality to filter table rows based on user input
             const searchInput = $('#searchInput');
             if (searchInput.length && tableBody.length) {
                 searchInput.on('keyup', function () {
                     const value = searchInput.val().toLowerCase();
                     tableBody.find('tr').each(function () {
                         const row = $(this);
+                        // Show or hide rows based on whether the row text contains the search input
                         row.toggle(row.text().toLowerCase().includes(value));
                     });
                 });
             }
         });
     </script>
+
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
 
