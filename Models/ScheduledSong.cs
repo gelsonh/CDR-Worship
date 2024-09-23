@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ namespace CDR_Worship.Models
         private DateTime _created;
         private DateTime _startDate;
         private DateTime _endDate;
-        private DateTime _updated;
+        private DateTime? _updated;
 
         // Primary Key
         public int Id { get; set; }
@@ -17,61 +18,40 @@ namespace CDR_Worship.Models
         [Required]
         public string? Name { get; set; }
 
-     
+      
+        public string? SongName { get; set; }
+
+       
         public string? Description { get; set; }
 
 
-        // Propiedades para fechas
+      
+       // Propiedades para fechas
         public DateTime Created
         {
-            get
-            {
-                return _created;
-            }
-            set
-            {
-                _created = value.ToUniversalTime();
-            }
+            get => _created;
+            set => _created = DateTime.SpecifyKind(value, DateTimeKind.Utc);
         }
 
         public DateTime StartDate
         {
-            get
-            {
-                return _startDate;
-            }
-            set
-            {
-                _startDate = value.ToUniversalTime();
-            }
+            get => _startDate;
+            set => _startDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
         }
 
         public DateTime EndDate
         {
-            get
-            {
-                return _endDate;
-            }
-            set
-            {
-                _endDate = value.ToUniversalTime();
-            }
+            get => _endDate;
+            set => _endDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
         }
-
 
         public DateTime? Updated
-        {
-            get => _updated;
+{
+    get => _updated;
+    set => _updated = value.HasValue ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc) : (DateTime?)null;
+}
 
-            set
-            {
-                if (value.HasValue)
-                {
-                    _updated = value.Value.ToUniversalTime();
-                }
-              
-            }
-        }
+
 
 
         public int? ChordId { get; set; }
