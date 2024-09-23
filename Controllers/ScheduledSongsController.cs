@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using CDR_Worship.Data;
 using CDR_Worship.Models;
 using CDR_Worship.Services.Interfaces;
-using CDR_Worship.Models.ViewModel;
-using CDR_Worship.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CDR_Worship.Controllers
@@ -136,7 +134,8 @@ namespace CDR_Worship.Controllers
 
 
         // POST: ScheduledSongs/Create
-        [HttpPost]     
+        [HttpPost]  
+        [ValidateAntiForgeryToken]   
         public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId,  BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
         {
             try
@@ -176,8 +175,6 @@ namespace CDR_Worship.Controllers
             }
         }
 
-
-
         // GET: ScheduledSongs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -192,46 +189,78 @@ namespace CDR_Worship.Controllers
                 return NotFound();
             }
 
-            // Aquí podrías cargar cualquier otra información adicional que necesites en la vista, como una lista de cantantes, etc.
-            // ViewBag.LeadSingers = new SelectList(_context.LeadSingers, "Id", "MemberName");
+           // Obtener la lista de miembros para los diferentes roles de la banda
+                var LeadSingers = await _scheduledSongService.GetLeadSingersAsync();
+                var BackingVocalists = await _scheduledSongService.GetBackingVocalistsAsync();
+                var BackingVocalistTwo = await _scheduledSongService.GetBackingVocalistTwoAsync();
+                var LeadGuitarists = await _scheduledSongService.GetLeadGuitaristsAsync();
+                var SecondGuitarists = await _scheduledSongService.GetSecondGuitaristsAsync();
+                var Bassists = await _scheduledSongService.GetBassistsAsync();
+                var Drummers = await _scheduledSongService.GetDrummersAsync();
+
+                ViewBag.LeadSingers = new SelectList(LeadSingers, "Id", "MemberName");
+                ViewBag.BackingVocalists = new SelectList(BackingVocalists, "Id", "MemberName");
+                ViewBag.BackingVocalistTwo = new SelectList(BackingVocalistTwo, "Id", "MemberName");
+
+                ViewBag.LeadGuitarists = new SelectList(LeadGuitarists, "Id", "MemberName");
+                ViewBag.SecondGuitarists = new SelectList(SecondGuitarists, "Id", "MemberName");
+                ViewBag.Bassists = new SelectList(Bassists, "Id", "MemberName");
+                ViewBag.Drummers = new SelectList(Drummers, "Id", "MemberName");
 
             return View(scheduledSong);
         }
 
 
         // POST: ScheduledSongs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Created,Updated")] ScheduledSong scheduledSong)
-        {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,SongName,Description,StartDate,EndDate,LeadSingerId,BackingVocalistId,BackingVocalistTwoId,LeadGuitaristId,SecondGuitaristId,BassistId,DrummerId")] ScheduledSong scheduledSong)        {
             if (id != scheduledSong.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+           if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(scheduledSong);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ScheduledSongExists(scheduledSong.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+              try
+            {
+               _context.Update(scheduledSong);
+               await _context.SaveChangesAsync();
+               return RedirectToAction(nameof(Index));
             }
-            return View(scheduledSong);
+               catch (DbUpdateConcurrencyException)
+           {
+           if (!ScheduledSongExists(scheduledSong.Id))
+           {
+              return NotFound();
+            }
+            else
+            {
+              throw;
+            }
+       }
+    }
+      else
+   {
+    // Repoblar los ViewBag si el modelo no es válido
+    var LeadSingers = await _scheduledSongService.GetLeadSingersAsync();
+    var BackingVocalists = await _scheduledSongService.GetBackingVocalistsAsync();
+    var BackingVocalistTwo = await _scheduledSongService.GetBackingVocalistTwoAsync();
+    var LeadGuitarists = await _scheduledSongService.GetLeadGuitaristsAsync();
+    var SecondGuitarists = await _scheduledSongService.GetSecondGuitaristsAsync();
+    var Bassists = await _scheduledSongService.GetBassistsAsync();
+    var Drummers = await _scheduledSongService.GetDrummersAsync();
+
+    ViewBag.LeadSingers = new SelectList(LeadSingers, "Id", "MemberName");
+    ViewBag.BackingVocalists = new SelectList(BackingVocalists, "Id", "MemberName");
+    ViewBag.BackingVocalistTwo = new SelectList(BackingVocalistTwo, "Id", "MemberName");
+    ViewBag.LeadGuitarists = new SelectList(LeadGuitarists, "Id", "MemberName");
+    ViewBag.SecondGuitarists = new SelectList(SecondGuitarists, "Id", "MemberName");
+    ViewBag.Bassists = new SelectList(Bassists, "Id", "MemberName");
+    ViewBag.Drummers = new SelectList(Drummers, "Id", "MemberName");
+}
+
+return View(scheduledSong);
         }
 
         // GET: ScheduledSongs/Delete/5
