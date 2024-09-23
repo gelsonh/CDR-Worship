@@ -52,7 +52,8 @@
                                 <i class="bi bi-calendar3 me-2"></i>
                                 <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
                             </div>
-                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) ||
+                           User.IsInRole("DemoUser"))
                             {
                                 <div class="d-flex justify-content-center mt-3">
                                     <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary me-2"

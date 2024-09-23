@@ -12,7 +12,8 @@
 
         <div class="border-bottom p-4 d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">Cantantes</h4>
-            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) ||
+            User.IsInRole("DemoUser"))
             {
                 <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-color btn-sm">Subir Nueva
                     Canción</a>
