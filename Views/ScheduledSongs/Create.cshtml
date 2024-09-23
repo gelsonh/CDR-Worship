@@ -1,61 +1,58 @@
 ﻿@model CDR_Worship.Models.ScheduledSong
 
-@using CDR_Worship.Models
-
 @{
     ViewData["Title"] = "Create";
 }
 
-<style>
-    .card {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    }
-</style>
 
-<div class="section-page">
-    <div class="container-xxl mt-5">
-        <div class="card">
-            <div class="card-body">
-                <h1 class="card-title">Crear Nueva Programación</h1>
-                <hr />
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <form asp-action="Create" asp-controller="ScheduledSongs" enctype="multipart/form-data">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="Description" />
 
-                            <div class="form-group mt-2">
-                                <label asp-for="Name" class="control-label">Nombre de la Canción:</label>
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
+<div class="container-xxl mt-5 d-flex justify-content-center">
 
-                            <div class="form-group mt-2">
-                                <label asp-for="LeadSingerId" class="control-label">Cantante Principal:</label>
-                                <select asp-for="LeadSingerId" class="form-control" asp-items="ViewBag.LeadSingers">
-                                    <option value="">Seleccionar Cantante Principal</option>
-                                </select>
-                            </div>
 
-                            <div class="form-group mt-2">
-                                <label asp-for="StartDate" class="control-label">Fecha:</label>
-                                <input asp-for="StartDate" type="date" class="form-control" />
-                                <span asp-validation-for="StartDate" class="text-danger"></span>
-                            </div>
+    <div class="card box-shadow">
+        <div class="card-body">
+            <h1 class="card-title text-center">Crear Nueva Programación</h1>
+            <hr />
 
-                            <div class="form-group mt-3">
-                                <input type="submit" value="Create" class="btn btn-primary" />
-                                <a asp-action="Index" class="btn btn-secondary ml-2">Volver a la Lista</a>
-                            </div>
-                        </form>
+            <div class="justify-content-center">
+
+                <form asp-action="Create" asp-controller="ScheduledSongs" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Description" />
+
+                    <div class="form-group mt-3">
+                        <label asp-for="Name" class="control-label">Nombre de la Canción:</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                </div>
+
+                    <div class="form-group mt-3">
+                        <label asp-for="LeadSingerId" class="control-label">Cantante Principal:</label>
+                        <select asp-for="LeadSingerId" class="form-control" asp-items="ViewBag.LeadSingers">
+                            <option value="">Seleccionar Cantante Principal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label asp-for="StartDate" class="control-label">Fecha:</label>
+                        <input asp-for="StartDate" type="date" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-3 text-center">
+                        <button type="submit" class="btn btn-color">Crear</button>
+                        <a asp-action="Index" class="btn btn-secondary ml-2">Volver a la Lista</a>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
+
+
 </div>
+
 
 @section Scripts {
     @{

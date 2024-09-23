@@ -4,36 +4,16 @@
     ViewData["Title"] = "Delete";
 }
 
-<div class="section-page">
-    <div class="container-xxl mt-5">
 
-        <h1>Estas seguro que quieres eliminar esta programacion?</h1>
+<div class="container-xxl mt-5">
 
-        <h3></h3>
-        <div>
-            <h4></h4>
-            <hr />
-            <dl class="row">
-                @*    <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Created)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Created)
-                </dd>
-                <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Updated)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Updated)
-                </dd> *@
-            </dl>
+    <h3>Estas seguro que quieres eliminar esta programacion?</h3>
 
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" /> |
-                <a asp-action="Index">Back to List</a>
-            </form>
-        </div>
-    </div>
+    <hr />
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
 </div>
-

@@ -4,92 +4,89 @@
     ViewData["Title"] = "Index";
 }
 
-<style>
-    .card {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        /* Sombra suave */
-    }
-
-    .custom-margin {
-        margin-top: 8rem;
-        margin-bottom: 8rem;
-    }
-</style>
-
-
-<div class="container custom-margin">
-
-
+<div class="container-xxl">
     <div class="row">
-        @foreach (var song in Model)
+        @if (!Model.Any())
         {
-            <div class="col-lg-4 my-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@song.Name</h5>
-                        <p class="card-text">
-                            <strong>Cantante Principal:</strong> @song.LeadSinger?.MemberName<br />
-                            <strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")
-                        </p>
-                        @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
-                        {
-                            <div class="text-center">
-                                <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary me-2" data-toggle="tooltip"
-                                    title="Editar">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger" data-toggle="tooltip"
-                                    title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
-                        }
-                    </div>
+            <div class="col-12 text-center my-5">
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">¡No hay Programaciones!</h4>
+                    <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programacion.</p>
+                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                    {
+                        <a asp-action="Create" class="btn btn-color btn-info">Agregar Nueva Programación</a>
+                    }
                 </div>
             </div>
         }
-    </div>
+        else
+        {
 
-    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+            <div class="col-12 text-center my-5">
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">¡RECUERDEN!</h4>
+                    <p> - Debemos practicar y estudiar las canciones en casa.<br />
+                        - Debemos buscar tutoriales para fortalecernos más en los detalles de cada instrumento.<br />
+                        - Debemos siempre estar listos en caso de que una canción se cambie de tono para acomodarla a
+                        nuestras voces.<br /><br />
+                        <em>Sigamos hacia adelante aumentando cada día más nuestra excelencia para Dios no solo en la música
+                            sino en todo lo que hagamos.</em><br /><br />
+                        Gracias mil por el tiempo, dedicación y trabajo que hacen para Dios. Ustedes todos son una gran
+                        bendición para mí y para Casa del Rey.
+                    </p>
+
+                </div>
+            </div>
+
+            @foreach (var song in Model)
+            {
+                <div class="col-md-4 my-3">
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@song.Name</h5>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-person me-2"></i>
+                                <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-calendar3 me-2"></i>
+                                <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
+                            </div>
+                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                            {
+                                <div class="d-flex justify-content-center mt-3">
+                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary me-2"
+                                        data-bs-toggle="tooltip" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger" data-bs-toggle="tooltip"
+                                        title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
     {
-        <div class="mt-3">
+        <div class="text-center my-4">
             <a asp-action="Create" class="btn btn-color btn-info">Agregar Nueva Programación</a>
         </div>
     }
-
-    @* <!-- Comments Section --> *@
-    @* <div class="mt-5">
-    <h4>Chat</h4>
-    @await Html.PartialAsync("_DocumentCommentPartial")
-    </div> *@
-
-    @* </div> *@
-
-
-    @*
-    <style>
-    .calendar {
-    display: flex;
-    flex-wrap: wrap;
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    .calendar .day {
-    flex: 1 0 14.28%;
-    /*7 column*/
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    height: 100px;
-    text-align: center;
-    padding: 16px;
-    }
-    </style>
-
-
-    <div class="container">
-    <div class="calendar">
-    <div class="day">1</div>
-    <div class="day">2</div>
-    <div class="day">3</div>
-    </div>
-    </div> *@
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+}
