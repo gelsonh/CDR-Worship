@@ -5,17 +5,51 @@
 }
 
 <style>
-    .btn-custom {
-        padding: 0.25rem 0.5rem;
+    
+.btn-custom {
+    padding: 0.25rem 0.5rem;
         /* Ajusta el padding según sea necesario */
         font-size: 0.75rem;
         /* Ajusta el tamaño de la fuente */
-    }
+}
 
     .icon-smaller {
         font-size: 0.8rem;
         /* Ajusta este valor según sea necesario */
     }
+
+    .card {
+    transition: transform 0.3s ease;
+    }
+
+ .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 123, 255, 0.8); /* Change to a lighter shade */
+}
+
+.btn-primary {
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 123, 255, 0.8); /* Blue shade */
+}
+
+.btn-danger {
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 0, 0, 0.8); /* Red shade */
+}
 
     
 </style>
@@ -35,32 +69,37 @@
                     }
                 </div>
             </div>
+            
         }
         else
         {
 
-            <div class="col-12 text-center my-5">
-                <div class="alert alert-info">
-                    <h4 class="alert-heading">¡RECUERDEN!</h4>
-                    <p> - Debemos practicar y estudiar las canciones en casa.<br />
-                        - Debemos buscar tutoriales para fortalecernos más en los detalles de cada instrumento.<br />
-                        - Debemos siempre estar listos en caso de que una canción se cambie de tono para acomodarla a
-                        nuestras voces.<br /><br />
-                        <em>Sigamos hacia adelante aumentando cada día más nuestra excelencia para Dios no solo en la música
-                            sino en todo lo que hagamos.</em><br /><br />
-                        Gracias mil por el tiempo, dedicación y trabajo que hacen para Dios. Ustedes todos son una gran
-                        bendición para mí y para Casa del Rey.
-                    </p>
+         <div class="col-12 text-center my-5">
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                     <i class="bi bi-exclamation-circle fs-3 me-2" aria-hidden="true"></i> 
 
-                </div>
+                    <h4 class="alert-heading">¡RECUERDEN!</h4>
+                    <p>
+                    <strong>Consejos para la práctica:</strong><br />
+                    <ul class="list-unstyled">
+                 <li>- Debemos practicar y estudiar las canciones en casa.</li>
+                <li>- Debemos buscar tutoriales para fortalecernos más en los detalles de cada instrumento.</li>
+                <li>- Debemos siempre estar listos en caso de que una canción se cambie de tono para acomodarla a nuestras voces.</li>
+                     </ul>
+            <em>Sigamos hacia adelante aumentando cada día más nuestra excelencia para Dios, no solo en la música sino en todo lo que hagamos.</em>
+            <br /><br />
+            Gracias mil por el tiempo, dedicación y trabajo que hacen para Dios. Ustedes todos son una gran bendición para mí y para Casa del Rey.
+              </p>
+
+         </div>
             </div>
 
             @foreach (var song in Model)
             {
                 <div class="col-md-4 my-3">
                     <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <h5 class="media-title card-title text-primary">@song.Name</h5>
+                        <div class="card-body bg-light">
+                            <h5 class="media-title card-title text-primary border-bottom pb-2 mb-3">@song.Name</h5>
                             <div class="d-flex align-items-center mb-2">
                                 <i class="bi bi-person me-2"></i>
                                 <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
@@ -89,6 +128,7 @@
             }
         }
     </div>
+    
     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
     {
         <div class="text-center my-4">
@@ -96,6 +136,9 @@
         </div>
     }
 </div>
+
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
