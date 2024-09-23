@@ -8,8 +8,6 @@
 
 
 <div class="container-xxl mt-5 d-flex justify-content-center">
-
-
     <div class="card box-shadow">
         <div class="card-body">
             <h1 class="card-title text-center">Crear Nueva Programación</h1>
@@ -20,6 +18,7 @@
                 <form asp-action="Create" asp-controller="ScheduledSongs" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Description" />
+                    <input type="hidden" asp-for="SongName" />
 
                     <div class="form-group mt-3">
                         <label asp-for="Name" class="control-label">Nombre de la Canción:</label>
@@ -49,8 +48,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 
