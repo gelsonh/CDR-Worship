@@ -3,6 +3,7 @@ using System;
 using CDR_Worship.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CDR_Worship.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911232253_AddScheduledSongsTable")]
+    partial class AddScheduledSongsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,9 +354,6 @@ namespace CDR_Worship.Migrations
                     b.Property<int?>("SecondGuitaristId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("SongName")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -671,7 +671,7 @@ namespace CDR_Worship.Migrations
                         .HasForeignKey("CalendarDayId");
 
                     b.HasOne("CDR_Worship.Models.Calendar", null)
-                        .WithMany("ScheduledSongs")
+                        .WithMany("Songs")
                         .HasForeignKey("CalendarId");
 
                     b.HasOne("CDR_Worship.Models.Chord", "Chord")
@@ -800,7 +800,7 @@ namespace CDR_Worship.Migrations
                 {
                     b.Navigation("Days");
 
-                    b.Navigation("ScheduledSongs");
+                    b.Navigation("Songs");
                 });
 
             modelBuilder.Entity("CDR_Worship.Models.CalendarDay", b =>

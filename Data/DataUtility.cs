@@ -88,8 +88,7 @@ namespace CDR_Worship.Data
             // Seed Demo User(s)
             await SeedDemoUsersAsync(userManagerSvc, configurationSvc);
         }
-
-        
+  
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
@@ -161,7 +160,7 @@ namespace CDR_Worship.Data
 
         }
 
-         private static async Task SeedDemoUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
+        private static async Task SeedDemoUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
         {
         string? demoLoginEmail = configuration["DemoLoginEmail"] ?? Environment.GetEnvironmentVariable("DemoLoginEmail");
         string? demoLoginPassword = configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
@@ -194,7 +193,6 @@ namespace CDR_Worship.Data
             throw;
         }
     }
-
 
         public static async Task SeedDefaultChordsAsync(ApplicationDbContext context)
         {
@@ -244,7 +242,6 @@ namespace CDR_Worship.Data
                 throw;
             }
         }
-
 
         public static async Task SeedDefaultMembersAsync(ApplicationDbContext context)
         {
