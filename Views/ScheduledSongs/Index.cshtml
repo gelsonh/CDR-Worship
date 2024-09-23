@@ -4,6 +4,23 @@
     ViewData["Title"] = "Index";
 }
 
+<style>
+    .btn-custom {
+        padding: 0.25rem 0.5rem;
+        /* Ajusta el padding según sea necesario */
+        font-size: 0.75rem;
+        /* Ajusta el tamaño de la fuente */
+    }
+
+    .icon-smaller {
+        font-size: 0.8rem;
+        /* Ajusta este valor según sea necesario */
+    }
+
+    
+</style>
+
+
 <div class="container-xxl">
     <div class="row">
         @if (!Model.Any())
@@ -43,7 +60,7 @@
                 <div class="col-md-4 my-3">
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                            <h5 class="card-title text-primary">@song.Name</h5>
+                            <h5 class="media-title card-title text-primary">@song.Name</h5>
                             <div class="d-flex align-items-center mb-2">
                                 <i class="bi bi-person me-2"></i>
                                 <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
@@ -56,13 +73,13 @@
                            User.IsInRole("DemoUser"))
                             {
                                 <div class="d-flex justify-content-center mt-3">
-                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary me-2"
+                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary me-2 btn-custom"
                                         data-bs-toggle="tooltip" title="Editar">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-pencil icon-smaller"></i>
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger" data-bs-toggle="tooltip"
-                                        title="Eliminar">
-                                        <i class="bi bi-trash"></i>
+                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger btn-custom"
+                                        data-bs-toggle="tooltip" title="Eliminar">
+                                        <i class="bi bi-trash icon-smaller"></i>
                                     </a>
                                 </div>
                             }

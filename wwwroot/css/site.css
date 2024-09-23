@@ -68,3 +68,12 @@ a:hover {
 .nav-link:active {
   color: var(--gh-blue-red-300) !important;
 }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .media-title {
+    font-size: 1rem; /* Tamaño de h6 */
+    font-weight: 600; /* Similar a h6 */
+    margin: 0.5rem 0; /* Ajusta según sea necesario */
+  }
+}

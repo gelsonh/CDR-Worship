@@ -232,32 +232,14 @@ h3 {
   .blockquote-style {
     margin: 12px 0 12px 20px;
   }
-
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  .mainTitle {
-    font-size: 8rem;
-    font-weight: 5rem;
-    letter-spacing: 0.4rem;
-    padding-bottom: 2rem;
-  }
-
-  .mainSubTitle {
-    font-size: 2rem;
-    font-weight: 1.2rem;
-    letter-spacing: 0.1rem;
-  }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-  .mainSubTitle {
-    font-size: 2.5rem;
-    font-weight: 1.2rem;
-    letter-spacing: 0.1rem;
-  }
 }
 
 /* X-Large devices (large desktops, 1200px and up) */
