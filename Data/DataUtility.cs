@@ -176,11 +176,14 @@ namespace CDR_Worship.Data
 
         try
         {
+
             AppUser? appUser = await userManager.FindByEmailAsync(demoLoginEmail!);
 
             if (appUser == null)
             {
                 await userManager.CreateAsync(demoUser, demoLoginPassword!);
+                 // Assign the Admin role to the demo user
+            await userManager.AddToRoleAsync(demoUser, nameof(Roles.Admin));
             }
         }
         catch (Exception ex)
