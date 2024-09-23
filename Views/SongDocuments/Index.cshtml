@@ -4,25 +4,33 @@
     ViewData["Title"] = "Index";
 }
 
-
+<style>
+    .sticky-header th {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa;
+        /* Optional: gives it a background color */
+        z-index: 1;
+        /* Ensures it stays on top of the content */
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        /* Optional: adds a shadow effect */
+        background-color: var(--gh-blue-red-500);
+    }
+</style>
 
 <div class="container custom-margin">
-
     <div class="box-shadow">
-
         <div class="border-bottom p-4 d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">Cantantes</h4>
             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) ||
             User.IsInRole("DemoUser"))
             {
-                <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-color btn-sm">Subir Nueva
-                    Canción</a>
+                <a href="@Url.Action("Create", "SongDocuments")" class="btn btn-color btn-sm">Subir Nueva Canción</a>
             }
         </div>
 
         <div class="card-body">
-
-            <div class="d-flex justify-content-between my-3">
+            <div class="d-flex justify-content-between align-items-center my-3">
                 <!-- Selector de cantidad de filas -->
                 <div class="d-flex align-items-center">
                     <label for="rowCount" class="form-label ms-2">Mostrar:</label>
@@ -34,52 +42,47 @@
                     </select>
                 </div>
 
-                <div class="mb-3 me-2">
+                <div class="d-flex align-items-center me-2">
                     <input type="text" id="searchInput" class="form-control form-control-md w-100"
                         placeholder="Buscar canciones...">
                 </div>
             </div>
 
-
             <div class="table-responsive">
-                <table class="table table-striped table-bordered text-nowrap custom-table">
-                    <thead>
+                <table class="table table-hover table-bordered text-nowrap custom-table">
+                    <thead class="sticky-header">
                         <tr>
-
                             <th>Nombre de la Canción</th>
                             <th>Artista/s</th>
-                            <th>Detalles</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="songTableBody">
                         @foreach (var songDocument in Model)
                         {
-                            <tr>
-
+                            <tr class="align-middle">
                                 <td>@songDocument.SongName</td>
                                 <td>@songDocument.Description</td>
-                                <td style="text-align: center;">
-                                    <a style="color: inherit;" class="text-decoration-none mx-2"
+                                <td class="text-center">
+                                    <a class="text-decoration-none mx-2"
                                         href="@Url.Action("ViewDocument", "SongDocuments", new { id = songDocument.Id })"
                                         data-toggle="tooltip" title="Ver" target="_blank">
-                                        <i class="bi bi-eye"></i>
+                                        <i class="bi bi-eye fs-5"></i>
                                     </a>
-                                    <a style="color: inherit;"
-                                        href="@Url.Action("Download", "SongDocuments", new { id = songDocument.Id })"
+                                    <a href="@Url.Action("Download", "SongDocuments", new { id = songDocument.Id })"
                                         data-toggle="tooltip" title="Descargar" class="mx-2 text-decoration-none">
-                                        <i class="bi bi-file-earmark-arrow-down"></i>
+                                        <i class="bi bi-file-earmark-arrow-down fs-5"></i>
                                     </a>
-
                                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") ||
                                    User.IsInRole("Moderator")))
                                     {
-                                        <a style="color: inherit;" asp-action="Edit" asp-route-id="@songDocument.Id"
-                                            data-toggle="tooltip" title="Editar" class="mx-2 text-decoration-none">
-                                            <i class="bi bi-pencil"></i>
+                                        <a asp-action="Edit" asp-route-id="@songDocument.Id" data-toggle="tooltip"
+                                            title="Editar" class="mx-2 text-decoration-none">
+                                            <i class="bi bi-pencil fs-5"></i>
                                         </a>
-                                        <a style="color: inherit;" asp-action="Delete" asp-route-id="@songDocument.Id"
-                                            data-toggle="tooltip" title="Eliminar" class="mx-2 text-decoration-none">
-                                            <i class="bi bi-trash"></i>
+                                        <a asp-action="Delete" asp-route-id="@songDocument.Id" data-toggle="tooltip"
+                                            title="Eliminar" class="mx-2 text-decoration-none">
+                                            <i class="bi bi-trash fs-5"></i>
                                         </a>
                                     }
                                 </td>
@@ -88,14 +91,15 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+
 }
+
