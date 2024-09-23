@@ -70,25 +70,25 @@
                                 <td>@chordDocument.SongName</td>
                                 <td>@chordDocument.Description</td>
                                 <td class="text-center">@chordDocument.Chord!.ChordName</td>
-                                <td style="text-align: center;">
-                                    <a style="color: inherit;" class="text-decoration-none mx-2"
+                                <td class="text-center">
+                                    <a class="text-decoration-none mx-2"
                                         href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })"
                                         data-toggle="tooltip" title="Ver" target="_blank">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a style="color: inherit;"
+                                    <a class="mx-2 text-decoration-none">
                                         href="@Url.Action("Download", "ChordDocuments", new { id = chordDocument.Id })"
-                                        data-toggle="tooltip" title="Descargar" class="mx-2 text-decoration-none">
+                                        data-toggle="tooltip" title="Descargar">
                                         <i class="bi bi-file-earmark-arrow-down"></i>
                                     </a>
                                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") ||
                                    User.IsInRole("Moderator")))
                                     {
-                                        <a style="color: inherit;" asp-action="Edit" asp-route-id="@chordDocument.Id"
+                                        <a asp-action="Edit" asp-route-id="@chordDocument.Id"
                                             data-toggle="tooltip" title="Editar" class="mx-2 text-decoration-none">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <a style="color: inherit;" asp-action="Delete" asp-route-id="@chordDocument.Id"
+                                        <a asp-action="Delete" asp-route-id="@chordDocument.Id"
                                             data-toggle="tooltip" title="Eliminar" class="mx-2 text-decoration-none">
                                             <i class="bi bi-trash"></i>
                                         </a>
