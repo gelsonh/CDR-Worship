@@ -65,68 +65,81 @@
                     <ul class="navbar-nav">
                         @if (User.Identity!.IsAuthenticated)
                         {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"
-                                        title="Home">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="SongDocuments"
-                                        asp-action="Index">Cantantes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="ChordDocuments"
-                                        asp-action="Index">Acordes</a>
-                                </li>
-                                @* <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="ScheduledSong" asp-action="Index">Calendario</a>
-                                </li> *@
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"
+                                    title="Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="SongDocuments"
+                                    asp-action="Index">Cantantes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ChordDocuments"
+                                    asp-action="Index">Acordes</a>
+                            </li>
+                            <li class="nav-item">
+                                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") ||
+                               User.IsInRole("Moderator")))
+                                {
+                                    <a class="nav-link" asp-area="" asp-controller="ScheduledSongs"
+                                        asp-action="Index">Programacion</a>
+                                }
+
+                            </li>
+                            @* <li class="nav-item">
+                                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") ||
+                               User.IsInRole("Moderator")))
+                                {
+                                    <a class="nav-link" asp-area="" asp-controller="Sms" asp-action="Index">Notificaciones</a>
+                                }
+                            </li> *@
                         }
                         else
                         {
-                                <partial name="_LoginPartial" />
+                            <partial name="_LoginPartial" />
                         }
                     </ul>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                            <ul class="navbar-nav ms-auto">
-                                <li class="nav-item dropdown">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
                                 @if (User.Identity!.IsAuthenticated)
                                 {
                                     var user = await UserManager.GetUserAsync(User);
-                                            <a style="color: inherit;" class="nav-link dropdown-toggle" href="#" id="userDropdown"
-                                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <span class="material-symbols-outlined">emoji_people</span>
-                                                <span class="ms-2">@user?.FirstName</span>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                                <li class="dropdown-header">
-                                                    <div class="d-flex align-items-center p-3">
-                                                        <i class="bi bi-person-circle me-3"></i>
-                                                        <div>
-                                                            <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Mi Perfil</a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i
-                                                            class="bi bi-gear me-2"></i>Configuración de la Cuenta</a></li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
-                                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"><i
-                                                            class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión</a></li>
-                                            </ul>
+                                    <a style="color: inherit;" class="nav-link dropdown-toggle" href="#" id="userDropdown"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="material-symbols-outlined">emoji_people</span>
+                                        <span class="ms-2">@user?.FirstName</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        <li class="dropdown-header">
+                                            <div class="d-flex align-items-center p-3">
+                                                <i class="bi bi-person-circle me-3"></i>
+                                                <div>
+                                                    <h5 class="mb-0">@user?.FirstName @user?.LastName</h5>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Mi Perfil</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i
+                                                    class="bi bi-gear me-2"></i>Configuración de la Cuenta</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"><i
+                                                    class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión</a></li>
+                                    </ul>
                                 }
-                                </li>
-                            </ul>
+                            </li>
+                        </ul>
                     }
                 </div>
             </div>
@@ -138,13 +151,13 @@
     </div>
 
     <footer class="footer mt-auto bg-light py-3 sticky-footer">
-    <div class="container-fluid text-center">
-    <span class="text-dark">Creado por Gelson Hernandez</span>
-    <br />
-    <span class="text-dark">© 2024 - CDR Worship -</span>
-    <br />
-    <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
-    </div>
+        <div class="container-fluid text-center">
+            <span class="text-dark">Creado por Gelson Hernandez</span>
+            <br />
+            <span class="text-dark">© 2024 - CDR Worship -</span>
+            <br />
+            <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
+        </div>
     </footer>
 
     <!-- jQuery -->
