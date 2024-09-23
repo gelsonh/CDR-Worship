@@ -105,7 +105,7 @@ namespace CDR_Worship.Controllers
         public async Task<IActionResult> ShowFile(int id)
         {
             // Obtener el archivo adjunto del documento de acorde por su ID
-            ChordAttachment chordDocumentAttachment = await _chordDocumentService.GetChordAttachmentByIdAsync(id);
+            ChordAttachment? chordDocumentAttachment = await _chordDocumentService.GetChordAttachmentByIdAsync(id);
 
             // Verificar si el archivo adjunto existe
             if (chordDocumentAttachment != null && chordDocumentAttachment.FileData != null)
