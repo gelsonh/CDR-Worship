@@ -1,52 +1,24 @@
 :root {
-  --gh-gray-150: hsla(120, 4%, 91%, 1);
-  --gh-gray-200: hsla(120, 3%, 86%, 1);
-  --gh-gray-300: hsla(120, 2%, 81%, 1);
-  --gh-gray-400: hsla(146, 6%, 78%, 1);
-  --gh-gray-500: hsla(152, 10%, 74%, 1);
-  --gh-gray-600: hsla(154, 15%, 67%, 1);
-  --gh-gray-700: hsla(141, 7%, 48%, 1);
-  --gh-gray-800: hsla(136, 6%, 37%, 1);
-  --gh-gray-850: hsla(110, 4%, 26%, 1);
-  --gh-gray-900: hsla(120, 1%, 25%, 1);
-
-  --gh-blue-red-150: hsla(210, 100%, 91%, 1); /* Azul claro */
-  --gh-blue-red-200: hsla(0, 100%, 86%, 1); /* Rojo claro */
-  --gh-blue-red-300: hsla(210, 100%, 81%, 1); /* Azul más oscuro */
-  --gh-blue-red-400: hsla(0, 100%, 78%, 1); /* Rojo más oscuro */
-  --gh-blue-red-500: hsla(210, 100%, 74%, 1); /* Azul medio */
-  --gh-blue-red-600: hsla(0, 100%, 67%, 1); /* Rojo medio */
-  --gh-blue-red-700: hsla(210, 100%, 48%, 1); /* Azul oscuro */
-  --gh-blue-red-800: hsla(0, 100%, 37%, 1); /* Rojo oscuro */
-  --gh-blue-red-850: hsla(210, 100%, 26%, 1); /* Azul muy oscuro */
-  --gh-blue-red-900: hsla(0, 100%, 25%, 1); /* Rojo muy oscuro */
+  --color-primary-light: hsla(210, 100%, 95%, 1); /* Azul claro */
+  --color-primary: hsla(210, 100%, 80%, 1); /* Azul */
+  --color-primary-dark: hsla(210, 100%, 60%, 1); /* Azul oscuro */
+  --color-secondary-light: hsla(0, 100%, 90%, 1); /* Rojo claro */
+  --color-secondary: hsla(0, 100%, 70%, 1); /* Rojo */
+  --color-secondary-dark: hsla(0, 100%, 50%, 1); /* Rojo oscuro */
+  --color-accent: hsla(120, 100%, 50%, 1); /* Verde */
+  --color-background: hsla(0, 0%, 98%, 1); /* Fondo claro */
+  --color-text: hsla(0, 0%, 20%, 1); /* Texto oscuro */
 }
 
-[data-cf-theme="gray"] {
-  --gh-theme-core: var(--gh-gray-core);
-  --gh-theme-100: var(--gh-gray-100);
-  --gh-theme-150: var(--gh-gray-150);
-  --gh-theme-200: var(--gh-gray-200);
-  --gh-theme-300: var(--gh-gray-300);
-  --gh-theme-400: var(--gh-gray-400);
-  --gh-theme-500: var(--gh-gray-500);
-  --gh-theme-600: var(--gh-gray-600);
-  --gh-theme-700: var(--gh-gray-700);
-  --gh-theme-800: var(--gh-gray-800);
-  --gh-theme-850: var(--gh-gray-850);
-  --gh-theme-900: var(--gh-gray-900);
-}
-
-[data-cf-theme="blue-red"] {
-  --gh-theme-core: var(--gh-blue-red-core);
-  --gh-theme-150: var(--gh-blue-red-150);
-  --gh-theme-200: var(--gh-blue-red-200);
-  --gh-theme-300: var(--gh-blue-red-300);
-  --gh-theme-400: var(--gh-blue-red-400);
-  --gh-theme-500: var(--gh-blue-red-500);
-  --gh-theme-600: var(--gh-blue-red-600);
-  --gh-theme-700: var(--gh-blue-red-700);
-  --gh-theme-800: var(--gh-blue-red-800);
-  --gh-theme-850: var(--gh-blue-red-850);
-  --gh-theme-900: var(--gh-blue-red-900);
+[data-cf-theme="modern-clean"] {
+  --gh-theme-core: var(--color-primary);
+  --gh-theme-150: var(--color-primary-light);
+  --gh-theme-200: var(--color-secondary-light);
+  --gh-theme-300: var(--color-primary);
+  --gh-theme-400: var(--color-secondary);
+  --gh-theme-500: var(--color-secondary-dark);
+  --gh-theme-600: var(--color-primary-dark);
+  --gh-theme-700: var(--color-accent);
+  --gh-theme-800: var(--color-background);
+  --gh-theme-900: var(--color-text);
 }

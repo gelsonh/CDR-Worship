@@ -4,50 +4,30 @@
   --gh-subtitle-font: "Nunito", sans-serif;
   --gh-heading-font: "Nunito", sans-serif;
   --gh-body-font: "Nunito", sans-serif;
+
   /* basic colors */
-  --gh-dark-color: #333;
-  --gh-light-color: #605e5c;
-  --gh-background-color: rgba(250, 250, 250, 0.8);
+  --gh-dark-color: #333; /* Texto oscuro */
+  --gh-light-color: #605e5c; /* Color de texto claro */
+  --gh-background-color: rgba(250, 250, 250, 0.8); /* Fondo claro */
+
+  /* New Style */
+  --gh-theme-core: hsla(210, 100%, 80%, 1); /* Azul */
+  --gh-theme-150: hsla(210, 100%, 95%, 1); /* Azul claro */
+  --gh-theme-200: hsla(0, 100%, 90%, 1); /* Rojo claro */
+  --gh-theme-300: hsla(210, 100%, 80%, 1); /* Azul */
+  --gh-theme-400: hsla(0, 100%, 70%, 1); /* Rojo */
+  --gh-theme-500: hsla(0, 100%, 50%, 1); /* Rojo oscuro */
+  --gh-theme-600: hsla(210, 100%, 60%, 1); /* Azul oscuro */
+  --gh-theme-700: hsla(120, 100%, 50%, 1); /* Verde */
+  --gh-theme-800: rgba(250, 250, 250, 0.8); /* Fondo claro */
+  --gh-theme-900: var(--gh-dark-color); /* Texto oscuro */
+
   /* text style */
   --gh-font-size: 1.2rem;
   --gh-font-weight: 400;
   --gh-line-height: 1.5rem;
   --gh-title-color: var(--gh-dark-color);
   --gh-gray-core: #adb5bd;
-  --gh-theme-core: var(--gh-gray-core);
-  --gh-theme-100: var(--gh-gray-100);
-  --gh-theme-150: var(--gh-gray-150);
-  --gh-theme-200: var(--gh-gray-200);
-  --gh-theme-300: var(--gh-gray-300);
-  --gh-theme-400: var(--gh-gray-400);
-  --gh-theme-500: var(--gh-gray-500);
-  --gh-theme-600: var(--gh-gray-600);
-  --gh-theme-700: var(--gh-gray-700);
-  --gh-theme-800: var(--gh-gray-800);
-  --gh-theme-850: var(--gh-gray-850);
-  --gh-theme-900: var(--gh-gray-900);
-
-  /* New Style */
-
-  --gh-theme-core: var(--gh-blue-red-core);
-  --gh-theme-150: var(--gh-blue-red-150);
-  --gh-theme-200: var(--gh-blue-red-200);
-  --gh-theme-300: var(--gh-blue-red-300);
-  --gh-theme-400: var(--gh-blue-red-400);
-  --gh-theme-500: var(--gh-blue-red-500);
-  --gh-theme-600: var(--gh-blue-red-600);
-  --gh-theme-700: var(--gh-blue-red-700);
-  --gh-theme-800: var(--gh-blue-red-800);
-  --gh-theme-850: var(--gh-blue-red-850);
-  --gh-theme-900: var(--gh-blue-red-900);
-
-  /* BTN Color */
-  /* --bs-btn-bg: var(--gh-theme-600);
-  --bs-btn-border-color: var(--gh-theme-600);
-  --bs-btn-hover-bg: var(--gh-theme-700);
-  --bs-btn-hover-border-color: var(--gh-theme-700);
-  --bs-btn-active-bg: var(--gh-theme-700);
-  --bs-btn-active-border-color: var(--gh-theme-700); */
 }
 
 /* Element Overrides */
@@ -57,6 +37,7 @@ body {
   font-weight: var(--gh-font-weight);
   line-height: var(--gh-line-height);
   color: var(--gh-dark-color);
+  background-color: var(--gh-background-color); /* Fondo */
 }
 
 h6,
@@ -81,23 +62,23 @@ h1,
 .btn-color {
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: var(--gh-blue-red-500); /* Azul más claro */
-  border-color: var(--gh-blue-red-500); /* Azul más claro */
-  color: var(--gh-blue-red-800); /* Rojo más oscuro */
+  background-color: var(--gh-theme-300); /* Azul */
+  border-color: var(--gh-theme-300); /* Azul */
+  color: var(--gh-theme-800); /* Fondo claro */
   transition: background-color 0.3s ease, border-color 0.3s ease,
     color 0.3s ease;
 }
 
 .btn-color:hover {
-  background-color: var(--gh-blue-red-600); /* Rojo más oscuro */
-  border-color: var(--gh-blue-red-600); /* Rojo más oscuro */
-  color: var(--gh-blue-red-700); /* Azul más claro */
+  background-color: var(--gh-theme-600); /* Azul oscuro */
+  border-color: var(--gh-theme-600); /* Azul oscuro */
+  color: var(--gh-theme-700); /* Verde */
 }
 
 .btn-color:active {
-  background-color: var(--gh-blue-red-600); /* Rojo más oscuro */
-  border-color: var(--gh-blue-red-600); /* Rojo más oscuro */
-  color: var(--gh-blue-red-500); /* Azul más claro */
+  background-color: var(--gh-theme-600); /* Azul oscuro */
+  border-color: var(--gh-theme-600); /* Azul oscuro */
+  color: var(--gh-theme-300); /* Azul */
 }
 
 @keyframes fadeIn {
@@ -105,7 +86,6 @@ h1,
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -113,34 +93,29 @@ h1,
 }
 
 .text-paragraph {
-  font-size: 1em;
-  /* 16px */
+  font-size: 1em; /* 16px */
   font-family: "Open Sans", sans-serif;
 }
 
 .main-heading {
-  font-size: 3.375em;
-  /* 54px */
+  font-size: 3.375em; /* 54px */
   letter-spacing: -0.03em;
 }
 
 .sub-heading {
-  font-size: 2.25em;
-  /* 36px */
+  font-size: 2.25em; /* 36px */
 }
 
 .italic-heading {
-  font-size: 1.5em;
-  /* 24px */
+  font-size: 1.5em; /* 24px */
   font-style: italic;
 }
 
 .content-container {
   width: 960px;
   padding: 5% 12% 10% 10%;
-  background-color: #f4f4f4;
+  background-color: #f4f4f4; /* Color del contenedor */
   margin: 0 auto;
-  /*margin-top: 4rem; */
   border-right: 1px solid #e4e4e4;
   border-left: 1px solid #e4e4e4;
 }
@@ -155,7 +130,7 @@ h1,
 h3 {
   margin: 10px 0px;
   font-family: "Nunito", serif;
-  color: #3d4c5c;
+  color: #3d4c5c; /* Color de encabezado */
 }
 
 .text-paragraph:first-of-type:first-letter {
@@ -174,7 +149,7 @@ h3 {
 }
 
 .blockquote-style {
-  background-color: #eaeaea;
+  background-color: #eaeaea; /* Fondo del bloque de cita */
   font-family: "Nunito", serif;
   font-style: italic;
   padding-top: 15px;
@@ -183,17 +158,13 @@ h3 {
   text-align: center;
 }
 
-/* .image-caption {}
-
-.image-container {} */
-
+/* Imagen responsive */
 .responsive-image {
   max-width: 100%;
   display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  /* Si hay otros estilos que afectan el alineado */
 }
 
 .thank-you {
@@ -204,48 +175,24 @@ h3 {
 /* Media Queries para dispositivos móviles */
 @media (max-width: 768px) {
   .main-heading {
-    font-size: 2.5em;
-    /* 40px */
+    font-size: 2.5em; /* 40px */
   }
   .content-container {
     width: 425px;
   }
-
   .sub-heading {
-    font-size: 1.75em;
-    /* 28px */
+    font-size: 1.75em; /* 28px */
   }
-
   .italic-heading {
-    font-size: 1em;
-    /* 20px */
+    font-size: 1em; /* 20px */
   }
-
   .content-container {
     padding: 5% 5% 10% 5%;
   }
-
   .centered-text {
     margin-bottom: 50px;
   }
-
   .blockquote-style {
     margin: 12px 0 12px 20px;
   }
-}
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-}
-
-/* X-Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-}
-
-/* XX-Large devices (larger desktops, 1400px and up) */
-@media (min-width: 1400px) {
 }
