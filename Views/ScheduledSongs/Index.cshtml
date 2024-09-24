@@ -5,75 +5,56 @@
 }
 
 <style>
+    /* Efecto hover en las tarjetas */
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-hover:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para los botones */
     .btn-custom {
-        padding: 0.25rem 0.5rem;
-        /* Ajusta el padding según sea necesario */
-        font-size: 0.75rem;
-        /* Ajusta el tamaño de la fuente */
+        padding: 0.5rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 1.5rem;
+        transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
     }
 
-    .icon-smaller {
-        font-size: 0.8rem;
-        /* Ajusta este valor según sea necesario */
-    }
-
-    .card {
-        transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Estilos generales para botones */
-    .btn {
-        border-radius: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .btn:hover {
-        transform: scale(1.1);
-        /* Añadir un efecto de escala en hover */
-    }
-
-    /* Botón de edición */
     .btn-primary {
         background-color: var(--gh-blue-red-500);
-        /* Azul medio */
-        border-color: var(--gh-blue-red-500);
-        /* Azul medio */
-        color: var(--gh-blue-red-800);
-        /* Texto en rojo oscuro */
+        border: none;
+        color: #fff;
     }
 
     .btn-primary:hover {
         background-color: var(--gh-theme-600);
-        /* Verde en hover */
-        border-color: var(--gh-theme-600);
-        /* Verde en hover */
         color: #fff;
-        /* Texto en blanco en hover */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Botón de eliminación */
     .btn-danger {
         background-color: var(--gh-blue-red-400);
-        /* Rojo oscuro */
-        border-color: var(--gh-blue-red-400);
-        /* Rojo oscuro */
+        border: none;
         color: #fff;
-        /* Texto en blanco */
     }
 
     .btn-danger:hover {
         background-color: var(--gh-blue-red-800);
-        /* Rojo más oscuro */
-        border-color: var(--gh-blue-red-800);
-        /* Rojo más oscuro */
         color: #fff;
-        /* Mantener texto en blanco en hover */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilos adicionales para una tarjeta limpia */
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .text-muted {
+        font-size: 0.875rem;
     }
 </style>
 
@@ -123,28 +104,35 @@
             @foreach (var song in Model)
             {
                 <div class="col-md-4 my-3">
-                    <div class="card shadow mb-4">
-                        <div class="card-body bg-light">
-                            <h5 class="media-title card-title text-primary border-bottom pb-2 mb-3">@song.Name</h5>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="bi bi-person me-2"></i>
+                    <div class="card card-hover shadow-sm border-0 rounded-lg">
+                        <div class="card-body bg-light p-4">
+                            <!-- Título de la canción -->
+                            <h5 class="media-title card-title text-primary border-bottom pb-2 mb-3 fw-bold">@song.Name</h5>
+
+                            <!-- Información del cantante -->
+                            <div class="d-flex align-items-center mb-2 text-muted">
+                                <i class="bi bi-person me-2 text-primary"></i>
                                 <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-calendar3 me-2"></i>
+
+                            <!-- Fecha de inicio -->
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="bi bi-calendar3 me-2 text-primary"></i>
                                 <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
                             </div>
-                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) ||
-                           User.IsInRole("DemoUser"))
+
+                            <!-- Botones de acciones para roles específicos -->
+                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
+                           User.IsInRole("DemoUser")))
                             {
-                                <div class="d-flex justify-content-center mt-3">
-                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary me-2 btn-custom"
+                                <div class="d-flex justify-content-center mt-4">
+                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-custom btn-primary me-2"
                                         data-bs-toggle="tooltip" title="Editar">
-                                        <i class="bi bi-pencil icon-smaller"></i>
+                                        <i class="bi bi-pencil"></i> Editar
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger btn-custom btn-delete"
+                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-custom btn-danger"
                                         data-bs-toggle="tooltip" title="Eliminar">
-                                        <i class="bi bi-trash icon-smaller"></i>
+                                        <i class="bi bi-trash"></i> Eliminar
                                     </a>
                                 </div>
                             }
@@ -170,10 +158,10 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-<script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-</script>
+@* <script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script> *@
 }

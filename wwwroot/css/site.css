@@ -36,6 +36,19 @@ main > .container {
   width: 100%;
 }
 
+footer {
+  background-color: var(
+    --gh-theme-100
+  ); /* Cambia esto según tu paleta de colores */
+}
+
+.social-links a:hover {
+  color: var(
+    --gh-theme-600
+  ); /* Cambia esto para personalizar el efecto hover */
+  transition: color 0.3s ease;
+}
+
 li {
   list-style: none;
 }
@@ -46,30 +59,33 @@ a {
 }
 
 a:hover {
-  color: var(--gh-blue-red-700); /* Azul oscuro */
+  color: var(--gh-blue-red-300); /* Azul oscuro */
 }
 
+/* Estilo adicional para modernizar los elementos de la lista */
 .nav-link {
-  text-decoration: none;
-  color: var(--gh-blue-red-600); /* Rojo medio */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 10px 15px;
+  font-weight: 500;
 }
 
 .nav-link:hover {
-  color: var(--gh-blue-red-700); /* Azul oscuro */
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
+  background-color: var(--gh-theme-300);
+  color: white;
 }
 
-.nav-link:active {
-  color: var(--gh-blue-red-300) !important; /* Azul más oscuro */
+.navbar {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los elementos redondeados */
+.rounded-pill {
+  border-radius: 50px;
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .media-title {
-    font-size: 1rem; /* Tamaño de h6 */
-    font-weight: 600; /* Similar a h6 */
-    margin: 0.5rem 0; /* Ajusta según sea necesario */
+    font-size: 0.8rem; /* Tamaño de h6 */
   }
 }

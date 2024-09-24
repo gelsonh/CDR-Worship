@@ -7,23 +7,36 @@
 
 
 <header>
-    <div class="section-page">
-        <div class="container mt-5">
-            <h1>@ViewData["Title"]</h1>
-            @{
-                if (User.Identity?.IsAuthenticated ?? false)
-                {
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                        asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                        <button type="submit" class="nav-link btn btn-link text-danger">Haz clic aquí para cerrar
-                            sesión</button>
-                    </form>
-                }
-                else
-                {
-                    <p>Has cerrado sesión en la aplicación exitosamente.</p>
-                }
+    <div class="container mt-5">
+        @{
+            if (User.Identity?.IsAuthenticated ?? false)
+            {
+                @* Alerta roja para advertir al usuario antes de cerrar sesión *@
+                <div class="col-12 text-center my-5">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-x-circle fs-3 me-2" aria-hidden="true"></i>
+
+                        <h4 class="alert-heading">¿Estás seguro que deseas cerrar sesión?</h4>
+                        <p>
+                            Cerrar sesión te desconectará de tu cuenta y ya no podrás acceder a las funciones de la
+                            aplicación hasta que inicies sesión de nuevo.
+                        </p> <br />
+                        @* Formulario para cerrar sesión centrado *@
+                        <div class="d-flex justify-content-center">
+                            <form asp-area="Identity" asp-page="/Account/Logout"
+                                asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                <button type="submit" class="btn btn-danger">
+                                    <strong>Haz clic aquí para cerrar sesión</strong>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             }
-        </div>
+            else
+            {
+                <p>Has cerrado sesión en la aplicación exitosamente.</p>
+            }
+        }
     </div>
 </header>
