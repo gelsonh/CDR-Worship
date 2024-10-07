@@ -216,18 +216,20 @@
                 updateTable(); // Initial call to set the table based on the current selection
             }
 
-            // Add search functionality to filter table rows based on user input
-            const searchInput = $('#searchInput');
-            if (searchInput.length && tableBody.length) {
-                searchInput.on('keyup', function () {
-                    const value = searchInput.val().toLowerCase();
-                    tableBody.find('tr').each(function () {
-                        const row = $(this);
-                        // Show or hide rows based on whether the row text contains the search input
-                        row.toggle(row.text().toLowerCase().includes(value));
-                    });
-                });
-            }
+           // Add search functionality to filter table rows based on user input
+const searchInput = $('#searchInput');
+if (searchInput.length && tableBody.length) {
+    searchInput.on('keyup', function () {
+        const value = searchInput.val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        tableBody.find('tr').each(function () {
+            const row = $(this);
+            // Normalize row text to remove accents for accurate comparison
+            const rowText = row.text().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            // Show or hide rows based on whether the row text contains the search input
+            row.toggle(rowText.includes(value));
+        });
+    });
+}
         });
     </script>
 
