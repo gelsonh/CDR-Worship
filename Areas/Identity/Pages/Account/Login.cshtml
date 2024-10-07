@@ -15,95 +15,65 @@
     <title>@ViewData["Title"] CDR Worship</title>
 
     <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/style.css" asp-asp-append-version="true" />
     @* <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
 </head>
 
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-body p-4">
-                        <h1 class="text-center mb-4">@ViewData["Title"]</h1>
-                        <form id="account" method="post">
-                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="Input.Email" class="form-control" autocomplete="username"
-                                    aria-required="true" placeholder="nombre@ejemplo.com" />
-                                <label asp-for="Input.Email">Correo Electrónico</label>
-                                <span asp-validation-for="Input.Email" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
-                                    aria-required="true" placeholder="contraseña" />
-                                <label asp-for="Input.Password">Contraseña</label>
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" asp-for="Input.RememberMe" />
-                                <label asp-for="Input.RememberMe" class="form-check-label">
-                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                </label>
-                            </div>
-                            <div class="auth-container"
-                                style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg border-0" style="max-width: 400px; width: 100%;">
+            <div class="card-body p-5">
+                <h1 class="text-center mb-5" style="font-weight: 700; font-size: 1.8rem;">@ViewData["Title"]</h1>
 
-                                <!-- Formulario para Iniciar Sesión -->
-                                <form id="login-account" method="post">
-                                    <!-- Botón de inicio de sesión -->
-                                    <button id="account" type="submit" class="btn btn-primary btn-lg w-100">
-                                        Iniciar Sesión
-                                    </button>
-                                </form>
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
-                                <!-- Botón para volver a la lista -->
-                                <a href="@Url.Action("Index", "Home")" class="btn btn-danger w-100">
-                                    Cancelar
-                                </a>
-
-                                <!-- Formulario para Demo Login -->
-                                <form id="demo-account" method="post">
-                                    <button class="btn btn-secondary w-100" type="submit" name="demoLoginEmail"
-                                        value="DemoLoginEmail">
-                                        Demo Login
-                                    </button>
-                                </form>
-
-
-
-                                <!-- Enlaces de autenticación -->
-                                <div class="auth-links text-center" style="width: 100%;">
-                                    <a id="forgot-password" asp-page="./ForgotPassword" class="d-block mb-2">
-                                        ¿Olvidaste tu contraseña?
-                                    </a>
-                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
-                                        class="d-block mb-2">
-                                        Regístrate como nuevo usuario
-                                    </a>
-                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="d-block">
-                                        Reenviar confirmación de correo
-                                    </a>
-                                </div>
-                            </div>
-
-
-                        </form>
-
-
-
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username"
+                            aria-required="true" placeholder="nombre@ejemplo.com" />
+                        <label asp-for="Input.Email">Correo Electrónico</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
-                </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.Password" type="password" class="form-control rounded-3"
+                            autocomplete="current-password" aria-required="true" placeholder="contraseña" />
+                        <label asp-for="Input.Password">Contraseña</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        <label asp-for="Input.RememberMe" class="form-check-label">
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Iniciar Sesión</button>
+                    <button type="button" class="btn btn-outline-danger btn-lg w-100 mb-3"
+                        onclick="window.location.href='@Url.Action("Index", "Home")'">Cancelar</button>
+                    <button class="btn btn-secondary btn-lg w-100 mb-4" type="submit" name="demoLoginEmail"
+                        value="DemoLoginEmail">Demo Login</button>
+
+                    <div class="auth-links text-center">
+                        <a id="forgot-password" asp-page="./ForgotPassword"
+                            class="d-block mb-3 text-decoration-none">¿Olvidaste tu contraseña?</a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                            class="d-block mb-3 text-decoration-none">Regístrate como nuevo usuario</a>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation"
+                            class="d-block text-decoration-none">Reenviar confirmación de correo</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

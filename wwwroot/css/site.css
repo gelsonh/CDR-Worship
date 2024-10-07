@@ -79,6 +79,10 @@ a:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.custom-login-partial {
+  box-shadow: none;
+}
+
 /* Estilo para los elementos redondeados */
 .rounded-pill {
   border-radius: 50px;
