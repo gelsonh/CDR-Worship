@@ -1,0 +1,40 @@
+@model CDR_Worship.Models.Sms
+
+@{
+    ViewData["Title"] = "Send SMS";
+}
+
+<h2 class="mt-5 mb-5 text-center">Notificaciones</h2>
+
+<form asp-action="SendSms" method="post">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group mb-3">
+                <label for="to" class="">Numero de celular</label>
+                <input type="text" class="form-control" id="to" name="To" asp-for="To" required>
+                <span asp-validation-for="To" class="text-danger"></span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+
+
+            <div class="form-group mb-3">
+                <label for="message">Mensaje</label>
+                <textarea class="form-control" id="message" name="Message" asp-for="Message" required></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

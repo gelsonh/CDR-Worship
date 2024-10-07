@@ -55,11 +55,12 @@ li {
 
 a {
   text-decoration: none;
-  color: var(--gh-blue-red-600); /* Rojo medio */
+  color: #333;
+  /* color: var(--gh-blue-red-600);  */
 }
 
 a:hover {
-  color: var(--gh-blue-red-300); /* Azul oscuro */
+  color: var(--gh-blue-red-800);
 }
 
 /* Estilo adicional para modernizar los elementos de la lista */
