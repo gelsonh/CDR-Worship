@@ -28,7 +28,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ISongDocumentService, SongDocumentService>();
 builder.Services.AddScoped<IChordDocumentService, ChordDocumentService>();
 builder.Services.AddScoped<IScheduledSongsService, ScheduledSongsService>();
-builder.Services.AddScoped<ICalendarService, CalendarService>();
+// builder.Services.AddScoped<ICalendarService, CalendarService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
 // builder.Services.AddScoped<ISmsService, SmsService>();
 
