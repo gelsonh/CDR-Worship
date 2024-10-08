@@ -172,20 +172,27 @@ namespace CDR_Worship.Controllers
         }
 
 
-        // GET: ChordDocuments/Create
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            // Obtener una lista de los acordes disponibles
-            var chords = await _chordDocumentService.GetUniqueChordsAsync();
+        // GET: ChordDocuments/Delete/5
+[HttpGet]
+public async Task<IActionResult> Delete(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
 
-            // Crear una lista desplegable con los acordes
-            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
+    // Obtener el documento de acorde con la información del acorde
+    var chordDocument = await _context.ChordDocuments
+        .Include(cd => cd.Chord) // Incluye los datos de Chord
+        .FirstOrDefaultAsync(m => m.Id == id);
 
-            // Crear un nuevo objeto ChordDocument y pasarlo a la vista
-            var chordDocument = new ChordDocument(); // Puedes inicializarlo como lo necesites
-            return View(chordDocument);
-        }
+    if (chordDocument == null)
+    {
+        return NotFound();
+    }
+
+    return View(chordDocument);
+}
 
 
         [HttpPost]

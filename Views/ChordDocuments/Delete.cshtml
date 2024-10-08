@@ -22,7 +22,7 @@
                     </div>
                     <div class="d-flex justify-content-between border-bottom pb-3">
                         <span class="fw-bold">Acorde:</span>
-                        <span>@Html.DisplayFor(model => model.Chord!.ChordName)</span>
+                        <span>@(Model.Chord != null ? Model.Chord.ChordName : "N/A")</span>
                     </div>
                 </div>
 
