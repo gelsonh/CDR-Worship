@@ -23,7 +23,7 @@
     }
 </style>
 
-<div class="container mt-5">
+<div class="container my-5">
 
     <!-- Sección de información sobre la tabla -->
     <div class="info-section mb-5">
@@ -115,14 +115,23 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Sección de información adicional -->
-    <div class="col-12 text-center my-5">
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-circle fs-3 me-2" aria-hidden="true"></i>
-            <h5>Consejos para los cantantes</h5>
-            <p>Recuerda practicar las canciones subidas regularmente. Esto te ayudará a estar preparado para las
-                presentaciones del domingo. Si tienes dudas, contacta a tu líder de equipo.</p>
+<!-- Modal (ventana emergente) de consejos para los músicos -->
+<div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adviceModalLabel">Consejos para los cantantes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Recuerda practicar las canciones subidas regularmente. Esto te ayudará a estar preparado para las
+                    presentaciones del domingo. Si tienes dudas, contacta a tu líder de equipo.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>
