@@ -145,4 +145,12 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+<!-- Advice Modal -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var adviceModal = new bootstrap.Modal(document.getElementById('adviceModal'));
+        adviceModal.show();
+    });
+</script>
 }
