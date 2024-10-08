@@ -3,6 +3,7 @@ using CDR_Worship.Models;
 using CDR_Worship.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CDR_Worship.Models.Enums; // Espacio de nombres para el enum CDRChord y el mapper
 
 namespace CDR_Worship.Services
 {
@@ -18,25 +19,41 @@ namespace CDR_Worship.Services
             _userManager = userManager;
         }
 
-        public async Task<IEnumerable<Chord>> GetUniqueChordsAsync()
+       public async Task<IEnumerable<Chord>> GetUniqueChordsAsync()
+{
+    try
+    {
+        // Obtener todos los acordes de la base de datos
+        var chords = await _context.Chords.ToListAsync();
+
+        // Crear un conjunto para almacenar los nombres de los acordes únicos
+        var uniqueChords = new Dictionary<string, Chord>();
+
+        foreach (var chord in chords)
         {
-
-            try 
+            if (Enum.TryParse(typeof(CDRChord), chord.ChordName, out var parsedChord))
             {
-               var chordDocuments = await _context.Chords
-               .GroupBy(c => c.ChordName)
-               .Select(g => g.FirstOrDefault())           
-               .ToListAsync();
+                // Obtener el nombre mapeado del acorde
+                var chordName = CDRChordMapper.ChordNames[(CDRChord)parsedChord];
 
-                return chordDocuments!;
-            }
-            catch (Exception ex)
-            {
-                // Manejar la excepción según sea necesario (registrándola, lanzándola nuevamente, etc.)
-                throw new Exception("Error al obtener todos los documentos de acordes.", ex);
+                // Si el acorde con este nombre aún no está en el diccionario, lo añadimos
+                if (!uniqueChords.ContainsKey(chordName))
+                {
+                    chord.ChordName = chordName;
+                    uniqueChords[chordName] = chord;
+                }
             }
         }
 
+        // Retornar solo los acordes únicos
+        return uniqueChords.Values;
+    }
+    catch (Exception ex)
+    {
+        // Manejar la excepción según sea necesario (registrándola, lanzándola nuevamente, etc.)
+        throw new Exception("Error al obtener los acordes únicos.", ex);
+    }
+}
       
         public async Task AddChordAttachmentAsync(ChordAttachment? ChordAttachment)
         {
@@ -92,24 +109,37 @@ namespace CDR_Worship.Services
         }
 
         public async Task<IEnumerable<ChordDocument>> GetAllChordDocumentsAsync()
-        {
-            try
-            {
-                // Obtener todos los documentos de acordes incluyendo los datos de los acordes asociados
-                var chordDocuments = await _context.ChordDocuments
-                    .Include(cd => cd.ChordAttachments)
-                    .Include(cd => cd.Chord)
-                    .ToListAsync();
+{
+    try
+    {
+        // Obtener todos los documentos de acordes incluyendo los datos de los acordes asociados
+        var chordDocuments = await _context.ChordDocuments
+            .Include(cd => cd.ChordAttachments)
+            .Include(cd => cd.Chord)
+            .ToListAsync();
 
-                return chordDocuments;
-            }
-            catch (Exception ex)
+        // Actualizar los nombres de los acordes usando el mapeo para incluir sostenidos (#)
+        foreach (var chordDocument in chordDocuments)
+        {
+            if (chordDocument.Chord != null && Enum.TryParse(typeof(CDRChord), chordDocument.Chord.ChordName, out var parsedChord))
             {
-                // Manejar la excepción según sea necesario (registrándola, lanzándola nuevamente, etc.)
-                throw new Exception("Error al obtener todos los documentos de acordes.", ex);
+                chordDocument.Chord.ChordName = CDRChordMapper.ChordNames[(CDRChord)parsedChord];
+            }
+            else
+            {
+                // En caso de que el parseo falle, puedes agregar una acción alternativa, como:
+                // Console.WriteLine($"Advertencia: No se pudo mapear el acorde: {chordDocument.Chord?.ChordName}");
             }
         }
 
+        return chordDocuments;
+    }
+    catch (Exception ex)
+    {
+        // Manejar la excepción según sea necesario (registrándola, lanzándola nuevamente, etc.)
+        throw new Exception("Error al obtener todos los documentos de acordes.", ex);
+    }
+}
 
         public Task<ChordDocument?> GetChordDocumentByIdAsync(int chordDocumentId)
         {

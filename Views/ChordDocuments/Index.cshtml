@@ -84,7 +84,16 @@
                             <tr class="align-middle">
                                 <td>@chordDocument.SongName</td>
                                 <td>@chordDocument.Description</td>
-                                <td class="text-center">@chordDocument.Chord!.ChordName</td>
+                                <td class="text-center">
+                                    @if (chordDocument.Chord != null)
+                                    {
+                                        @chordDocument.Chord.ChordName
+                                    }
+                                    else
+                                    {
+                                        <span>No disponible</span>
+                                    }
+                                </td>
                                 <td class="text-center">
                                     <a class="text-decoration-none mx-2"
                                         href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })"

@@ -198,53 +198,52 @@ namespace CDR_Worship.Data
     }
 
         public static async Task SeedDefaultChordsAsync(ApplicationDbContext context)
+{
+    try
+    {
+        // Crear la lista de acordes con los nombres correctos, utilizando CDRChordMapper para obtener el nombre
+        IList<Chord> chords = new List<Chord>
         {
-            try
-            {
-                IList<Chord> chords = [
-            new Chord() {  ChordName =  nameof(CDRChord.C) },
-               new Chord() {  ChordName =  nameof(CDRChord.D) },
-                  new Chord() {  ChordName =  nameof(CDRChord.E) },
-                     new Chord() {  ChordName =  nameof(CDRChord.F) },
-                        new Chord() {  ChordName =  nameof(CDRChord.G) },
-                           new Chord() {  ChordName =  nameof(CDRChord.A) },
-                              new Chord() {  ChordName =  nameof(CDRChord.B) },
-                                 new Chord() {  ChordName =  nameof(CDRChord.Fsos) },
-                                    new Chord() {  ChordName =  nameof(CDRChord. Csos) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Bb) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Cm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Dm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Em) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Fm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Gm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Am) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Bm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Fsosm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Csosm) },
-                                       new Chord() {  ChordName =  nameof(CDRChord.Bbm)},
-                                       new Chord() {  ChordName = nameof(CDRChord.Gb)},
-                                       new Chord() {  ChordName = nameof(CDRChord.Gsos)},
-                                       new Chord() { ChordName = nameof(CDRChord.Gsosm)}
-                                       
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.C] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.D] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.E] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.F] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.G] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.A] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.B] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Fsos] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Csos] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bb] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Cm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Dm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Em] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Fm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Am] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Fsosm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Csosm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bbm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gb] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gsos] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gsosm] }
+        };
 
-        ];
+        // Agregar los acordes a tu contexto
+        await context.Chords.AddRangeAsync(chords);
 
-
-                // Agregar los acordes a tu contexto
-                await context.Chords.AddRangeAsync(chords);
-
-                // Guardar los cambios en tu contexto
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("*************  ERROR  *************");
-                Console.WriteLine("Error Seeding Chords.");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("***********************************");
-                throw;
-            }
-        }
+        // Guardar los cambios en tu contexto
+        await context.SaveChangesAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("*************  ERROR  *************");
+        Console.WriteLine("Error Seeding Chords.");
+        Console.WriteLine(ex.Message);
+        Console.WriteLine("***********************************");
+        throw;
+    }
+}
 
         public static async Task SeedDefaultMembersAsync(ApplicationDbContext context)
         {

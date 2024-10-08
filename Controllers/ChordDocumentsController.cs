@@ -263,86 +263,73 @@ namespace CDR_Worship.Controllers
             }
         }
 
-        // GET: ChordDocuments/Edit/5
-        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+       // GET: ChordDocuments/Edit/5
+[HttpGet]
+public async Task<IActionResult> Edit(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
 
-            // Obtener el documento de acorde desde tu contexto
-            var chordDocument = await _context.ChordDocuments.FindAsync(id);
-            if (chordDocument == null)
-            {
-                return NotFound();
-            }
+    // Obtener el documento de acorde desde tu contexto, incluyendo la información del acorde
+    var chordDocument = await _context.ChordDocuments
+        .Include(cd => cd.Chord)
+        .FirstOrDefaultAsync(cd => cd.Id == id);
+    
+    if (chordDocument == null)
+    {
+        return NotFound();
+    }
 
-            // Obtener una lista de los acordes disponibles
-            var chords = await _chordDocumentService.GetUniqueChordsAsync();
+    // Obtener una lista de los acordes disponibles
+    var chords = await _chordDocumentService.GetUniqueChordsAsync();
 
-            // Crear una lista desplegable con los acordes
-            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
+    // Crear una lista desplegable con los acordes, usando los nombres correctos (mapeados)
+    ViewBag.ChordId = new SelectList(chords, "Id", "ChordName", chordDocument.ChordId);
 
-            // Pasar el documento de acorde a tu vista
-            return View(chordDocument);
-        }
+    // Pasar el documento de acorde a tu vista
+    return View(chordDocument);
+}
 
 
 
-        // POST: ChordDocuments/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SongName,Description,Created,Updated,SongDocumentId, ChordId")] ChordDocument chordDocument)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(int id, [Bind("Id,SongName,Description,Created,Updated,SongDocumentId,ChordId")] ChordDocument chordDocument)
+{
+    if (id != chordDocument.Id)
+    {
+        return NotFound();
+    }
+
+    if (ModelState.IsValid)
+    {
+        try
         {
-            if (id != chordDocument.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(chordDocument);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ChordDocumentExists(chordDocument.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(chordDocument);
+            _context.Update(chordDocument);
+            await _context.SaveChangesAsync();
         }
-
-        // GET: ChordDocuments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        catch (DbUpdateConcurrencyException)
         {
-            if (id == null)
+            if (!ChordDocumentExists(chordDocument.Id))
             {
                 return NotFound();
             }
-
-            var chordDocument = await _context.ChordDocuments
-            .Include(cd => cd.Chord)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (chordDocument == null)
+            else
             {
-                return NotFound();
+                throw;
             }
-
-            return View(chordDocument);
         }
+        return RedirectToAction(nameof(Index));
+    }
+
+    // En caso de error, vuelve a cargar los acordes para mostrarlos nuevamente
+    var chords = await _chordDocumentService.GetUniqueChordsAsync();
+    ViewBag.ChordId = new SelectList(chords, "Id", "ChordName", chordDocument.ChordId);
+
+    return View(chordDocument);
+}
 
         // POST: ChordDocuments/Delete/5
         [HttpPost, ActionName("Delete")]
