@@ -35,6 +35,7 @@
             <div class="card-body p-5">
                 <h1 class="text-center mb-5" style="font-weight: 700; font-size: 1.8rem;">@ViewData["Title"]</h1>
 
+
                 <form id="account" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
@@ -62,18 +63,25 @@
                     <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Iniciar Sesión</button>
                     <button type="button" class="btn btn-outline-danger btn-lg w-100 mb-3"
                         onclick="window.location.href='@Url.Action("Index", "Home")'">Cancelar</button>
+                </form>
+
+                <form id="demoLogin" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
                     <button class="btn btn-secondary btn-lg w-100 mb-4" type="submit" name="demoLoginEmail"
                         value="DemoLoginEmail">Demo Login</button>
-
-                    <div class="auth-links text-center">
-                        <a id="forgot-password" asp-page="./ForgotPassword"
-                            class="d-block mb-3 text-decoration-none">¿Olvidaste tu contraseña?</a>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
-                            class="d-block mb-3 text-decoration-none">Regístrate como nuevo usuario</a>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation"
-                            class="d-block text-decoration-none">Reenviar confirmación de correo</a>
-                    </div>
                 </form>
+
+                <div class="auth-links text-center">
+                    <a id="forgot-password" asp-page="./ForgotPassword"
+                        class="d-block mb-3 text-decoration-none">&#191;Olvidaste tu contraseña?</a>
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                        class="d-block mb-3 text-decoration-none">Regístrate como nuevo usuario</a>
+                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation"
+                        class="d-block text-decoration-none">Reenviar confirmación de correo</a>
+                </div>
+                ```
+
             </div>
         </div>
     </div>
