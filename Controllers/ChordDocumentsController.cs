@@ -333,7 +333,9 @@ namespace CDR_Worship.Controllers
             }
 
             var chordDocument = await _context.ChordDocuments
+            .Include(cd => cd.Chord)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (chordDocument == null)
             {
                 return NotFound();

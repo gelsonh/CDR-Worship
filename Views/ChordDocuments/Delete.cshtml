@@ -4,55 +4,40 @@
     ViewData["Title"] = "Delete";
 }
 
+<div class="section-page py-5">
+    <div class="container" style="max-width: 600px; margin: 0 auto;">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-5">
+                <h2 class="text-center text-danger mb-4 fw-bold">Eliminar Canción</h2>
+                <p class="text-center mb-5">¿Estás seguro de que quieres eliminar esta canción?</p>
 
-<div class="section-page">
-    <div class="container-xxl mt-5">
+                <div class="song-details mb-5">
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <span class="fw-bold">Canción:</span>
+                        <span>@Html.DisplayFor(model => model.SongName)</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <span class="fw-bold">Artista/s:</span>
+                        <span>@Html.DisplayFor(model => model.Description)</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-3">
+                        <span class="fw-bold">Acorde:</span>
+                        <span>@Html.DisplayFor(model => model.Chord!.ChordName)</span>
+                    </div>
+                </div>
 
-        <h1>Estas seguro que quieres eliminar esta cancion?</h1>
-
-        <h3></h3>
-        <div>
-            <h4></h4>
-            <hr />
-            <dl class="row">
-                <dt class="col-sm-2">
-                    Nombre de la canción:
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.SongName)
-                </dd>
-
-                @*     <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-                </dd> *@
-                @*   <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Created)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Created)
-                </dd> *@
-                @*   <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Updated)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Updated)
-                </dd> *@
-                @*  <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SongDocumentId)
-                </dt> *@
-                @*   <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SongDocumentId)
-                </dd> *@
-            </dl>
-
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" /> |
-                <a asp-action="Index">Back to List</a>
-            </form>
+                <form asp-action="Delete" class="d-flex justify-content-between">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Volver a la lista</a>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
