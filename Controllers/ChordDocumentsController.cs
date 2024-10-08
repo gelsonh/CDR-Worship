@@ -172,27 +172,20 @@ namespace CDR_Worship.Controllers
         }
 
 
-        // GET: ChordDocuments/Delete/5
-[HttpGet]
-public async Task<IActionResult> Delete(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
+        // GET: ChordDocuments/Create
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            // Obtener una lista de los acordes disponibles
+            var chords = await _chordDocumentService.GetUniqueChordsAsync();
 
-    // Obtener el documento de acorde con la información del acorde
-    var chordDocument = await _context.ChordDocuments
-        .Include(cd => cd.Chord) // Incluye los datos de Chord
-        .FirstOrDefaultAsync(m => m.Id == id);
+            // Crear una lista desplegable con los acordes
+            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
 
-    if (chordDocument == null)
-    {
-        return NotFound();
-    }
-
-    return View(chordDocument);
-}
+            // Crear un nuevo objeto ChordDocument y pasarlo a la vista
+            var chordDocument = new ChordDocument(); // Puedes inicializarlo como lo necesites
+            return View(chordDocument);
+        }
 
 
         [HttpPost]
@@ -337,6 +330,31 @@ public async Task<IActionResult> Edit(int id, [Bind("Id,SongName,Description,Cre
 
     return View(chordDocument);
 }
+
+
+// GET: ChordDocuments/Delete/5
+[HttpGet]
+public async Task<IActionResult> Delete(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    // Obtener el documento de acorde con la información del acorde
+    var chordDocument = await _context.ChordDocuments
+        .Include(cd => cd.Chord) // Incluye los datos de Chord
+        .FirstOrDefaultAsync(m => m.Id == id);
+
+    if (chordDocument == null)
+    {
+        return NotFound();
+    }
+
+    return View(chordDocument);
+}
+
+
 
         // POST: ChordDocuments/Delete/5
         [HttpPost, ActionName("Delete")]
