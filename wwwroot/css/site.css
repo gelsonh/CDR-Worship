@@ -70,9 +70,18 @@ a:hover {
   font-weight: 500;
 }
 
-.nav-link:hover {
-  background-color: var(--gh-theme-300);
-  color: white;
+/* Desactivar el efecto hover para los elementos específicos del dropdown y la navegación del usuario */
+.navbar-nav .nav-link,
+.dropdown-menu .dropdown-item,
+.dropdown-header .d-flex {
+  transition: none; /* Desactivar transiciones para asegurar que no haya efectos de hover */
+}
+
+.navbar-nav .nav-link:hover,
+.dropdown-menu .dropdown-item:hover,
+.dropdown-header .d-flex:hover {
+  background-color: transparent; /* Mantener el fondo transparente */
+  color: inherit; /* Mantener el color original */
 }
 
 .navbar {

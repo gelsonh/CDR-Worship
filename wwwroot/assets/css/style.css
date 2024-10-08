@@ -172,19 +172,19 @@ h3 {
   text-align: center;
 }
 
-.dropdown-menu {
-  background-color: var(--gh-theme-800); /* Color de fondo del dropdown */
-  border: none; /* Sin borde */
-}
+/* .dropdown-menu {
+  background-color: var(--gh-theme-800); 
+  border: none; 
+} */
 
-.dropdown-item {
+/* .dropdown-item {
   transition: background-color 0.3s;
-}
+} */
 
-.dropdown-item:hover {
-  background-color: var(--gh-theme-150); /* Color al pasar el mouse */
-  color: var(--gh-theme-900); /* Color del texto al pasar el mouse */
-}
+/* .dropdown-item:hover {
+  background-color: var(--gh-theme-150); 
+  color: var(--gh-theme-900); 
+} */
 
 /* Media Queries para dispositivos móviles */
 @media (max-width: 768px) {
