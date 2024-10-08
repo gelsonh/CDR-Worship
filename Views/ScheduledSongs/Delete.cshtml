@@ -1,19 +1,43 @@
 ﻿@model CDR_Worship.Models.ScheduledSong
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Programación";
 }
 
+<div class="section-page py-5">
+    <div class="container" style="max-width: 600px; margin: 0 auto;">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-5">
+                <h2 class="text-center text-danger mb-4 fw-bold">Eliminar Programación</h2>
+                <p class="text-center mb-5">¿Estás seguro de que quieres eliminar esta programación?</p>
 
-<div class="container-xxl mt-5">
+                <div class="song-details mb-5">
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <span class="fw-bold">Canción:</span>
+                        <span>@Html.DisplayFor(model => model.Name)</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <span class="fw-bold">Cantante Principal:</span>
+                        <span>@(Model.LeadSinger != null ? Model.LeadSinger.MemberName : "No Asignado")</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-3">
+                        <span class="fw-bold">Fecha:</span>
+                        <span>@Model.StartDate.ToString("MM/dd/yyyy")</span>
+                    </div>
+                </div>
 
-    <h3>Estas seguro que quieres eliminar esta programacion?</h3>
-
-    <hr />
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+                <form asp-action="Delete" class="d-flex justify-content-between">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Volver a la lista</a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -272,6 +272,7 @@ return View(scheduledSong);
             }
 
             var scheduledSong = await _context.ScheduledSongs
+                .Include(s => s.LeadSinger)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (scheduledSong == null)
             {
