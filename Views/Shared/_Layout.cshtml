@@ -110,10 +110,17 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
-                                                style="color: var(--gh-theme-900);">
-                                                <i class="bi bi-gear me-2"></i>Configuración de la Cuenta
-                                            </a>
+                                           @{
+    var isDemoUser = user != null && await UserManager.IsInRoleAsync(user, "DemoUser");
+}
+
+@if (!isDemoUser)
+{
+    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
+        style="color: var(--gh-theme-900);">
+        <i class="bi bi-gear me-2"></i>Configuración de la Cuenta
+    </a>
+}
                                         </li>
                                         <li>
                                             <hr class="dropdown-divider">
