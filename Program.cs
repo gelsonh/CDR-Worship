@@ -28,12 +28,21 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ISongDocumentService, SongDocumentService>();
 builder.Services.AddScoped<IChordDocumentService, ChordDocumentService>();
 builder.Services.AddScoped<IScheduledSongsService, ScheduledSongsService>();
+// builder.Services.AddScoped<ICalendarService, CalendarService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
+// builder.Services.AddScoped<ISmsService, SmsService>();
 
 // Bind the email settings to the EmailSettings object
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("NonDemoUserPolicy", policy =>
+        policy.RequireAssertion(context =>
+            !context.User.IsInRole("DemoUser")));
+});
 
 var app = builder.Build();
 
@@ -53,18 +62,14 @@ else
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
-
-//app.MapControllerRoute(
-//    name: "viewDocument",
-//    pattern: "ChordDocuments/ViewDocument/{id}",
-//    defaults: new { controller = "ChordDocuments", action = "ViewDocument" }
-//);
 
 app.MapControllerRoute(
     name: "default",

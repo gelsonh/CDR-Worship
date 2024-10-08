@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@using Microsoft.AspNetCore.Authorization
+
+@inject IAuthorizationService AuthorizationService
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -110,12 +113,14 @@
                                             <hr class="dropdown-divider">
                                         </li>
                                        <li>
-    @if (!User.IsInRole("DemoUser"))
-    {
-        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" style="color: var(--gh-theme-900);">
-            <i class="bi bi-gear me-2"></i>Configuración de la Cuenta
-        </a>
-    }
+    
+        @if ((await AuthorizationService.AuthorizeAsync(User, "NonDemoUserPolicy")).Succeeded)
+{
+    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" style="color: var(--gh-theme-900);">
+        <i class="bi bi-gear me-2"></i>Configuración de la Cuenta
+    </a>
+}
+    
 </li>
                                         <li>
                                             <hr class="dropdown-divider">
