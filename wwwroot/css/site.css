@@ -69,19 +69,25 @@ a:hover {
   padding: 10px 15px;
   font-weight: 500;
 }
-
-/* Desactivar el efecto hover para los elementos específicos del dropdown y la navegación del usuario */
-.navbar-nav .nav-link,
-.dropdown-menu .dropdown-item,
-.dropdown-header .d-flex {
-  transition: none; /* Desactivar transiciones para asegurar que no haya efectos de hover */
+/* Enlace de navegación por defecto */
+.navbar-nav .nav-link {
+  color: var(--gh-theme-900);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el fondo y el color del texto */
+  padding: 0.5rem 1rem; /* Añadir algo de padding para dar más espacio al enlace */
 }
 
-.navbar-nav .nav-link:hover,
-.dropdown-menu .dropdown-item:hover,
-.dropdown-header .d-flex:hover {
-  background-color: transparent; /* Mantener el fondo transparente */
-  color: inherit; /* Mantener el color original */
+/* Efecto hover moderno para el enlace de navegación */
+.navbar-nav .nav-link:hover {
+  background-color: rgba(
+    0,
+    123,
+    255,
+    0.1
+  ); /* Color de fondo con transparencia */
+  color: var(
+    --gh-theme-600
+  ); /* Cambiar el color del texto para dar un aspecto destacado */
+  border-radius: 8px; /* Bordes redondeados para dar un aspecto suave al hover */
 }
 
 .navbar {

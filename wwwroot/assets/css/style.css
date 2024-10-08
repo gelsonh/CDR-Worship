@@ -19,7 +19,7 @@
   --gh-theme-500: hsla(0, 100%, 50%, 1); /* Rojo oscuro */
   --gh-theme-600: hsla(210, 100%, 60%, 1); /* Azul oscuro */
   --gh-theme-700: hsla(120, 100%, 50%, 1); /* Verde */
-  --gh-theme-800: rgba(250, 250, 250, 0.8); /* Fondo claro */
+  --gh-theme-800: rgba(154, 150, 150, 0.8); /* Fondo claro */
   --gh-theme-900: var(--gh-dark-color); /* Texto oscuro */
 
   /* text style */
@@ -59,26 +59,60 @@ h1,
   letter-spacing: 0.1rem;
 }
 
+/* Estilo general para los botones con clase 'btn-color' */
 .btn-color {
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1.25rem; /* Padding uniforme */
+  font-size: 0.875rem; /* Tamaño de fuente */
+  font-weight: 500; /* Peso del texto moderado */
+  border-radius: 1.5rem; /* Bordes redondeados */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease; /* Transiciones suaves */
+}
+
+/* Estilo para botones de acción primaria */
+.btn-primary {
   background-color: var(--gh-theme-300); /* Azul */
-  border-color: var(--gh-theme-300); /* Azul */
-  color: var(--gh-theme-800); /* Fondo claro */
-  transition: background-color 0.3s ease, border-color 0.3s ease,
-    color 0.3s ease;
+  border: none; /* Sin borde */
+  color: #fff; /* Texto blanco */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-.btn-color:hover {
-  background-color: var(--gh-theme-600); /* Azul oscuro */
-  border-color: var(--gh-theme-600); /* Azul oscuro */
-  color: var(--gh-theme-700); /* Verde */
+.btn-primary:hover {
+  background-color: var(--gh-theme-600); /* Azul oscuro en hover */
+  color: #fff; /* Mantener texto blanco */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más fuerte al hacer hover */
+  transform: translateY(-3px); /* Elevación sutil al hacer hover */
 }
 
-.btn-color:active {
-  background-color: var(--gh-theme-600); /* Azul oscuro */
-  border-color: var(--gh-theme-600); /* Azul oscuro */
-  color: var(--gh-theme-300); /* Azul */
+/* Estilo para botones de acción de peligro */
+.btn-danger {
+  background-color: var(--gh-blue-red-400); /* Rojo para acciones peligrosas */
+  border: none; /* Sin borde */
+  color: #fff; /* Texto blanco */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.btn-danger:hover {
+  background-color: var(--gh-blue-red-800); /* Rojo más oscuro al hacer hover */
+  color: #fff; /* Mantener texto blanco */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más fuerte al hacer hover */
+  transform: translateY(-3px); /* Elevación sutil al hacer hover */
+}
+
+/* Estilo para botones de acción alternativos */
+.btn-outline-secondary {
+  border: 1px solid var(--gh-theme-300); /* Borde azul claro */
+  color: var(--gh-theme-800); /* Texto oscuro */
+  background-color: transparent; /* Fondo transparente */
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--gh-theme-300); /* Fondo azul claro al hacer hover */
+  border-color: var(--gh-theme-600); /* Borde azul oscuro al hacer hover */
+  color: #fff; /* Texto blanco al hacer hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más fuerte */
+  transform: translateY(-3px); /* Elevación sutil al hacer hover */
 }
 
 @keyframes fadeIn {
@@ -89,124 +123,5 @@ h1,
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-.text-paragraph {
-  font-size: 1em; /* 16px */
-  font-family: "Open Sans", sans-serif;
-}
-
-.main-heading {
-  font-size: 3.375em; /* 54px */
-  letter-spacing: -0.03em;
-}
-
-.sub-heading {
-  font-size: 2.25em; /* 36px */
-}
-
-.italic-heading {
-  font-size: 1.5em; /* 24px */
-  font-style: italic;
-}
-
-.content-container {
-  width: 960px;
-  padding: 5% 12% 10% 10%;
-  background-color: #f4f4f4; /* Color del contenedor */
-  margin: 0 auto;
-  border-right: 1px solid #e4e4e4;
-  border-left: 1px solid #e4e4e4;
-}
-
-.centered-text {
-  text-align: center;
-  margin-bottom: 70px;
-}
-
-.main-heading,
-.sub-heading,
-h3 {
-  margin: 10px 0px;
-  font-family: "Nunito", serif;
-  color: #3d4c5c; /* Color de encabezado */
-}
-
-.text-paragraph:first-of-type:first-letter {
-  font-size: 4em;
-  font-weight: bold;
-  float: left;
-  padding-right: 3px;
-}
-
-.text-paragraph:first-of-type:first-line {
-  line-height: 1;
-}
-
-.content-container > .text-paragraph {
-  padding: 10px 0px 10px 40px;
-}
-
-.blockquote-style {
-  background-color: #eaeaea; /* Fondo del bloque de cita */
-  font-family: "Nunito", serif;
-  font-style: italic;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin: 12px 0 12px 40px;
-  text-align: center;
-}
-
-/* Imagen responsive */
-.responsive-image {
-  max-width: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-.thank-you {
-  margin-top: 80px;
-  text-align: center;
-}
-
-/* .dropdown-menu {
-  background-color: var(--gh-theme-800); 
-  border: none; 
-} */
-
-/* .dropdown-item {
-  transition: background-color 0.3s;
-} */
-
-/* .dropdown-item:hover {
-  background-color: var(--gh-theme-150); 
-  color: var(--gh-theme-900); 
-} */
-
-/* Media Queries para dispositivos móviles */
-@media (max-width: 768px) {
-  .main-heading {
-    font-size: 2.5em; /* 40px */
-  }
-  .content-container {
-    width: 425px;
-  }
-  .sub-heading {
-    font-size: 1.75em; /* 28px */
-  }
-  .italic-heading {
-    font-size: 1em; /* 20px */
-  }
-  .content-container {
-    padding: 5% 5% 10% 5%;
-  }
-  .centered-text {
-    margin-bottom: 50px;
-  }
-  .blockquote-style {
-    margin: 12px 0 12px 20px;
   }
 }

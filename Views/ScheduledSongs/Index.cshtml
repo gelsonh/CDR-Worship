@@ -15,39 +15,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
 
-    /* Estilo para los botones */
-    .btn-custom {
-        padding: 0.5rem 1.25rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        border-radius: 1.5rem;
-        transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
-    }
-
-    .btn-primary {
-        background-color: var(--gh-blue-red-500);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-primary:hover {
-        background-color: var(--gh-theme-600);
-        color: #fff;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-danger {
-        background-color: var(--gh-blue-red-400);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-danger:hover {
-        background-color: var(--gh-blue-red-800);
-        color: #fff;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
     /* Estilos adicionales para una tarjeta limpia */
     .card-title {
         font-size: 1.25rem;
@@ -69,7 +36,7 @@
                     <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programacion.</p>
                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                     {
-                        <a asp-action="Create" class="btn btn-color btn-info">Agregar Nueva Programación</a>
+                        <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
                     }
                 </div>
             </div>
@@ -121,16 +88,16 @@
                                 <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
                             </div>
 
-                            <!-- Botones de acciones para roles específicos -->
+                            @* <Botones de acciones para roles específicos *@
                             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
                            User.IsInRole("DemoUser")))
                             {
                                 <div class="d-flex justify-content-center mt-4">
-                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-custom btn-primary me-2"
+                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary me-2"
                                         data-bs-toggle="tooltip" title="Editar">
                                         <i class="bi bi-pencil"></i> Editar
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-custom btn-danger"
+                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger"
                                         data-bs-toggle="tooltip" title="Eliminar">
                                         <i class="bi bi-trash"></i> Eliminar
                                     </a>
@@ -146,7 +113,7 @@
     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
     {
         <div class="text-center my-4">
-            <a asp-action="Create" class="btn btn-color btn-info">Agregar Nueva Programación</a>
+            <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
         </div>
     }
 </div>
