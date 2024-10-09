@@ -4,33 +4,59 @@
     ViewData["Title"] = "Delete";
 }
 
-<div class="section-page py-5">
-    <div class="container" style="max-width: 600px; margin: 0 auto;">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-5">
-                <h2 class="text-center text-danger mb-4 fw-bold">Eliminar Canción</h2>
-                <p class="text-center mb-5">¿Estás seguro de que quieres eliminar esta canción?</p>
 
-                <div class="song-details mb-5">
-                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
-                        <span class="fw-bold">Nombre de la canción:</span>
-                        <span>@Html.DisplayFor(model => model.SongName)</span>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom pb-3">
-                        <span class="fw-bold">Artista/s:</span>
-                        <span>@Html.DisplayFor(model => model.Description)</span>
-                    </div>
+<style>
+    /* Custom Card Styles */
+    .card {
+        border-radius: 1rem;
+        background-color: #ffffff;
+    }
+
+    .card .card-body {
+        padding: 2rem;
+    }
+
+    /* Shadow and Border Radius */
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    .border-0 {
+        border: none;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg border-0 rounded-lg" style="max-width: 600px; width: 100%;">
+        <div class="card-body p-5">
+            <h1 class="text-center text-danger mb-5" style="font-weight: 700; font-size: 1.8rem;">Eliminar Canción</h1>
+            <p class="text-center mb-5">¿Estás seguro de que quieres eliminar esta canción?</p>
+
+            <div class="song-details mb-5">
+
+                <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                    <span class="fw-bold">Canción:</span>
+                    <span>@Html.DisplayFor(model => model.SongName)</span>
                 </div>
-
-                <form asp-action="Delete" class="d-flex justify-content-center">
-                    <input type="hidden" asp-for="Id" />
-                    <button type="submit" class="btn btn-color btn-danger mx-2">Eliminar</button>
-                    <a asp-action="Index" class="btn btn-color btn-outline-secondary">Volver a la lista</a>
-                </form>
+                <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                    <span class="fw-bold">Artista/s:</span>
+                    <span>@Html.DisplayFor(model => model.Description)</span>
+                </div>
             </div>
+
+            <form asp-action="Delete" class="d-flex justify-content-center">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-color btn-danger mx-2">Eliminar</button>
+                <a asp-action="Index" class="btn btn-color btn-outline-secondary">Volver a la lista</a>
+            </form>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @{

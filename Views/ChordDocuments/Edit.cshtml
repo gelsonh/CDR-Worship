@@ -4,42 +4,88 @@
     ViewData["Title"] = "Edit";
 }
 
-<div class="section-page py-5">
-    <div class="container">
-        <div class="card shadow-sm border-0" style="max-width: 600px; margin: 0 auto;">
-            <div class="card-header bg-primary text-white">
-                <h5 class="card-title mb-0 text-center">Edit Document</h5>
-            </div>
-            <div class="card-body p-4">
-                <form asp-action="Edit">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
-                    <input type="hidden" asp-for="Id" />
 
-                    <div class="mb-3">
-                        <label for="SongName" class="form-label fw-bold">Song Name</label>
-                        <input type="text" class="form-control" id="SongName" asp-for="SongName" />
-                        <span asp-validation-for="SongName" class="text-danger"></span>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="Description" class="form-label fw-bold">Artist/s</label>
-                        <input type="text" class="form-control" id="Description" asp-for="Description" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
+<style>
+    /* Custom Card Styles */
+    .card {
+        border-radius: 1rem;
+        background-color: #ffffff;
+    }
 
-                    <div class="mb-3">
-                        <label for="ChordId" class="form-label fw-bold">Chords</label>
-                        <select class="form-select" id="ChordId" asp-for="ChordId" asp-items="@ViewBag.ChordId">
-                            <option value="">Select Chord</option>
-                        </select>
-                    </div>
+    .card .card-body {
+        padding: 2rem;
+    }
 
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-color btn-primary mx-2">Save</button>
-                        <a asp-action="Index" class="btn btn-color btn-outline-secondary">Back to List</a>
-                    </div>
-                </form>
-            </div>
+    /* Form Styles */
+    .form-floating .form-control,
+    .form-floating .form-select {
+        border-radius: 0.5rem;
+    }
+
+    .form-floating label {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    /* Shadow and Border Radius */
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    .border-0 {
+        border: none;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
+    }
+
+    /* Optional: Add custom focus styles */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+</style>
+
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg border-0 rounded-lg" style="max-width: 600px; width: 100%;">
+
+        <div class="card-body p-5">
+            <h1 class="text-center mb-5" style="font-weight: 700; font-size: 1.8rem;">@ViewData["Title"]</h1>
+
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-floating mb-4">
+                    <input type="text" asp-for="SongName" class="form-control rounded-3" id="SongName"
+                        placeholder="Nombre de la Canción" />
+                    <label for="SongName" class="form-label">Nombre de la Canción</label>
+                    <span asp-validation-for="SongName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <input type="text" asp-for="Description" class="form-control rounded-3" id="Description"
+                        placeholder="Artist/s" />
+                    <label for="Description" class="form-label">Artist/s</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <select asp-for="ChordId" class="form-select rounded-3" id="ChordId" asp-items="@ViewBag.ChordId">
+                        <option value="">Select Chord</option>
+                    </select>
+                    <label for="ChordId" class="form-label">Chords</label>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg btn-color mx-2">Save</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg btn-color">Back to List</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
