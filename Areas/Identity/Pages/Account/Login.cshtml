@@ -29,21 +29,62 @@
 </head>
 
 <style>
-    .form-floating>.form-control-plaintext:focus,
-    .form-floating>.form-control-plaintext:not(:placeholder-shown),
-    .form-floating>.form-control:focus,
-    .form-floating>.form-control:not(:placeholder-shown) {
-        padding-top: 2rem;
-        /* Aumentar padding-top para asegurar que el label no cubra el contenido */
-        padding-bottom: 0.625rem;
-        /* Mantener el padding-bottom ajustado */
+    <style>
+
+    /* Custom Card Styles */
+    .card {
+        border-radius: 1rem;
+        background-color: #ffffff;
     }
+
+    .card .card-body {
+        padding: 2rem;
+    }
+
+    .card .card-body h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+    }
+
+    /* Form Styles */
+    .form-floating .form-control {
+        border-radius: 0.5rem;
+    }
+
+    .form-floating label {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+
+
+    /* Shadow and Border Radius */
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    .border-0 {
+        border: none;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
+    }
+
+    /* Optional: Add custom focus styles */
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+</style>
+
 </style>
 
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
 
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card shadow-lg border-0" style="max-width: 400px; width: 100%;">
+        <div class="card shadow-lg border-0 rounded-lg" style="max-width: 400px; width: 100%;">
             <div class="card-body p-5">
                 <h1 class="text-center mb-5" style="font-weight: 700; font-size: 1.8rem;">@ViewData["Title"]</h1>
 
