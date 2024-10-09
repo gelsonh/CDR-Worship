@@ -28,6 +28,18 @@
     @* <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
 </head>
 
+<style>
+    .form-floating>.form-control-plaintext:focus,
+    .form-floating>.form-control-plaintext:not(:placeholder-shown),
+    .form-floating>.form-control:focus,
+    .form-floating>.form-control:not(:placeholder-shown) {
+        padding-top: 2rem;
+        /* Aumentar padding-top para asegurar que el label no cubra el contenido */
+        padding-bottom: 0.625rem;
+        /* Mantener el padding-bottom ajustado */
+    }
+</style>
+
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
 
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -42,14 +54,14 @@
                     <div class="form-floating mb-4">
                         <input asp-for="Input.Email" class="form-control rounded-3" autocomplete="username"
                             aria-required="true" placeholder="nombre@ejemplo.com" />
-                        <label asp-for="Input.Email">Correo Electrónico</label>
+                        <label asp-for="Input.Email" class="form-label">Correo Electrónico</label>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
 
                     <div class="form-floating mb-4">
                         <input asp-for="Input.Password" type="password" class="form-control rounded-3"
                             autocomplete="current-password" aria-required="true" placeholder="contraseña" />
-                        <label asp-for="Input.Password">Contraseña</label>
+                        <label asp-for="Input.Password" class="form-label">Contraseña</label>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
 
