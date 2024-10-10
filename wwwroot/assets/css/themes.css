@@ -5,7 +5,7 @@
   --color-secondary-light: hsla(0, 100%, 90%, 1); /* Rojo claro */
   --color-secondary: hsla(0, 100%, 70%, 1); /* Rojo */
   --color-secondary-dark: hsla(0, 100%, 50%, 1); /* Rojo oscuro */
-  --color-accent: hsla(120, 100%, 50%, 1); /* Verde */
+  --color-accent: hsla(0, 0%, 20%, 1); /* Verde */
   --color-background: hsla(0, 0%, 98%, 1); /* Fondo claro */
   --color-text: hsla(0, 0%, 20%, 1); /* Texto oscuro */
 }
