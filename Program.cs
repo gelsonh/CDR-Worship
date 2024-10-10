@@ -30,7 +30,7 @@ builder.Services.AddScoped<IChordDocumentService, ChordDocumentService>();
 builder.Services.AddScoped<IScheduledSongsService, ScheduledSongsService>();
 // builder.Services.AddScoped<ICalendarService, CalendarService>();
 builder.Services.AddScoped<IEmailSender, EmailService>();
-// builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<ISmsService, SmsService>();
 
 // Bind the email settings to the EmailSettings object
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
