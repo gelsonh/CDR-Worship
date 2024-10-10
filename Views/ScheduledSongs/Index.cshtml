@@ -5,14 +5,19 @@
 }
 
 <style>
-    /* Efecto hover en las tarjetas */
-    .card-hover {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .card {
+        border-radius: 1rem;
+        background-color: #ffffff;
+        transition: transform 0.3s ease;
     }
 
-    .card-hover:hover {
+    .card:hover {
         transform: scale(1.03);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card .card-body {
+        padding: 2rem;
     }
 
     /* Estilos adicionales para una tarjeta limpia */
@@ -22,6 +27,19 @@
 
     .text-muted {
         font-size: 0.875rem;
+    }
+
+    /* Shadow and Border Radius */
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    .border-0 {
+        border: none;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
     }
 </style>
 
@@ -71,7 +89,7 @@
             @foreach (var song in Model)
             {
                 <div class="col-md-4 my-3">
-                    <div class="card card-hover shadow-sm border-0 rounded-lg">
+                    <div class="card shadow-lg border-0 rounded-lg">
                         <div class="card-body bg-light p-4">
                             <!-- Título de la canción -->
                             <h5 class="media-title card-title text-primary border-bottom pb-2 mb-3 fw-bold">@song.Name</h5>

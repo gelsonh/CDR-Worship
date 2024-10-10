@@ -4,39 +4,90 @@
     ViewData["Title"] = "Cerrar sesión";
 }
 
+<style>
+    /* Style for the logout box */
+    .logout-wrapper {
+        background-color: #fff;
+        border-radius: 1rem;
+        padding: 3rem 2rem;
+        box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+    }
+
+    /* Icon style */
+    .logout-icon {
+        color: #dc3545;
+        width: 3rem;
+        height: 3rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    p.lead {
+        font-size: 1.125rem;
+        color: #6c757d;
+    }
+
+    .btn-danger {
+        font-size: 1.125rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    /* Shadow and Border Radius */
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    .border-0 {
+        border: none;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
+    }
+</style>
 
 
 <header>
-    <div class="container mt-5">
-        @{
-            if (User.Identity?.IsAuthenticated ?? false)
-            {
-                @* Alerta roja para advertir al usuario antes de cerrar sesión *@
-                <div class="col-12 text-center my-5">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-x-circle fs-3 me-2" aria-hidden="true"></i>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <div class="logout-wrapper text-center shadow-lg border-0 rounded-lg">
+                <svg class="logout-icon mb-4" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    viewBox="0 0 24 24">
+                    <path d="M15 3H9a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
 
-                        <h4 class="alert-heading">¿Estás seguro que deseas cerrar sesión?</h4>
-                        <p>
-                            Cerrar sesión te desconectará de tu cuenta y ya no podrás acceder a las funciones de la
-                            aplicación hasta que inicies sesión de nuevo.
-                        </p> <br />
-                        @* Formulario para cerrar sesión centrado *@
-                        <div class="d-flex justify-content-center">
-                            <form asp-area="Identity" asp-page="/Account/Logout"
-                                asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                <button type="submit" class="btn btn-color btn-danger">
-                                    <strong>Haz clic aquí para cerrar sesión</strong>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <p>Has cerrado sesión en la aplicación exitosamente.</p>
-            }
+                <h1 class="mb-4">Cerrar sesión</h1>
+                <p class="lead mb-4">
+                    ¿Estás seguro de que deseas salir? <br> Si cierras sesión, deberás iniciar sesión nuevamente para
+                    acceder a tu cuenta.
+                </p>
+
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
+                    method="post">
+                    <button type="submit" class="btn btn-danger btn-lg px-4">
+                        Cerrar sesión
+                    </button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <p class="text-center">Has cerrado sesión exitosamente.</p>
         }
     </div>
 </header>
