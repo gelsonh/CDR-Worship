@@ -76,6 +76,13 @@
                                                         <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
                                                             asp-action="Index">Programación</a>
                                                     </li>
+                                                    @* Solo se muestra si el usuario está autenticado y tiene el rol de Admin o Moderator *@
+@if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+{
+    <li class="nav-item">
+        <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms" asp-action="Index">Mensajes</a>
+    </li>
+}
                                                 </ul>
                     }
                     else
@@ -183,6 +190,8 @@
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <!-- Otros scripts aquí -->
+ <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Table -->
     <script>

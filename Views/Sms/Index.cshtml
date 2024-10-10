@@ -1,40 +1,94 @@
-@* @model CDR_Worship.Models.Sms
+@model CDR_Worship.Models.Sms
 
 @{
-    ViewData["Title"] = "Send SMS";
+    ViewData["Title"] = "Enviar Notificación SMS";
 }
 
-<h2 class="mt-5 mb-5 text-center">Notificaciones</h2>
+<style>
+    /* Custom Card Styles */
+    .card {
+        border-radius: 1rem;
+        background-color: #ffffff;
+    }
 
-<form asp-action="SendSms" method="post">
+    .card .card-body {
+        padding: 2rem;
+    }
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="form-group mb-3">
-                <label for="to" class="">Numero de celular</label>
-                <input type="text" class="form-control" id="to" name="To" asp-for="To" required>
-                <span asp-validation-for="To" class="text-danger"></span>
+    /* Shadow and Border Radius */
+    .shadow-lg {
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    .border-0 {
+        border: none;
+    }
+
+    .rounded-lg {
+        border-radius: 1rem;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Enviar Notificación por SMS</h2>
+
+                    <form asp-action="SendSms" method="post">
+                        <!-- Mensaje -->
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="message" name="Message" asp-for="Message"
+                                placeholder="Escribe tu mensaje aquí" style="height: 150px;" required></textarea>
+                            <label for="message">Mensaje</label>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-color btn-primary btn-lg">Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-4">
-
-
-            <div class="form-group mb-3">
-                <label for="message">Mensaje</label>
-                <textarea class="form-control" id="message" name="Message" asp-for="Message" required></textarea>
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </div>
-    </div>
-</form>
+</div>
 
 @section Scripts {
+
+
+    <!-- Script para mostrar las alertas basadas en TempData -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Verificar si hay un mensaje de éxito
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                        Swal.fire({
+                            icon: 'success',
+                        title: '¡Éxito!',
+                        text: '@TempData["SuccessMessage"]'
+                                    });
+            </text>
+        }
+
+                // Verificar si hay un mensaje de error
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                        Swal.fire({
+                            icon: 'error',
+                        title: 'Error',
+                        text: '@TempData["ErrorMessage"]'
+                                    });
+            </text>
+        }
+                });
+    </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-} *@
+}
