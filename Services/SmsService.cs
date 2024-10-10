@@ -28,7 +28,7 @@ public class SmsService : ISmsService
         foreach (var recipient in _recipients)
         {
             var messageOptions = new CreateMessageOptions(
-                new Twilio.Types.PhoneNumber(recipient))
+                new Twilio.Types.PhoneNumber(recipient.Trim())) 
             {
                 From = new Twilio.Types.PhoneNumber(_fromPhoneNumber),
                 Body = message
