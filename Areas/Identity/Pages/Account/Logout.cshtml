@@ -4,6 +4,29 @@
     ViewData["Title"] = "Cerrar sesión";
 }
 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] CDR Worship</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/style.css" asp-asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/CDR_Worship.styles.css" asp-append-version="true" /> *@
+</head>
+
 <style>
     /* Style for the logout box */
     .logout-wrapper {
@@ -33,16 +56,6 @@
         color: #6c757d;
     }
 
-    .btn-danger {
-        font-size: 1.125rem;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
-
     /* Shadow and Border Radius */
     .shadow-lg {
         box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
@@ -58,8 +71,9 @@
 </style>
 
 
-<header>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
+<body>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
         @if (User.Identity?.IsAuthenticated ?? false)
         {
             <div class="logout-wrapper text-center shadow-lg border-0 rounded-lg">
@@ -79,7 +93,7 @@
 
                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
                     method="post">
-                    <button type="submit" class="btn btn-danger btn-lg px-4">
+                    <button type="submit" class="btn btn-color btn-danger btn-lg px-4">
                         Cerrar sesión
                     </button>
                 </form>
@@ -90,4 +104,22 @@
             <p class="text-center">Has cerrado sesión exitosamente.</p>
         }
     </div>
-</header>
+
+    <!-- Incluir jQuery primero -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Incluir Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- Incluir los plugins de validación después de jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+</body>
+
+</html>
