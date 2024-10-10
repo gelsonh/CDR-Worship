@@ -8,28 +8,31 @@
     .card {
         border-radius: 1rem;
         background-color: #ffffff;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card:hover {
         transform: scale(1.03);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        /* Aumenté la sombra para un efecto más llamativo */
     }
 
     .card .card-body {
         padding: 2rem;
     }
 
-    /* Estilos adicionales para una tarjeta limpia */
     .card-title {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #007bff;
     }
 
     .text-muted {
         font-size: 0.875rem;
+        color: #6c757d;
     }
 
-    /* Shadow and Border Radius */
+
     .shadow-lg {
         box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
     }
@@ -43,7 +46,6 @@
     }
 </style>
 
-
 <div class="container-xxl">
     <div class="row">
         @if (!Model.Any())
@@ -51,7 +53,7 @@
             <div class="col-12 text-center my-5">
                 <div class="alert alert-info">
                     <h4 class="alert-heading">¡No hay Programaciones!</h4>
-                    <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programacion.</p>
+                    <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programación.</p>
                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                     {
                         <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
@@ -62,7 +64,6 @@
         }
         else
         {
-
             <div class="col-12 text-center my-5">
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     <i class="bi bi-exclamation-circle fs-3 me-2" aria-hidden="true"></i>
@@ -72,15 +73,15 @@
                         <strong>Consejos para la práctica:</strong><br />
                     <ul class="list-unstyled">
                         <li>- Debemos practicar y estudiar las canciones en casa.</li>
-                        <li>- Debemos buscar tutoriales para fortalecernos más en los detalles de cada instrumento.</li>
-                        <li>- Debemos siempre estar listos en caso de que una canción se cambie de tono para acomodarla a
-                            nuestras voces.</li>
+                        <li>- Buscar tutoriales para fortalecernos más en los detalles de cada instrumento.</li>
+                        <li>- Siempre estar listos en caso de que una canción se cambie de tono para acomodarla a nuestras
+                            voces.</li>
                     </ul>
-                    <em>Sigamos hacia adelante aumentando cada día más nuestra excelencia para Dios, no solo en la música
-                        sino en todo lo que hagamos.</em>
+                    <em>Sigamos aumentando cada día más nuestra excelencia para Dios, no solo en la música, sino en todo lo
+                        que hagamos.</em>
                     <br /><br />
-                    Gracias mil por el tiempo, dedicación y trabajo que hacen para Dios. Ustedes todos son una gran
-                    bendición para mí y para Casa del Rey.
+                    Gracias mil por el tiempo, dedicación y trabajo que hacen para Dios. Ustedes son una gran bendición para
+                    mí y para Casa del Rey.
                     </p>
 
                 </div>
@@ -91,22 +92,18 @@
                 <div class="col-md-4 my-3">
                     <div class="card shadow-lg border-0 rounded-lg">
                         <div class="card-body bg-light p-4">
-                            <!-- Título de la canción -->
-                            <h5 class="media-title card-title text-primary border-bottom pb-2 mb-3 fw-bold">@song.Name</h5>
+                            <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
 
-                            <!-- Información del cantante -->
                             <div class="d-flex align-items-center mb-2 text-muted">
                                 <i class="bi bi-person me-2 text-primary"></i>
                                 <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
                             </div>
 
-                            <!-- Fecha de inicio -->
                             <div class="d-flex align-items-center text-muted">
                                 <i class="bi bi-calendar3 me-2 text-primary"></i>
                                 <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
                             </div>
 
-                            @* <Botones de acciones para roles específicos *@
                             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
                            User.IsInRole("DemoUser")))
                             {
