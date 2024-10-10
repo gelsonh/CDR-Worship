@@ -48,81 +48,54 @@
 
 <div class="container-xxl">
     <div class="row">
-        @if (!Model.Any())
-        {
-            <div class="col-12 text-center my-5">
-                <div class="alert alert-info">
-                    <h4 class="alert-heading">¡No hay Programaciones!</h4>
-                    <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programación.</p>
-                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
-                    {
-                        <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
-                    }
-                </div>
+
+        <div class="col-12 text-center my-5">
+            <div class="alert alert-info">
+                <h4 class="alert-heading">¡No hay Programaciones!</h4>
+                <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programación.</p>
+                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                {
+                    <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
+                }
             </div>
+        </div>
 
-        }
-        else
+        @foreach (var song in Model)
         {
-            <div class="col-12 text-center my-5">
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-circle fs-3 me-2" aria-hidden="true"></i>
+            <div class="col-md-4 my-3">
+                <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card-body bg-light p-4">
+                        <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
 
-                    <h4 class="alert-heading">¡RECUERDEN!</h4>
-                    <p>
-                        <strong>Consejos para la práctica:</strong><br />
-                    <ul class="list-unstyled">
-                        <li>- Debemos practicar y estudiar las canciones en casa.</li>
-                        <li>- Buscar tutoriales para fortalecernos más en los detalles de cada instrumento.</li>
-                        <li>- Siempre estar listos en caso de que una canción se cambie de tono para acomodarla a nuestras
-                            voces.</li>
-                    </ul>
-                    <em>Sigamos aumentando cada día más nuestra excelencia para Dios, no solo en la música, sino en todo lo
-                        que hagamos.</em>
-                    <br /><br />
-                    Gracias mil por el tiempo, dedicación y trabajo que hacen para Dios. Ustedes son una gran bendición para
-                    mí y para Casa del Rey.
-                    </p>
-
-                </div>
-            </div>
-
-            @foreach (var song in Model)
-            {
-                <div class="col-md-4 my-3">
-                    <div class="card shadow-lg border-0 rounded-lg">
-                        <div class="card-body bg-light p-4">
-                            <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
-
-                            <div class="d-flex align-items-center mb-2 text-muted">
-                                <i class="bi bi-person me-2 text-primary"></i>
-                                <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
-                            </div>
-
-                            <div class="d-flex align-items-center text-muted">
-                                <i class="bi bi-calendar3 me-2 text-primary"></i>
-                                <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
-                            </div>
-
-                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
-                           User.IsInRole("DemoUser")))
-                            {
-                                <div class="d-flex justify-content-center mt-4">
-                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary me-2"
-                                        data-bs-toggle="tooltip" title="Editar">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger"
-                                        data-bs-toggle="tooltip" title="Eliminar">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </a>
-                                </div>
-                            }
+                        <div class="d-flex align-items-center mb-2 text-muted">
+                            <i class="bi bi-person me-2 text-primary"></i>
+                            <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
                         </div>
+
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="bi bi-calendar3 me-2 text-primary"></i>
+                            <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
+                        </div>
+
+                        @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
+                       User.IsInRole("DemoUser")))
+                        {
+                            <div class="d-flex justify-content-center mt-4">
+                                <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary me-2"
+                                    data-bs-toggle="tooltip" title="Editar">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger"
+                                    data-bs-toggle="tooltip" title="Eliminar">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </div>
+                        }
                     </div>
                 </div>
-            }
+            </div>
         }
+
     </div>
 
     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
@@ -133,11 +106,52 @@
     }
 </div>
 
-
+<!-- Modal 3 -->
+<div class="modal fade" id="adviceModal3" tabindex="-1" aria-labelledby="adviceModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adviceModalLabel3">¡RECUERDEN!</h5>
+            </div>
+            <div class="modal-body text-center">
+                <p><strong>Consejos para la práctica:</strong></p>
+                <ul class="list-unstyled">
+                    <li>- Practicar y estudiar las canciones en casa.</li>
+                    <li>- Buscar tutoriales para mejorar en los detalles de cada instrumento.</li>
+                    <li>- Estar listos para cambios de tono en las canciones según las voces.</li>
+                </ul>
+                <p><em>Sigamos creciendo en excelencia para Dios en la música y en todo lo que hagamos.</em></p>
+                <p><strong>Gracias por su dedicación y esfuerzo. Son una gran bendición para Casa del Rey.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-color btn-outline-secondary"
+                    data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+<!-- Advice Modal Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Verificar si el modal ya se ha mostrado usando sessionStorage
+        if (!sessionStorage.getItem('modal3Shown')) {
+            // Agregar un retraso antes de mostrar el modal (3 segundos)
+            setTimeout(function () {
+                var adviceModal3 = new bootstrap.Modal(document.getElementById('adviceModal3'));
+
+                // Mostrar el modal
+                adviceModal3.show();
+
+                // Guardar en sessionStorage que el modal ya se mostró
+                sessionStorage.setItem('modal3Shown', 'true');
+            }, 3000); // 3000 milisegundos = 3 segundos de retraso
+        }
+    });
+</script>
 }

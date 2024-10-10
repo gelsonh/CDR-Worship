@@ -129,12 +129,13 @@
 </div>
 
 
-<!-- Modal (ventana emergente) de consejos para los músicos -->
-<div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalLabel" aria-hidden="true">
+
+<!-- Modal 1 -->
+<div class="modal fade" id="adviceModal1" tabindex="-1" aria-labelledby="adviceModalLabel1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="adviceModalLabel">Consejos para los músicos</h5>
+                <h5 class="modal-title" id="adviceModalLabel1">Consejos para los músicos</h5>
             </div>
             <div class="modal-body">
                 <p>Recuerda practicar las canciones subidas regularmente. Esto te ayudará a estar preparado para las
@@ -148,19 +149,27 @@
     </div>
 </div>
 
-
-
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-<!-- Advice Modal -->
+<!-- Advice Modal Script -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var adviceModal = new bootstrap.Modal(document.getElementById('adviceModal'));
-        adviceModal.show();
+        // Verificar si el modal ya se ha mostrado usando sessionStorage
+        if (!sessionStorage.getItem('modal1Shown')) {
+            // Agregar un retraso antes de mostrar el modal (3 segundos)
+            setTimeout(function () {
+                var adviceModal1 = new bootstrap.Modal(document.getElementById('adviceModal1'));
+
+                // Mostrar el modal
+                adviceModal1.show();
+
+                // Guardar en sessionStorage que el modal ya se mostró
+                sessionStorage.setItem('modal1Shown', 'true');
+            }, 3000); // 3000 milisegundos = 3 segundos de retraso
+        }
     });
 </script>
 }
