@@ -109,3 +109,116 @@ a:hover {
     font-size: 0.8rem; /* Tamaño de h6 */
   }
 }
+
+/* General Dropdown Styles */
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.user-dropdown:hover {
+  background-color: #e6e6e6;
+  transform: scale(1.05);
+}
+
+/* SVG Icon for User Dropdown */
+.user-icon {
+  width: 24px;
+  height: 24px;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.user-dropdown:hover .user-icon {
+  color: #0056b3;
+}
+
+/* Username Style */
+.user-name {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  background: linear-gradient(90deg, #007bff, #00bfff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background 0.3s ease;
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+  border-radius: 0.75rem;
+  background-color: #f9f9f9;
+  border: none;
+  padding: 1rem;
+  min-width: 250px;
+  transition: all 0.3s ease;
+}
+
+/* Dropdown Header */
+.dropdown-header {
+  background-color: #e9ecef;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.dropdown-header h5 {
+  color: var(--gh-theme-600);
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  color: var(--gh-theme-900);
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* SVG Icon Inside Dropdown */
+.dropdown-item .bi {
+  font-size: 1.2rem;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.dropdown-item:hover .bi {
+  color: #fff;
+}
+
+/* Divider Style */
+.dropdown-divider {
+  margin: 0.5rem 0;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .user-dropdown {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .user-name {
+    font-size: 0.9rem;
+  }
+
+  .dropdown-menu {
+    padding: 0.75rem;
+    min-width: 200px;
+  }
+}
