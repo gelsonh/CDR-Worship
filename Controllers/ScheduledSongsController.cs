@@ -14,12 +14,16 @@ namespace CDR_Worship.Controllers
         private readonly ISongDocumentService _songDocumentService;
         private readonly IChordDocumentService _chordDocumentService;
 
-        public ScheduledSongsController(ApplicationDbContext context, IScheduledSongsService scheduledSongService, ISongDocumentService songDocumentService, IChordDocumentService chordDocumentService)
+        private readonly ISmsService _smsService;
+
+        public ScheduledSongsController(ApplicationDbContext context, IScheduledSongsService scheduledSongService, ISongDocumentService songDocumentService, IChordDocumentService chordDocumentService, ISmsService smsService)
         {
             _context = context;
             _scheduledSongService = scheduledSongService;
             _songDocumentService = songDocumentService;
             _chordDocumentService = chordDocumentService;
+            _smsService = smsService;
+            
         }
 
 
@@ -132,48 +136,65 @@ namespace CDR_Worship.Controllers
             }
         }
 
-
-        // POST: ScheduledSongs/Create
-        [HttpPost]  
-        [ValidateAntiForgeryToken]   
-        public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId,  BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
+// POST: ScheduledSongs/Create
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId, BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
+{
+    try
+    {
+        if (ModelState.IsValid)
         {
-            try
+            // Guardar el ScheduledSong en la base de datos
+            _context.Add(scheduledSong);
+            await _context.SaveChangesAsync();
+
+            // Contar cuántas programaciones existen
+            var scheduledSongsCount = await _context.ScheduledSongs.CountAsync();
+
+            // Si hay 3 o más programaciones, enviamos el SMS
+            if (scheduledSongsCount >= 3)
             {
-                if (ModelState.IsValid)
-                {
-                    // Procesar archivos adjuntos si es necesario
+                var messageLink = "https://cdr-worship-production.up.railway.app/";
+                var messageBody = $"Las programaciones de canciones están listas. Puedes revisarlas aquí: {messageLink}";
 
-                    // Guardar el ScheduledSong en la base de datos
-                    _context.Add(scheduledSong);
-                    await _context.SaveChangesAsync();
-
-                    // Redirigir a la acción Index o a otra acción según sea necesario
-                    return RedirectToAction("Index");
-                }
-                // Si el modelo no es válido, repoblar los SelectList para los roles de la banda
-                ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
-                ViewBag.BackingVocalists = new SelectList(await _scheduledSongService.GetBackingVocalistsAsync(), "Id", "MemberName");
-                ViewBag.BackingVocalistTwo = new SelectList(await _scheduledSongService.GetBackingVocalistTwoAsync(), "Id", "MemberName");
-
-                ViewBag.LeadGuitarists = new SelectList(await _scheduledSongService.GetLeadGuitaristsAsync(), "Id", "MemberName");
-                ViewBag.SecondGuitarists = new SelectList(await _scheduledSongService.GetSecondGuitaristsAsync(), "Id", "MemberName");
-                ViewBag.Bassists = new SelectList(await _scheduledSongService.GetBassistsAsync(), "Id", "MemberName");
-                ViewBag.Drummers = new SelectList(await _scheduledSongService.GetDrummersAsync(), "Id", "MemberName");
-
-                return View(scheduledSong);
+                // Llamar al servicio de Twilio para enviar el SMS a todos los destinatarios
+                _smsService.SendSms(messageBody);
             }
-            catch (Exception ex)
-            {
-                // Manejar la excepción
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear la canción programada.");
-                Console.WriteLine($"Ocurrió un error: {ex.Message}");
-                // Repoblar los SelectList para los roles de la banda antes de volver a mostrar la vista
-                ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
-                // ... repoblar los demás SelectList ...
-                return View(scheduledSong);
-            }
+
+            // Redirigir a la acción Index
+            return RedirectToAction("Index");
         }
+
+        // Si el modelo no es válido, repoblar los SelectList para los roles de la banda
+        ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
+        ViewBag.BackingVocalists = new SelectList(await _scheduledSongService.GetBackingVocalistsAsync(), "Id", "MemberName");
+        ViewBag.BackingVocalistTwo = new SelectList(await _scheduledSongService.GetBackingVocalistTwoAsync(), "Id", "MemberName");
+        ViewBag.LeadGuitarists = new SelectList(await _scheduledSongService.GetLeadGuitaristsAsync(), "Id", "MemberName");
+        ViewBag.SecondGuitarists = new SelectList(await _scheduledSongService.GetSecondGuitaristsAsync(), "Id", "MemberName");
+        ViewBag.Bassists = new SelectList(await _scheduledSongService.GetBassistsAsync(), "Id", "MemberName");
+        ViewBag.Drummers = new SelectList(await _scheduledSongService.GetDrummersAsync(), "Id", "MemberName");
+
+        return View(scheduledSong);
+    }
+    catch (Exception ex)
+    {
+        // Manejar la excepción
+        ModelState.AddModelError(string.Empty, $"Ocurrió un error al crear la canción programada: {ex.Message}");
+        Console.WriteLine($"Error: {ex}");
+
+        // Repoblar los SelectList para los roles de la banda antes de volver a mostrar la vista
+        ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
+        ViewBag.BackingVocalists = new SelectList(await _scheduledSongService.GetBackingVocalistsAsync(), "Id", "MemberName");
+        ViewBag.BackingVocalistTwo = new SelectList(await _scheduledSongService.GetBackingVocalistTwoAsync(), "Id", "MemberName");
+        ViewBag.LeadGuitarists = new SelectList(await _scheduledSongService.GetLeadGuitaristsAsync(), "Id", "MemberName");
+        ViewBag.SecondGuitarists = new SelectList(await _scheduledSongService.GetSecondGuitaristsAsync(), "Id", "MemberName");
+        ViewBag.Bassists = new SelectList(await _scheduledSongService.GetBassistsAsync(), "Id", "MemberName");
+        ViewBag.Drummers = new SelectList(await _scheduledSongService.GetDrummersAsync(), "Id", "MemberName");
+
+        return View(scheduledSong);
+    }
+}
 
         // GET: ScheduledSongs/Edit/5
         public async Task<IActionResult> Edit(int? id)
