@@ -14,11 +14,11 @@
     .card:hover {
         transform: scale(1.03);
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        /* Aumenté la sombra para un efecto más llamativo */
     }
 
     .card .card-body {
-        padding: 2rem;
+        padding: 1.5rem;
+        /* Ajustar padding para equilibrar el diseño con los botones más pequeños */
     }
 
     .card-title {
@@ -32,70 +32,78 @@
         color: #6c757d;
     }
 
-
-    .shadow-lg {
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-    }
-
-    .border-0 {
-        border: none;
-    }
-
-    .rounded-lg {
-        border-radius: 1rem;
+    .info-section {
+        padding: 20px;
     }
 </style>
 
-<div class="container-xxl">
+
+<div class="container-xxl my-5">
+
+
     <div class="row">
 
-        <div class="col-12 text-center my-5">
-            <div class="alert alert-info">
-                <h4 class="alert-heading">¡No hay Programaciones!</h4>
-                <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programación.</p>
-                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
-                {
-                    <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
-                }
-            </div>
-        </div>
 
-        @foreach (var song in Model)
+
+        @if (!Model.Any())
         {
-            <div class="col-md-4 my-3">
-                <div class="card shadow-lg border-0 rounded-lg">
-                    <div class="card-body bg-light p-4">
-                        <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
-
-                        <div class="d-flex align-items-center mb-2 text-muted">
-                            <i class="bi bi-person me-2 text-primary"></i>
-                            <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
-                        </div>
-
-                        <div class="d-flex align-items-center text-muted">
-                            <i class="bi bi-calendar3 me-2 text-primary"></i>
-                            <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
-                        </div>
-
-                        @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
-                       User.IsInRole("DemoUser")))
-                        {
-                            <div class="d-flex justify-content-center mt-4">
-                                <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary me-2"
-                                    data-bs-toggle="tooltip" title="Editar">
-                                    <i class="bi bi-pencil"></i> Editar
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger"
-                                    data-bs-toggle="tooltip" title="Eliminar">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </a>
-                            </div>
-                        }
-                    </div>
+            <div class="col-12 text-center my-5">
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">¡No hay Programaciones!</h4>
+                    <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programación.</p>
+                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                    {
+                        <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
+                    }
                 </div>
             </div>
         }
+        else
+        {
+            @* Sección de información sobre la tabla *@
+            <div class="info-section mb-5">
+                <h4 class="text-center">Bienvenido a las Programaciones de Canciones</h4>
+                <p class="text-center">
+                    Aquí puedes visualizar todas las programaciones de canciones para los próximos eventos.
+                    Mantente al tanto de las fechas y detalles para estar siempre preparado.
+                </p>
+            </div>
+            @foreach (var song in Model)
+            {
+                <div class="col-md-4 my-3">
+                    <div class="card shadow-lg border-0 rounded-lg">
+                        <div class="card-body bg-light p-4">
+                            <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
 
+                            <div class="d-flex align-items-center mb-2 text-muted">
+                                <i class="bi bi-person me-2 text-primary"></i>
+                                <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
+                            </div>
+
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="bi bi-calendar3 me-2 text-primary"></i>
+                                <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
+                            </div>
+
+                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
+                           User.IsInRole("DemoUser")))
+                            {
+                                <div class="d-flex justify-content-center mt-4">
+                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary btn-sm me-2"
+                                        data-bs-toggle="tooltip" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger btn-sm"
+                                        data-bs-toggle="tooltip" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 
     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
