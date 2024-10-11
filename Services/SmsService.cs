@@ -24,7 +24,7 @@ public class SmsService : ISmsService
     }
 
     // Este método envía el mensaje a todos los números de la lista de Recipients
-   public void SendSms(string message)
+    public void SendSms(string message)
 {
     foreach (var recipient in _recipients)
     {
