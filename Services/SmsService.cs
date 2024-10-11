@@ -3,7 +3,6 @@ using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
 
-
 public class SmsService : ISmsService
 {
     private readonly string? _accountSid;
@@ -25,9 +24,11 @@ public class SmsService : ISmsService
     }
 
     // Este método envía el mensaje a todos los números de la lista de Recipients
-    public void SendSms(string message)
+   public void SendSms(string message)
+{
+    foreach (var recipient in _recipients)
     {
-        foreach (var recipient in _recipients)
+        try
         {
             var messageOptions = new CreateMessageOptions(
                 new Twilio.Types.PhoneNumber(recipient.Trim())) 
@@ -39,7 +40,12 @@ public class SmsService : ISmsService
             var msg = MessageResource.Create(messageOptions);
             Console.WriteLine($"Message sent to {recipient}: {msg.Sid}");
         }
+        catch (Exception ex)
+        {
+            // Manejar error y registrar detalles para seguimiento
+            Console.WriteLine($"Failed to send message to {recipient}: {ex.Message}");
+        }
     }
-
+}
    
 }
