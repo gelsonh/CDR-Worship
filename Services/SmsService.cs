@@ -7,6 +7,7 @@ public class SmsService : ISmsService
 {
     private readonly string? _accountSid;
     private readonly string? _authToken;
+    private readonly string? _apiKey;  // Nueva variable para la API Key
     private readonly string? _fromPhoneNumber;
     private readonly List<string> _recipients;
 
@@ -14,38 +15,43 @@ public class SmsService : ISmsService
     {
         _accountSid = configuration["Twilio:AccountSid"];
         _authToken = configuration["Twilio:AuthToken"];
+        _apiKey = configuration["Twilio:ApiKey"];  // Asignar la API Key desde la configuración
         _fromPhoneNumber = configuration["Twilio:PhoneNumber"];
         
         // Obtener los destinatarios de la configuración
         _recipients = configuration.GetSection("Twilio:Recipients").Get<List<string>>() ?? new List<string>();
 
-        // Inicializar el cliente de Twilio
+        if (string.IsNullOrEmpty(_accountSid) || string.IsNullOrEmpty(_authToken) || string.IsNullOrEmpty(_apiKey))
+        {
+            throw new InvalidOperationException("Twilio credentials are not configured properly.");
+        }
+
+        // Inicializar Twilio con AccountSid y AuthToken o API Key
         TwilioClient.Init(_accountSid, _authToken);
     }
 
     // Este método envía el mensaje a todos los números de la lista de Recipients
     public void SendSms(string message)
-{
-    foreach (var recipient in _recipients)
     {
-        try
+        foreach (var recipient in _recipients)
         {
-            var messageOptions = new CreateMessageOptions(
-                new Twilio.Types.PhoneNumber(recipient.Trim())) 
+            try
             {
-                From = new Twilio.Types.PhoneNumber(_fromPhoneNumber),
-                Body = message
-            };
+                var messageOptions = new CreateMessageOptions(
+                    new Twilio.Types.PhoneNumber(recipient.Trim())) 
+                {
+                    From = new Twilio.Types.PhoneNumber(_fromPhoneNumber),
+                    Body = message
+                };
 
-            var msg = MessageResource.Create(messageOptions);
-            Console.WriteLine($"Message sent to {recipient}: {msg.Sid}");
-        }
-        catch (Exception ex)
-        {
-            // Manejar error y registrar detalles para seguimiento
-            Console.WriteLine($"Failed to send message to {recipient}: {ex.Message}");
+                var msg = MessageResource.Create(messageOptions);
+                Console.WriteLine($"Message sent to {recipient}: {msg.Sid}");
+            }
+            catch (Exception ex)
+            {
+                // Manejar error y registrar detalles para seguimiento
+                Console.WriteLine($"Failed to send message to {recipient}: {ex.Message}");
+            }
         }
     }
-}
-   
 }
