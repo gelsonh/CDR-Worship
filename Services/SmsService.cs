@@ -2,32 +2,29 @@ using CDR_Worship.Services.Interfaces;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
-
 public class SmsService : ISmsService
 {
-    private readonly string? _accountSid;
-    private readonly string? _authToken;
-    private readonly string? _apiKey;  // Nueva variable para la API Key
     private readonly string? _fromPhoneNumber;
     private readonly List<string> _recipients;
 
-    public SmsService(IConfiguration configuration)
+    public SmsService()
     {
-        _accountSid = configuration["Twilio:AccountSid"];
-        _authToken = configuration["Twilio:AuthToken"];
-        _apiKey = configuration["Twilio:ApiKey"];  // Asignar la API Key desde la configuración
-        _fromPhoneNumber = configuration["Twilio:PhoneNumber"];
-        
-        // Obtener los destinatarios de la configuración
-        _recipients = configuration.GetSection("Twilio:Recipients").Get<List<string>>() ?? new List<string>();
+        // Leer las credenciales de Twilio desde variables de entorno
+        var accountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+        var authToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+        _fromPhoneNumber = Environment.GetEnvironmentVariable("TWILIO_PHONE_NUMBER");
 
-        if (string.IsNullOrEmpty(_accountSid) || string.IsNullOrEmpty(_authToken) || string.IsNullOrEmpty(_apiKey))
+        // Inicializar Twilio
+        if (string.IsNullOrEmpty(accountSid) || string.IsNullOrEmpty(authToken) || string.IsNullOrEmpty(_fromPhoneNumber))
         {
             throw new InvalidOperationException("Twilio credentials are not configured properly.");
         }
 
-        // Inicializar Twilio con AccountSid y AuthToken o API Key
-        TwilioClient.Init(_accountSid, _authToken);
+        TwilioClient.Init(accountSid, authToken);
+
+        // Obtener los destinatarios desde las variables de entorno o configurarlos aquí manualmente
+        var recipientsEnv = Environment.GetEnvironmentVariable("TWILIO_RECIPIENTS");
+        _recipients = recipientsEnv?.Split(',').ToList() ?? new List<string>();
     }
 
     // Este método envía el mensaje a todos los números de la lista de Recipients
@@ -38,7 +35,7 @@ public class SmsService : ISmsService
             try
             {
                 var messageOptions = new CreateMessageOptions(
-                    new Twilio.Types.PhoneNumber(recipient.Trim())) 
+                    new Twilio.Types.PhoneNumber(recipient.Trim()))
                 {
                     From = new Twilio.Types.PhoneNumber(_fromPhoneNumber),
                     Body = message
