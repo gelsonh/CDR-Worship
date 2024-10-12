@@ -61,10 +61,10 @@
                 @Html.DisplayFor(modelItem => item.FileType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Song.Description)
+                @Html.DisplayFor(modelItem => item.Song!.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser.Id)
+                @Html.DisplayFor(modelItem => item.AppUser!.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FileName)
