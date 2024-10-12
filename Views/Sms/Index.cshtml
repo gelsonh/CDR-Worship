@@ -28,6 +28,18 @@
     .rounded-lg {
         border-radius: 1rem;
     }
+
+
+    /* Form Styles */
+    .form-floating .form-control,
+    .form-floating .form-select {
+        border-radius: 0.5rem;
+    }
+
+    .form-floating label {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
 </style>
 
 <div class="container my-5">
@@ -41,8 +53,8 @@
                         <!-- Mensaje -->
                         <div class="form-floating mb-3">
                             <textarea class="form-control" id="message" name="Message" asp-for="Message"
-                                placeholder="Escribe tu mensaje aquí" style="height: 150px;" required></textarea>
-                            <label for="message">Mensaje</label>
+                                style="height: 150px;" required></textarea>
+                            <label for="message">Escribe tu mensaje aquí</label>
                             <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
 
@@ -71,7 +83,7 @@
                             icon: 'success',
                         title: '¡Éxito!',
                         text: '@TempData["SuccessMessage"]'
-                                    });
+                                                                                                                                                    });
             </text>
         }
 
@@ -83,10 +95,10 @@
                             icon: 'error',
                         title: 'Error',
                         text: '@TempData["ErrorMessage"]'
-                                    });
+                                                                                                                                                    });
             </text>
         }
-                });
+                                                                        });
     </script>
 
     @{
