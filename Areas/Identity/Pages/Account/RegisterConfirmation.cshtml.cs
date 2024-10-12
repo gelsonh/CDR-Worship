@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using CDR_Worship.Models;
 using Microsoft.AspNetCore.Identity;
