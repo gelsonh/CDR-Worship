@@ -28,56 +28,52 @@
 </head>
 
 <style>
-    /* Style for the logout box */
+    /* Wrapper for the logout box */
     .logout-wrapper {
-        background-color: #fff;
-        border-radius: 1rem;
-        padding: 3rem 2rem;
-        box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.1);
-        max-width: 600px;
+        padding: 2.5rem 1.5rem;
+        max-width: 550px;
         width: 100%;
+        transition: all 0.3s ease;
     }
 
     /* Icon style */
     .logout-icon {
-        color: #dc3545;
-        width: 3rem;
-        height: 3rem;
+        color: #e74c3c;
+        width: 3.5rem;
+        height: 3.5rem;
     }
 
-    h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #343a40;
+    .logout-wrapper h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
     }
 
-    p.lead {
-        font-size: 1.125rem;
+    .logout-wrapper p.lead {
+        font-size: 1.1rem;
         color: #6c757d;
+        margin-bottom: 1.5rem;
     }
 
-    /* Shadow and Border Radius */
-    .shadow-lg {
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    /* Button style */
+    .logout-wrapper button {
+        border-radius: 50px;
+        font-size: 1rem;
+        padding: 0.75rem 2.5rem;
+        transition: all 0.3s ease;
     }
 
-    .border-0 {
-        border: none;
-    }
-
-    .rounded-lg {
-        border-radius: 1rem;
+    .logout-wrapper button:hover {
+        background-color: #c0392b;
     }
 </style>
 
-
 <body>
-
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         @if (User.Identity?.IsAuthenticated ?? false)
         {
-            <div class="logout-wrapper text-center shadow-lg border-0 rounded-lg">
-                <svg class="logout-icon mb-4" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"
+            <div class="logout-wrapper text-center box-shadow">
+                <svg class="logout-icon mb-3" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     viewBox="0 0 24 24">
                     <path d="M15 3H9a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"></path>
@@ -85,17 +81,14 @@
                     <line x1="15" y1="12" x2="3" y2="12"></line>
                 </svg>
 
-                <h1 class="mb-4">Cerrar sesión</h1>
-                <p class="lead mb-4">
-                    ¿Estás seguro de que deseas salir? <br> Si cierras sesión, deberás iniciar sesión nuevamente para
-                    acceder a tu cuenta.
+                <h1 class="mb-3">Cerrar sesión</h1>
+                <p class="lead">
+                    ¿Seguro que deseas cerrar sesión? <br> Tendrás que iniciar sesión nuevamente para acceder a tu cuenta.
                 </p>
 
                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })"
                     method="post">
-                    <button type="submit" class="btn btn-color btn-danger btn-lg px-4">
-                        Cerrar sesión
-                    </button>
+                    <button type="submit" class="btn btn-danger btn-lg">Cerrar sesión</button>
                 </form>
             </div>
         }
@@ -104,6 +97,7 @@
             <p class="text-center">Has cerrado sesión exitosamente.</p>
         }
     </div>
+
 
     <!-- Incluir jQuery primero -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
