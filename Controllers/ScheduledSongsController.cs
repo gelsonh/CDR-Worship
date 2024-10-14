@@ -140,24 +140,12 @@ namespace CDR_Worship.Controllers
 // POST: ScheduledSongs/Create
 [HttpPost]
 [ValidateAntiForgeryToken]
-public async Task<IActionResult> Create(IFormFile FormFile, [Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId, BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
+public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId, BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
 {
     try
     {
         if (ModelState.IsValid)
         {
-            // Procesar el archivo adjunto si se envía uno
-            if (FormFile != null && FormFile.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await FormFile.CopyToAsync(memoryStream);
-                    scheduledSong.FileData = memoryStream.ToArray();  // Guardar los bytes del archivo
-                    scheduledSong.FileName = FormFile.FileName;  // Guardar el nombre del archivo
-                    scheduledSong.FileType = FormFile.ContentType;  // Guardar el tipo MIME del archivo
-                }
-            }
-
             // Guardar el ScheduledSong en la base de datos
             _context.Add(scheduledSong);
             await _context.SaveChangesAsync();

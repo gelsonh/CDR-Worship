@@ -44,31 +44,37 @@
             @foreach (var song in Model)
             {
                 <div class="col-md-4 my-3">
-                    <div class="card box-shadow">
-                        <div class="card-body bg-light p-4">
-                            <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
+                    <div class="card box-shadow h-100">
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="card-title text-center mb-3">@song.Name</h5>
 
-                            <div class="d-flex align-items-center mb-2 text-muted">
-                                <i class="bi bi-person me-2 text-primary"></i>
-                                <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
-                            </div>
+                                <div class="d-flex align-items-center justify-content-between text-muted mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person me-2 text-primary"></i>
+                                        <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
+                                    </div>
+                                </div>
 
-                            <div class="d-flex align-items-center text-muted">
-                                <i class="bi bi-calendar3 me-2 text-primary"></i>
-                                <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
+                                <div class="d-flex align-items-center justify-content-between text-muted">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-calendar3 me-2 text-primary"></i>
+                                        <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
+                                    </div>
+                                </div>
                             </div>
 
                             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
                            User.IsInRole("DemoUser")))
                             {
-                                <div class="d-flex justify-content-center mt-4">
+                                <div class="d-flex justify-content-around mt-4">
                                     <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary btn-sm me-2"
                                         data-bs-toggle="tooltip" title="Editar">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-pencil"></i> Editar
                                     </a>
                                     <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger btn-sm"
                                         data-bs-toggle="tooltip" title="Eliminar">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash"></i> Eliminar
                                     </a>
                                 </div>
                             }

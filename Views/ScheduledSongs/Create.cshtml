@@ -6,14 +6,14 @@
 
 
 <div class="container-xxl my-5 d-flex justify-content-center">
-    <div class="card box-shadow w-50 mx-auto"> <!-- w-75 hace la tarjeta más ancha -->
+    <div class="card box-shadow w-50 mx-auto">
         <div class="card-body">
             <h1 class="card-title text-center">Crear Nueva Lista</h1>
             <hr />
 
             <div class="justify-content-center">
 
-                <form asp-action="Create" asp-controller="ScheduledSongs" method="post">
+                <form asp-action="Create" asp-controller="ScheduledSongs" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Description" />
 
