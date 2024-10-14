@@ -20,13 +20,13 @@
     <div class="row">
         @if (!Model.Any())
         {
+            @* No Hay Listas *@
             <div class="col-12 text-center my-5">
-                <div class="col-6 mx-auto box-shadow p-4">
+                <div class="no-lista-container box-shadow p-4 mx-auto">
                     <h5 class="mb-3">No hay lista disponibles</h5>
-                    @* <p class="mb-4">Actualmente no hay programaciones disponibles.</p> *@
                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                     {
-                        <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añade Nueva Lista</a>
+                        <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añadir Nueva Lista</a>
                     }
                 </div>
             </div>
@@ -92,6 +92,7 @@
         </div>
     }
 </div>
+
 
 <!-- Modal 3 -->
 <div class="modal fade" id="adviceModal3" tabindex="-1" aria-labelledby="adviceModalLabel3" aria-hidden="true">

@@ -219,3 +219,45 @@ a:hover {
     min-width: 200px;
   }
 }
+
+/* Lista */
+
+.no-lista-container {
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Media queries for responsive adjustments */
+@media (max-width: 767.98px) {
+  .no-lista-container {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .no-lista-container {
+    max-width: 80%;
+  }
+}
+
+/* Create List Responsive */
+
+/* Ajuste de la tarjeta para pantallas pequeñas */
+.responsive-card {
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Ajuste para pantallas medianas */
+@media (min-width: 768px) {
+  .responsive-card {
+    max-width: 600px;
+  }
+}
+
+/* Ajuste para pantallas grandes */
+@media (min-width: 992px) {
+  .responsive-card {
+    max-width: 50%;
+  }
+}

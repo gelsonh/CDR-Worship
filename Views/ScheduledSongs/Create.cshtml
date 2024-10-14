@@ -6,13 +6,12 @@
 
 
 <div class="container-xxl my-5 d-flex justify-content-center">
-    <div class="card box-shadow w-50 mx-auto">
+    <div class="card box-shadow mx-auto responsive-card">
         <div class="card-body">
             <h1 class="card-title text-center">Crear Nueva Lista</h1>
             <hr />
 
             <div class="justify-content-center">
-
                 <form asp-action="Create" asp-controller="ScheduledSongs" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Description" />
@@ -41,11 +40,12 @@
                         <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver a la Lista</a>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 @section Scripts {
