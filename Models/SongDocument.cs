@@ -44,23 +44,18 @@ namespace CDR_Worship.Models
             }
         }
 
-        public byte[]? File { get; set; }
+        public byte[]? FileData { get; set; }  // To store the binary data of the file
+
+        public string? FileName { get; set; }  // To store the name of the file
+
+        public string? FileType { get; set; }  // To store the MIME type of the file
+
 
         public int ChordDocumentId { get; set; }
 
 
-        // Navigation properties
-     
-        //public virtual ChordDocument? ChordDocument { get; set; }
-
-        // Collections
-
-        //public virtual ICollection<SongHistory> History { get; set; } = new HashSet<SongHistory>();q
-        //public virtual ICollection<SongComment> Comments { get; set; } = new HashSet<SongComment>();
         public virtual ICollection<SongAttachment> SongAttachments { get; set; } = new HashSet<SongAttachment>();
-        public virtual ICollection<ChordAttachment> ChordAttachments { get; set; } = new HashSet<ChordAttachment>();
-
-
+       
 
     }
 }

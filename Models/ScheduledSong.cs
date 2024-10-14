@@ -51,7 +51,9 @@ namespace CDR_Worship.Models
     set => _updated = value.HasValue ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc) : (DateTime?)null;
 }
 
-
+public byte[]? FileData { get; set; }
+public string? FileName { get; set; }
+public string? FileType { get; set; }
 
 
         public int? ChordId { get; set; }

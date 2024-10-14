@@ -44,10 +44,10 @@ namespace CDR_Worship.Models
         // Navigation properties
         public virtual SongDocument? Song { get; set; }
         public virtual AppUser? AppUser { get; set; }
-        public string? FileName { get; internal set; }
-        public string? FileContentType { get; internal set; }
+         public string? FileName { get; set; }
+           public string? FileContentType { get; set; }
 
-        public byte[]? File { get; set; }
+       
 
 
     }
