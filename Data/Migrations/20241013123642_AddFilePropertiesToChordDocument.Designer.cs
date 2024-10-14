@@ -3,6 +3,7 @@ using System;
 using CDR_Worship.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CDR_Worship.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241013123642_AddFilePropertiesToChordDocument")]
+    partial class AddFilePropertiesToChordDocument
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,6 +141,9 @@ namespace CDR_Worship.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("File")
+                        .HasColumnType("bytea");
+
                     b.Property<string>("FileContentType")
                         .HasColumnType("text");
 
@@ -153,11 +159,16 @@ namespace CDR_Worship.Migrations
                     b.Property<string>("MusicName")
                         .HasColumnType("text");
 
+                    b.Property<int?>("SongDocumentId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("ChordDocumentId");
+
+                    b.HasIndex("SongDocumentId");
 
                     b.ToTable("ChordAttachments");
                 });
@@ -180,13 +191,13 @@ namespace CDR_Worship.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("File")
+                        .HasColumnType("bytea");
+
                     b.Property<byte[]>("FileData")
                         .HasColumnType("bytea");
 
                     b.Property<string>("FileName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FileType")
                         .HasColumnType("text");
 
                     b.Property<int?>("ScheduledSongId")
@@ -281,15 +292,6 @@ namespace CDR_Worship.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<byte[]>("FileData")
-                        .HasColumnType("bytea");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FileType")
-                        .HasColumnType("text");
-
                     b.Property<int?>("LeadGuitaristId")
                         .HasColumnType("integer");
 
@@ -368,11 +370,17 @@ namespace CDR_Worship.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("text");
 
+                    b.Property<int?>("ChordDocumentId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("bytea");
 
                     b.Property<string>("FileContentType")
                         .HasColumnType("text");
@@ -395,6 +403,8 @@ namespace CDR_Worship.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("ChordDocumentId");
 
                     b.HasIndex("SongDocumentId");
 
@@ -419,14 +429,8 @@ namespace CDR_Worship.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("FileData")
+                    b.Property<byte[]>("File")
                         .HasColumnType("bytea");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FileType")
-                        .HasColumnType("text");
 
                     b.Property<int?>("ScheduledSongId")
                         .HasColumnType("integer");
@@ -589,6 +593,10 @@ namespace CDR_Worship.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CDR_Worship.Models.SongDocument", null)
+                        .WithMany("ChordAttachments")
+                        .HasForeignKey("SongDocumentId");
+
                     b.Navigation("AppUser");
 
                     b.Navigation("ChordDocument");
@@ -672,6 +680,10 @@ namespace CDR_Worship.Migrations
                         .WithMany()
                         .HasForeignKey("AppUserId");
 
+                    b.HasOne("CDR_Worship.Models.ChordDocument", null)
+                        .WithMany("SongAttachments")
+                        .HasForeignKey("ChordDocumentId");
+
                     b.HasOne("CDR_Worship.Models.SongDocument", "Song")
                         .WithMany("SongAttachments")
                         .HasForeignKey("SongDocumentId")
@@ -744,6 +756,8 @@ namespace CDR_Worship.Migrations
             modelBuilder.Entity("CDR_Worship.Models.ChordDocument", b =>
                 {
                     b.Navigation("ChordAttachments");
+
+                    b.Navigation("SongAttachments");
                 });
 
             modelBuilder.Entity("CDR_Worship.Models.ScheduledSong", b =>
@@ -755,6 +769,8 @@ namespace CDR_Worship.Migrations
 
             modelBuilder.Entity("CDR_Worship.Models.SongDocument", b =>
                 {
+                    b.Navigation("ChordAttachments");
+
                     b.Navigation("SongAttachments");
                 });
 #pragma warning restore 612, 618
