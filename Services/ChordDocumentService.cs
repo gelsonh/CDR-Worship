@@ -55,36 +55,52 @@ namespace CDR_Worship.Services
     }
 }
       
-        public async Task AddChordAttachmentAsync(ChordAttachment? ChordAttachment)
+       public async Task AddChordAttachmentAsync(ChordAttachment? chordAttachment)
+    {
+        try
         {
-            try
-            {
-                await _context.AddAsync(ChordAttachment!);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error adding ChordAttachment", ex);
-            }
+            await _context.AddAsync(chordAttachment!);
+            await _context.SaveChangesAsync();
         }
-
-        public async Task<ChordAttachment?> GetChordAttachmentByIdAsync(int? chordAttachmentId)
+        catch (Exception ex)
         {
-            try
-            {
-                ChordAttachment? chordAttachment = await _context.ChordAttachments
-                    .Include(ca => ca.ChordDocument) // Incluir datos del documento de acorde asociado
-                    .Include(ca => ca.AppUser)
-                    .FirstOrDefaultAsync(c => c.Id == chordAttachmentId);
-
-                return chordAttachment;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error getting ChordAttachment", ex);
-            }
+            throw new Exception("Error adding ChordAttachment", ex);
         }
+    }
 
+    public async Task<ChordAttachment?> GetChordAttachmentByIdAsync(int? chordAttachmentId)
+    {
+        try
+        {
+            ChordAttachment? chordAttachment = await _context.ChordAttachments
+                .Include(ca => ca.ChordDocument) // Include related ChordDocument data
+                .Include(ca => ca.AppUser)      // Include related AppUser data
+                .FirstOrDefaultAsync(c => c.Id == chordAttachmentId);
+
+            return chordAttachment;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error getting ChordAttachment", ex);
+        }
+    }
+
+    // Method to get the ChordDocument by its Id and retrieve the file data
+    public async Task<ChordDocument?> GetChordDocumentByIdAsync(int chordDocumentId)
+    {
+        try
+        {
+            ChordDocument? chordDocument = await _context.ChordDocuments
+                .Include(cd => cd.ChordAttachments) // Include attachments
+                .FirstOrDefaultAsync(cd => cd.Id == chordDocumentId);
+
+            return chordDocument;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error retrieving ChordDocument", ex);
+        }
+    }
 
         public async Task<ChordDocument?> GetChordDocumentByIdAsync(int? chordDocumentId)
         {
@@ -141,10 +157,6 @@ namespace CDR_Worship.Services
     }
 }
 
-        public Task<ChordDocument?> GetChordDocumentByIdAsync(int chordDocumentId)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<ChordAttachment?> GetChordAttachmentByIdAsync(int chordAttachmentId)
         {

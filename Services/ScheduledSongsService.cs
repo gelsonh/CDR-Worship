@@ -29,49 +29,46 @@ namespace CDR_Worship.Services
         }
 
 
-        public async Task<byte[]> GetPdfDataByIdAsync(int id, string attachmentType)
+        public async Task<byte[]> GetAttachmentDataByIdAsync(int id, string attachmentType)
+{
+    try
+    {
+        byte[]? attachmentData = null;
+
+        if (attachmentType == "SongAttachment")
         {
-            try
-            {
-                byte[]? attachmentData = null;
+            var songAttachment = await _context.SongAttachments
+                                               .FirstOrDefaultAsync(attachment => attachment.Id == id);
 
-                if (attachmentType == "SongAttachment")
-                {
-                    var songAttachment = await _context.SongAttachments
-                                                       .Where(attachment => attachment.Id == id)
-                                                       .FirstOrDefaultAsync();
+            attachmentData = songAttachment?.FileData;  // Obtener los datos del archivo
+        }
+        else if (attachmentType == "ChordAttachment")
+        {
+            var chordAttachment = await _context.ChordAttachments
+                                                .FirstOrDefaultAsync(attachment => attachment.Id == id);
 
-                    attachmentData = songAttachment?.File;
-                }
-                else if (attachmentType == "ChordAttachment")
-                {
-                    var chordAttachment = await _context.ChordAttachments
-                                                        .Where(attachment => attachment.Id == id)
-                                                        .FirstOrDefaultAsync();
-
-                    attachmentData = chordAttachment?.File;
-                }
-                else
-                {
-                    throw new ArgumentException("Tipo de adjunto no válido.");
-                }
-
-                if (attachmentData != null)
-                {
-                    return attachmentData;
-                }
-                else
-                {
-                    throw new Exception($"No se encontró ningún documento PDF con el ID {id}.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Manejar la excepción según tus necesidades
-                throw new Exception("Error al obtener los datos del PDF por ID.", ex);
-            }
+            attachmentData = chordAttachment?.FileData;  // Obtener los datos del archivo
+        }
+        else
+        {
+            throw new ArgumentException("Tipo de adjunto no válido.");
         }
 
+        if (attachmentData != null && attachmentData.Length > 0)
+        {
+            return attachmentData;
+        }
+        else
+        {
+            throw new Exception($"No se encontró ningún documento con el ID {id}.");
+        }
+    }
+    catch (Exception ex)
+    {
+        // Manejar la excepción según tus necesidades
+        throw new Exception("Error al obtener los datos del archivo por ID.", ex);
+    }
+}
         public async Task<ChordAttachment?> GetChordAttachmentByIdAsync(int chordAttachmentId)
         {
 

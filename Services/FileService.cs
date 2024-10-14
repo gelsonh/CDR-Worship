@@ -18,13 +18,8 @@ namespace CDR_Worship.Services
             if ((fileData == null || fileData.Length == 0))
             {
                 switch (fileType)
-                {
-                    // BTUser Image based on the 'DefaultImage' Enum
-                    case DefaultImage.UserImage: return _defaultAppUserImageSrc;
-                    //// Company Image based on the 'DefaultImage' Enum
-                    //case DefaultImage.CompanyImage: return _defaultCompanyImageSrc;
-                    //// Project Image based on the 'DefaultImage' Enum
-                    //case DefaultImage.ProjectImage: return _defaultProjectImageSrc;
+                {               
+                    case DefaultImage.UserImage: return _defaultAppUserImageSrc;  
                 }
             }
 
