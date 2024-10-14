@@ -5,28 +5,6 @@
 }
 
 <style>
-    .card {
-        border-radius: 1rem;
-        background-color: #ffffff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .card .card-body {
-        padding: 1.5rem;
-        /* Ajustar padding para equilibrar el diseño con los botones más pequeños */
-    }
-
-    .card-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #007bff;
-    }
-
     .text-muted {
         font-size: 0.875rem;
         color: #6c757d;
@@ -38,22 +16,17 @@
 </style>
 
 
-<div class="container-xxl my-5">
-
-
+<div class="container my-5">
     <div class="row">
-
-
-
         @if (!Model.Any())
         {
             <div class="col-12 text-center my-5">
-                <div class="alert alert-info">
-                    <h4 class="alert-heading">¡No hay Programaciones!</h4>
-                    <p>Actualmente no hay programaciones disponibles. Puedes agregar una nueva programación.</p>
+                <div class="col-6 mx-auto box-shadow p-4">
+                    <h5 class="mb-3">No hay lista disponibles</h5>
+                    @* <p class="mb-4">Actualmente no hay programaciones disponibles.</p> *@
                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                     {
-                        <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
+                        <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añade Nueva Lista</a>
                     }
                 </div>
             </div>
@@ -62,16 +35,16 @@
         {
             @* Sección de información sobre la tabla *@
             <div class="info-section mb-5">
-                <h4 class="text-center">Bienvenido a las Programaciones de Canciones</h4>
+                <h4 class="text-center">Bienvenido a las Lista de Canciones</h4>
                 <p class="text-center">
-                    Aquí puedes visualizar todas las programaciones de canciones para los próximos eventos.
+                    Aquí puedes visualizar todas las lista de canciones para los próximos eventos.
                     Mantente al tanto de las fechas y detalles para estar siempre preparado.
                 </p>
             </div>
             @foreach (var song in Model)
             {
                 <div class="col-md-4 my-3">
-                    <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card box-shadow">
                         <div class="card-body bg-light p-4">
                             <h5 class="media-title card-title border-bottom pb-2 mb-3">@song.Name</h5>
 

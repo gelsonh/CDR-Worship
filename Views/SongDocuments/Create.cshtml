@@ -5,56 +5,57 @@
 }
 
 
-<div class="section-page py-5">
-    <div class="container mt-5">
-        <!-- <h2 class="text-center mb-4 display-2">Documento para los Vocalistas</h2> -->
 
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card box-shadow">
-                    <div class="card-body">
-                        <form asp-action="Create" asp-controller="SongDocuments" enctype="multipart/form-data"
-                            method="post">
-                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                            <input type="hidden" asp-for="Id" />
-                            <input type="hidden" asp-for="ChordDocumentId" />
-                            <input type="hidden" asp-for="Created" />
-                            <input type="hidden" asp-for="Updated" />
 
-                            <div class="form-group my-3">
-                                <div class="card p-3">
-                                    <h3 class="h5">Subir Archivos</h3>
-                                    <div class="drop_box border border-dotted p-2 text-center">
-                                        <label class="btn btn-primary btn-sm btn-color m-0">
-                                            <input name="FormFile" type="file" class="form-control-file d-none"
-                                                id="fileID" />
-                                            Seleccionar Archivo
-                                        </label>
-                                    </div>
+<div class="container my-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card box-shadow">
+                <div class="card-body">
+                    <form asp-action="Create" asp-controller="SongDocuments" enctype="multipart/form-data"
+                        method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="ChordDocumentId" />
+                        <input type="hidden" asp-for="Created" />
+                        <input type="hidden" asp-for="Updated" />
+
+                        <div class="form-group my-3">
+                            <div class="card p-3">
+                                <h3 class="h5">Subir Archivos</h3>
+                                <div class="drop_box border border-dotted p-2 text-center">
+                                    <label class="btn btn-primary btn-sm btn-color m-0">
+                                        <input name="FormFile" type="file" class="form-control-file d-none" id="fileID"
+                                            onchange="showFileName()" />
+                                        Seleccionar Archivo
+                                    </label>
+                                    <p class="mt-2" id="fileNameText">Ningún archivo seleccionado</p>
                                 </div>
                             </div>
 
-                            <div id="fileNameDisplay" class="mb-3"></div>
+                        </div>
 
-                            <div class="form-group mb-2">
-                                <label asp-for="SongName" class="control-label">Nombre de la Canción</label>
-                                <input asp-for="SongName" class="form-control" />
-                                <span asp-validation-for="SongName" class="text-danger"></span>
-                            </div>
+                        <div id="fileNameDisplay" class="mb-3"></div>
 
-                            <div class="form-group">
-                                <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
-                                <input asp-for="Description" class="form-control" />
-                                <span asp-validation-for="Description" class="text-danger"></span>
-                            </div>
+                        <div class="form-group mb-2">
+                            <label asp-for="SongName" class="control-label">Nombre de la Canción</label>
+                            <input asp-for="SongName" class="form-control" />
+                            <span asp-validation-for="SongName" class="text-danger"></span>
+                        </div>
 
-                            <div class="form-group mt-3">
-                                <button type="submit" class="btn btn-color btn-primary">Crear</button>
-                                <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver a la
-                                    Lista</a>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-color btn-primary">Crear</button>
+                            <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver a la
+                                Lista</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -65,8 +66,19 @@
 
 
 
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
     }
+
+<script>
+    function showFileName() {
+        var input = document.getElementById('fileID');
+        var fileName = input.files.length > 0 ? input.files[0].name : "Ningún archivo seleccionado";
+        document.getElementById('fileNameText').textContent = fileName;
+    }
+</script>
 }

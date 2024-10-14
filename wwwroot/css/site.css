@@ -37,17 +37,12 @@ main > .container {
 }
 
 footer {
-  background-color: var(
-    --gh-theme-100
-  ); /* Cambia esto según tu paleta de colores */
+  background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
 }
 
-.social-links a:hover {
-  color: var(
-    --gh-theme-600
-  ); /* Cambia esto para personalizar el efecto hover */
-  transition: color 0.3s ease;
-}
+/* .social-links a:hover {
+ 
+} */
 
 li {
   list-style: none;
@@ -92,6 +87,7 @@ a:hover {
 
 .navbar {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
 }
 
 .custom-login-partial {

@@ -38,7 +38,8 @@ body {
   font-weight: var(--gh-font-weight);
   line-height: var(--gh-line-height);
   color: var(--gh-dark-color);
-  background-color: var(--gh-background-color); /* Fondo */
+  background-color: var(--gh-background-color); 
+ 
 }
 
 h6,
@@ -151,14 +152,3 @@ h1,
   background-position: right center; /* Desplaza el gradiente a la derecha al hacer hover */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra más fuerte */
 }
-
-/* @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */

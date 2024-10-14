@@ -97,7 +97,8 @@
                                 <td class="text-center">
                                     <a class="text-decoration-none mx-2"
                                         href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })"
-                                        data-toggle="tooltip" title="Ver" target="_blank">
+                                        data-bs-toggle="tooltip" title="Ver" target="_blank" rel="noopener noreferrer"
+                                        aria-label="Ver documento">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <a class="mx-2 text-decoration-none"
@@ -149,6 +150,8 @@
 </div>
 
 @section Scripts {
+
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -169,6 +172,15 @@
                 sessionStorage.setItem('modal1Shown', 'true');
             }, 3000); // 3000 milisegundos = 3 segundos de retraso
         }
+
+    });
+
+</script>
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 </script>
 }

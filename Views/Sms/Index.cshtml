@@ -6,30 +6,7 @@
 }
 
 <style>
-    /* Custom Card Styles */
-    .card {
-        border-radius: 1rem;
-        background-color: #ffffff;
-    }
-
-    .card .card-body {
-        padding: 2rem;
-    }
-
-    /* Shadow and Border Radius */
-    .shadow-lg {
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-    }
-
-    .border-0 {
-        border: none;
-    }
-
-    .rounded-lg {
-        border-radius: 1rem;
-    }
-
-
+  
     /* Form Styles */
     .form-floating .form-control,
     .form-floating .form-select {
@@ -40,12 +17,13 @@
         font-size: 1.1rem;
         color: #6c757d;
     }
+
 </style>
 
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card box-shadow">
                 <div class="card-body p-5">
                     <h2 class="text-center mb-4">Enviar Notificación por SMS</h2>
 
@@ -83,7 +61,7 @@
                             icon: 'success',
                         title: '¡Éxito!',
                         text: '@TempData["SuccessMessage"]'
-                                                                                                                                                    });
+                                                                                                                                                            });
             </text>
         }
 
@@ -95,10 +73,10 @@
                             icon: 'error',
                         title: 'Error',
                         text: '@TempData["ErrorMessage"]'
-                                                                                                                                                    });
+                                                                                                                                                            });
             </text>
         }
-                                                                        });
+                                                                            });
     </script>
 
     @{

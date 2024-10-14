@@ -6,9 +6,9 @@
 
 
 <div class="container-xxl my-5 d-flex justify-content-center">
-    <div class="card box-shadow">
+    <div class="card box-shadow w-50 mx-auto"> <!-- w-75 hace la tarjeta más ancha -->
         <div class="card-body">
-            <h1 class="card-title text-center">Crear Nueva Programación</h1>
+            <h1 class="card-title text-center">Crear Nueva Lista</h1>
             <hr />
 
             <div class="justify-content-center">
@@ -16,7 +16,6 @@
                 <form asp-action="Create" asp-controller="ScheduledSongs" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Description" />
-
 
                     <div class="form-group mt-3">
                         <label asp-for="Name" class="control-label">Nombre de la Canción:</label>
