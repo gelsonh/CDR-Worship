@@ -32,7 +32,7 @@ namespace CDR_Worship.Controllers
         {
             try
             {
-                var pdfData = await _scheduledSongService.GetPdfDataByIdAsync(id, "attachmentType"); // Proporciona un valor para el parámetro attachmentType
+                var pdfData = await _scheduledSongService.GetAttachmentDataByIdAsync(id, "attachmentType"); // Proporciona un valor para el parámetro attachmentType
                 if (pdfData != null)
                 {
                     return File(pdfData, "application/pdf"); // Devuelve el PDF como un archivo para su visualización
@@ -140,34 +140,41 @@ namespace CDR_Worship.Controllers
 // POST: ScheduledSongs/Create
 [HttpPost]
 [ValidateAntiForgeryToken]
-public async Task<IActionResult> Create([Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId, BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
+public async Task<IActionResult> Create(IFormFile FormFile, [Bind("Name, Description, StartDate, EndDate, LeadSingerId, BackingVocalistId, BackingVocalistTwoId, LeadGuitaristId, SecondGuitaristId, BassistId, DrummerId")] ScheduledSong scheduledSong)
 {
     try
     {
         if (ModelState.IsValid)
         {
+            // Procesar el archivo adjunto si se envía uno
+            if (FormFile != null && FormFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await FormFile.CopyToAsync(memoryStream);
+                    scheduledSong.FileData = memoryStream.ToArray();  // Guardar los bytes del archivo
+                    scheduledSong.FileName = FormFile.FileName;  // Guardar el nombre del archivo
+                    scheduledSong.FileType = FormFile.ContentType;  // Guardar el tipo MIME del archivo
+                }
+            }
+
             // Guardar el ScheduledSong en la base de datos
             _context.Add(scheduledSong);
             await _context.SaveChangesAsync();
 
-            // Contar cuántas programaciones existen
+            // Verificar si se necesitan enviar SMS (puedes ajustar la lógica como antes)
             var scheduledSongsCount = await _context.ScheduledSongs.CountAsync();
-
-            // Si hay 3 o más programaciones, enviamos el SMS
             if (scheduledSongsCount >= 3)
             {
                 var messageLink = "https://cdr-worship-production.up.railway.app/";
-                var messageBody = $"Las programaciones de canciones están listas. Puedes revisarlas aquí: {messageLink}";
-
-                // Llamar al servicio de Twilio para enviar el SMS a todos los destinatarios
+                var messageBody = $"🎶 ¡El setlist está listo! 🎶 Puedes revisarlo aquí: {messageLink} 🙌 ¡Dios les bendiga y gracias por su dedicación! 🙏";
                 _smsService.SendSms(messageBody);
             }
 
-            // Redirigir a la acción Index
             return RedirectToAction("Index");
         }
 
-        // Si el modelo no es válido, repoblar los SelectList para los roles de la banda
+        // Volver a cargar la vista con los select lists
         ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
         ViewBag.BackingVocalists = new SelectList(await _scheduledSongService.GetBackingVocalistsAsync(), "Id", "MemberName");
         ViewBag.BackingVocalistTwo = new SelectList(await _scheduledSongService.GetBackingVocalistTwoAsync(), "Id", "MemberName");
@@ -180,11 +187,10 @@ public async Task<IActionResult> Create([Bind("Name, Description, StartDate, End
     }
     catch (Exception ex)
     {
-        // Manejar la excepción
         ModelState.AddModelError(string.Empty, $"Ocurrió un error al crear la canción programada: {ex.Message}");
         Console.WriteLine($"Error: {ex}");
 
-        // Repoblar los SelectList para los roles de la banda antes de volver a mostrar la vista
+        // Recargar la vista con los select lists
         ViewBag.LeadSingers = new SelectList(await _scheduledSongService.GetLeadSingersAsync(), "Id", "MemberName");
         ViewBag.BackingVocalists = new SelectList(await _scheduledSongService.GetBackingVocalistsAsync(), "Id", "MemberName");
         ViewBag.BackingVocalistTwo = new SelectList(await _scheduledSongService.GetBackingVocalistTwoAsync(), "Id", "MemberName");
@@ -196,6 +202,8 @@ public async Task<IActionResult> Create([Bind("Name, Description, StartDate, End
         return View(scheduledSong);
     }
 }
+
+
 
         // GET: ScheduledSongs/Edit/5
         public async Task<IActionResult> Edit(int? id)
