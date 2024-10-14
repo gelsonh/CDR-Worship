@@ -91,6 +91,7 @@ a:hover {
 }
 
 .custom-login-partial {
+  background-color: none;
   box-shadow: none;
 }
 

@@ -3,41 +3,15 @@
 @inject UserManager<AppUser> UserManager
 
 
-<style>
-    .nav-item:not(:last-child) .nav-link::after {
-        content: "";
-        /* Contenido vacío para generar el elemento */
-        border-left: 1px solid #ccc;
-        /* Color y grosor de la línea */
-        height: 20px;
-        /* Altura de la línea */
-        margin-left: 15px;
-        /* Espacio a la izquierda */
-        margin-right: 0px;
-        /* Espacio a la derecha */
-        display: inline-block;
-        /* Asegura que esté en línea */
-        vertical-align: middle;
-        /* Alineación vertical con el texto */
-    }
-</style>
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-login-partial" id="main-navbar">
-    <div class="container-fluid">
 
-        <div class="collapse navbar-collapse" id="navbarNav">
 
-            <ul class="navbar-nav ms-auto">
-
-                <li class="nav-item ">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión /
-                        Demo</a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item ">
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión /
+            Demo</a>
+    </li>
+</ul>
