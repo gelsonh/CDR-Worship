@@ -9,7 +9,7 @@ namespace CDR_Worship.Services.Interfaces
         Task<List<ScheduledSong>> GetAllScheduledSongsAsync();
         Task<List<Member>> AllMembersAsync();
 
-        public Task<byte[]> GetPdfDataByIdAsync(int id, string attachmentType);
+        Task<byte[]> GetAttachmentDataByIdAsync(int id, string attachmentType);
 
         public Task<ChordAttachment?> GetChordAttachmentByIdAsync(int chordAttachmentId);
 
