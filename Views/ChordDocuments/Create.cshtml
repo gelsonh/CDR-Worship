@@ -6,6 +6,55 @@
 }
 
 
+<style>
+    /* Form Styles */
+    .form-floating .form-control,
+    .form-floating .form-select {
+        border-radius: 0.5rem;
+        height: 3.5rem;
+        /* Ajusta la altura del campo para que el label grande se vea mejor */
+    }
+
+    /* Cambiar el estilo del label cuando no está enfocado */
+    .form-floating label {
+        font-size: 1.5rem;
+        /* Tamaño inicial más grande */
+        color: #6c757d;
+        text-align: center;
+        transform-origin: left top;
+        transition: all 0.3s ease;
+    }
+
+    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
+    .form-floating .form-control:focus+label,
+    .form-floating .form-control:not(:placeholder-shown)+label,
+    .form-floating .form-select:focus+label,
+    .form-floating .form-select:not([value=""])+label {
+        font-size: 0.875rem;
+        /* Reducir el tamaño al hacer clic */
+        transform: translateY(-1.5rem);
+        /* Mover hacia arriba */
+        color: #007bff;
+        text-align: left;
+        /* Cambia a alineación izquierda cuando está en la parte superior */
+    }
+
+    /* Estilos para que el label de 'Acordes' esté siempre en la parte superior */
+    .chord-select label {
+        font-size: 0.875rem;
+        transform: translateY(-1.5rem);
+        color: #007bff;
+        text-align: left;
+        /* Aseguramos que esté en la posición superior siempre */
+    }
+
+    /* Agregar estilos para el select cuando está enfocado */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+</style>
 
 <div class="container my-5">
 
@@ -35,29 +84,29 @@
                             </div>
                         </div>
 
-                        <div class="form-group mt-4">
+                        <div class="form-floating mb-3">
+                            <input asp-for="SongName" class="form-control" placeholder=" " />
                             <label asp-for="SongName" class="control-label">Nombre de la Canción</label>
-                            <input asp-for="SongName" class="form-control" />
                             <span asp-validation-for="SongName" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group my-3">
-                            <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
-                            <input asp-for="Description" class="form-control" />
+                        <div class="form-floating mb-3 ">
+                            <input asp-for="Description" class="form-control" placeholder=" " />
+                            <label asp-for="Description" class="control-label">Nombre del Artista o Grupo</label>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="ChordId" class="control-label">Acordes</label>
-                            <select asp-for="ChordId" class="form-control" asp-items="@ViewBag.ChordId">
+                        <div class="form-floating mb-4 chord-select">
+                            <select asp-for="ChordId" class="form-select rounded-3" id="ChordId"
+                                asp-items="@ViewBag.ChordId">
                                 <option value="">Selecciona el Acorde</option>
                             </select>
+                            <label for="ChordId" class="form-label">Acordes</label>
                         </div>
 
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-color btn-primary">Crear</button>
-                            <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver a la
-                                Lista</a>
+                            <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver</a>
                         </div>
                     </form>
                 </div>

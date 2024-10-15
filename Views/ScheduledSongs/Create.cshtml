@@ -5,6 +5,53 @@
 }
 
 
+<style>
+    /* Form Styles */
+    .form-floating .form-control,
+    .form-floating .form-select {
+        border-radius: 0.5rem;
+        height: 3.5rem;
+    }
+
+    /* Estilo inicial del label */
+    .form-floating label {
+        font-size: 1.5rem;
+        color: #6c757d;
+        text-align: center;
+        transform-origin: left top;
+        transition: all 0.3s ease;
+    }
+
+    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
+    .form-floating .form-control:focus+label,
+    .form-floating .form-control:not(:placeholder-shown)+label,
+    .form-floating input[type="date"]:focus+label,
+    .form-floating input[type="date"]:valid+label,
+    .form-floating .form-select:focus+label,
+    .form-floating .form-select:not([value=""])+label {
+        font-size: 0.875rem;
+        transform: translateY(-1.5rem);
+        color: #007bff;
+        text-align: left;
+    }
+
+    /* Estilos específicos para el campo de fecha */
+     .form-floating.date-field label {
+        font-size: 0.875rem;
+        transform: translateY(-1.5rem);
+        color: #007bff;
+        text-align: left;
+        transition: none;
+    } 
+
+    /* Agregar estilos para el input de fecha cuando está enfocado */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+</style>
+
 <div class="container-xxl my-5 d-flex justify-content-center">
     <div class="card box-shadow mx-auto responsive-card">
         <div class="card-body">
@@ -16,28 +63,28 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Description" />
 
-                    <div class="form-group mt-3">
+                    <div class="form-floating mt-3">
+                        <input asp-for="Name" class="form-control" placeholder=" " />
                         <label asp-for="Name" class="control-label">Nombre de la Canción:</label>
-                        <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group mt-3">
-                        <label asp-for="LeadSingerId" class="control-label">Cantante Principal:</label>
-                        <select asp-for="LeadSingerId" class="form-control" asp-items="ViewBag.LeadSingers">
+                    <div class="form-floating mt-3 chord-select">
+                        <select asp-for="LeadSingerId" class="form-select rounded-3" asp-items="ViewBag.LeadSingers">
                             <option value="">Seleccionar Cantante Principal</option>
                         </select>
+                        <label asp-for="LeadSingerId" class="form-label">Cantante Principal:</label>
                     </div>
 
-                    <div class="form-group mt-3">
-                        <label asp-for="StartDate" class="control-label">Fecha:</label>
+                    <div class="form-floating mt-3 date-field">
                         <input asp-for="StartDate" type="date" class="form-control" />
+                        <label asp-for="StartDate" class="control-label">Fecha:</label>
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group mt-3 text-center">
+                    <div class="form-group mt-4 text-center">
                         <button type="submit" class="btn btn-color btn-primary">Crear</button>
-                        <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver a la Lista</a>
+                        <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver</a>
                     </div>
                 </form>
             </div>

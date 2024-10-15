@@ -10,8 +10,10 @@
         color: #6c757d;
     }
 
-    .info-section {
-        padding: 20px;
+    .gradient-icon {
+        background: linear-gradient(90deg, #007bff, #00bfff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 </style>
 
@@ -45,36 +47,38 @@
             {
                 <div class="col-md-4 my-3">
                     <div class="card box-shadow h-100">
-                        <div class="card-body p-4 d-flex flex-column justify-content-between">
-                            <div>
-                                <h5 class="card-title text-center mb-3">@song.Name</h5>
-
-                                <div class="d-flex align-items-center justify-content-between text-muted mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-person me-2 text-primary"></i>
-                                        <span><strong>Cantante:</strong> @song.LeadSinger?.MemberName</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center justify-content-between text-muted">
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-calendar3 me-2 text-primary"></i>
-                                        <span><strong>Fecha:</strong> @song.StartDate.ToString("MM/dd/yyyy")</span>
-                                    </div>
-                                </div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="card-title mb-4"
+                                style="font-size: 1.5rem; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem;">
+                                @song.Name
                             </div>
 
+                            <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
+                                <p class="d-flex align-items-center" style="font-size: 1.2rem;">
+                                    <i class="bi bi-person-fill me-2 gradient-icon" style="font-size: 1.4rem;"></i>
+                                    <strong>Cantante:</strong>
+                                    <span class="ms-2">@song.LeadSinger?.MemberName</span>
+                                </p>
+                            </div>
+
+                            <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
+                                <p class="d-flex align-items-center" style="font-size: 1.2rem;">
+                                    <i class="bi bi-calendar-event-fill me-2 gradient-icon" style="font-size: 1.4rem;"></i>
+                                    <strong>Fecha:</strong>
+                                    <span class="ms-2">@song.StartDate.ToString("MM/dd/yyyy")</span>
+                                </p>
+                            </div>
                             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
                            User.IsInRole("DemoUser")))
                             {
-                                <div class="d-flex justify-content-around mt-4">
-                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary btn-sm me-2"
-                                        data-bs-toggle="tooltip" title="Editar">
-                                        <i class="bi bi-pencil"></i> Editar
+                                <div class="mt-auto text-center">
+                                    <a asp-action="Edit" asp-route-id="@song.Id"
+                                        class="btn btn-primary btn-color btn-sm me-2 px-3 py-1">
+                                        Editar
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger btn-sm"
-                                        data-bs-toggle="tooltip" title="Eliminar">
-                                        <i class="bi bi-trash"></i> Eliminar
+                                    <a asp-action="Delete" asp-route-id="@song.Id"
+                                        class="btn btn-danger btn-color btn-sm px-3 py-1">
+                                        Eliminar
                                     </a>
                                 </div>
                             }

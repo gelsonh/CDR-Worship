@@ -5,7 +5,44 @@
 }
 
 
+<style>
+    /* Form Styles */
+    .form-floating .form-control,
+    .form-floating .form-select {
+        border-radius: 0.5rem;
+        height: 3.5rem;
+        /* Ajusta la altura del campo para que el label grande se vea mejor */
+    }
 
+    /* Cambiar el estilo del label cuando no está enfocado */
+    .form-floating label {
+        font-size: 1.5rem;
+        /* Tamaño inicial más grande */
+        color: #6c757d;
+        text-align: center;
+        transform-origin: left top;
+        transition: all 0.3s ease;
+    }
+
+    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
+    .form-floating .form-control:focus+label,
+    .form-floating .form-control:not(:placeholder-shown)+label {
+        font-size: 0.875rem;
+        /* Reducir el tamaño al hacer clic */
+        transform: translateY(-1.5rem);
+        /* Mover hacia arriba */
+        color: #007bff;
+        text-align: left;
+        /* Cambia a alineación izquierda cuando está en la parte superior */
+    }
+
+    /* Agregar estilos para el input cuando está enfocado */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+</style>
 
 <div class="container my-5">
 
@@ -38,22 +75,21 @@
 
                         <div id="fileNameDisplay" class="mb-3"></div>
 
-                        <div class="form-group mb-2">
+                        <div class="form-floating mb-3">
+                            <input asp-for="SongName" class="form-control" placeholder=" " />
                             <label asp-for="SongName" class="control-label">Nombre de la Canción</label>
-                            <input asp-for="SongName" class="form-control" />
                             <span asp-validation-for="SongName" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="Description" class="control-label">Nombre del Artista o Banda</label>
-                            <input asp-for="Description" class="form-control" />
+                        <div class="form-floating">
+                            <input asp-for="Description" class="form-control" placeholder=" " />
+                            <label asp-for="Description" class="control-label">Nombre del Artista o Grupo</label>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mt-3">
-                            <button type="submit" class="btn btn-color btn-primary">Crear</button>
-                            <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver a la
-                                Lista</a>
+                        <div class="form-floating mt-4">
+                            <button type="submit" class="btn btn-color btn-primary">Subir Canción</button>
+                            <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver</a>
                         </div>
                     </form>
                 </div>
