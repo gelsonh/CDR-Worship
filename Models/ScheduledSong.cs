@@ -15,13 +15,13 @@ namespace CDR_Worship.Models
         // Primary Key
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Es obligatorio")]
         public string? Name { get; set; }
 
       
         public string? SongName { get; set; }
 
-       
+        
         public string? Description { get; set; }
 
 

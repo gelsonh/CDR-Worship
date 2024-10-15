@@ -11,10 +11,10 @@ public class ChordDocument
 
     public int Id { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Es obligatorio")]
     public string? SongName { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Es obligatorio")]
     public string? Description { get; set; }
 
     public string? Tempo { get; set; }

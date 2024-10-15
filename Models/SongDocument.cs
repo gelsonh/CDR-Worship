@@ -9,10 +9,10 @@ namespace CDR_Worship.Models
         private DateTime? _updated;
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Es obligatorio")]
         public string? SongName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Es obligatorio")]
         public string? Description { get; set; }
 
         public DateTime Created
