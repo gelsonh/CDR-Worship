@@ -5,71 +5,80 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
 
-
 namespace CDR_Worship.Services
 {
     public class EmailService : IEmailSender
     {
         private readonly EmailSettings _emailSettings;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IOptions<EmailSettings> emailSettings)
+        public EmailService(IOptions<EmailSettings> emailSettings, ILogger<EmailService> logger)
         {
             _emailSettings = emailSettings.Value;
+            _logger = logger;
         }
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             try
             {
-                var emailAddress = _emailSettings.EmailAddress ?? Environment.GetEnvironmentVariable("EmailAddress");
-                var emailPassword = _emailSettings.EmailPassword ?? Environment.GetEnvironmentVariable("EmailPassword");
-                var emailHost = _emailSettings.EmailHost ?? Environment.GetEnvironmentVariable("EmailHost");
-                var emailPort = _emailSettings.EmailPort != 0 ? _emailSettings.EmailPort : int.Parse(Environment.GetEnvironmentVariable("EmailPort")!);
-                MimeMessage newEmail = new MimeMessage();
+                // Obtén las configuraciones de EmailSettings
+                var emailAddress = _emailSettings.EmailAddress;
+                var emailPassword = _emailSettings.EmailPassword; // Este será tu SendGrid API Key
+                var emailHost = _emailSettings.EmailHost;
+                var emailPort = _emailSettings.EmailPort;
 
-                // Attach the email recipients
-                newEmail.Sender = MailboxAddress.Parse(emailAddress);
+                var newEmail = new MimeMessage();
 
+                // Establecer el remitente con un nombre amigable
+                newEmail.Sender = new MailboxAddress("CDR Worship", emailAddress);
+                newEmail.From.Add(new MailboxAddress("CDR Worship", emailAddress));
+
+                // Agregar destinatarios
                 foreach (string address in email.Split(";"))
                 {
+                    if (MailboxAddress.TryParse(address.Trim(), out var mailboxAddress))
                     {
-                        newEmail.To.Add(MailboxAddress.Parse(address));
-
+                        newEmail.To.Add(mailboxAddress);
                     }
-
-
-                    // Set The Subject
-                    newEmail.Subject = subject;
-
-                    // Format the body
-                    BodyBuilder emailBody = new BodyBuilder();
-                    emailBody.HtmlBody = htmlMessage;
-                    newEmail.Body = emailBody.ToMessageBody();
-
-                    // Prep the service and send the email
-                    using SmtpClient smtpClient = new SmtpClient();
-
-                    try
+                    else
                     {
-                        await smtpClient.ConnectAsync(emailHost, emailPort, SecureSocketOptions.StartTls);
-                        await smtpClient.AuthenticateAsync(emailAddress, emailPassword);
-                        await smtpClient.SendAsync(newEmail);
-
-                        await smtpClient.DisconnectAsync(true);
-                    }
-                    catch (Exception)
-                    {
-
-                        // var error = ex.Message
-                        throw;
+                        _logger.LogWarning($"Dirección de correo electrónico no válida: {address}");
                     }
                 }
 
+                // Establecer el asunto
+                newEmail.Subject = subject;
 
+                // Construir el cuerpo del correo electrónico
+                var emailBody = new BodyBuilder
+                {
+                    HtmlBody = htmlMessage
+                };
+                newEmail.Body = emailBody.ToMessageBody();
+
+                // Enviar el correo electrónico
+                using var smtpClient = new SmtpClient();
+
+                try
+                {
+                    await smtpClient.ConnectAsync(emailHost, emailPort, SecureSocketOptions.StartTls);
+
+                    // Autenticación con SendGrid
+                    await smtpClient.AuthenticateAsync("apikey", emailPassword);
+
+                    await smtpClient.SendAsync(newEmail);
+                    await smtpClient.DisconnectAsync(true);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error al enviar el correo electrónico.");
+                    throw;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Error en el servicio de correo electrónico.");
                 throw;
             }
         }

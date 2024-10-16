@@ -36,7 +36,7 @@ builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddRazorPages();
 
 
 var app = builder.Build();
@@ -64,6 +64,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
