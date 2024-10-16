@@ -182,8 +182,8 @@ namespace CDR_Worship.Data
             if (appUser == null)
             {
                 await userManager.CreateAsync(demoUser, demoLoginPassword!);
-                 // Assign the Admin role to the demo user
-            // await userManager.AddToRoleAsync(demoUser, nameof(Roles.Admin));
+                
+                await userManager.AddToRoleAsync(demoUser, nameof(Roles.DemoUser));
             }
         }
         catch (Exception ex)

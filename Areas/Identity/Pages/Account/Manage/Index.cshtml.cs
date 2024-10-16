@@ -4,13 +4,16 @@
 
 using System.ComponentModel.DataAnnotations;
 using CDR_Worship.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CDR_Worship.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+
+    [Authorize(Policy = "NoDemoUserAccess")]
+        public class IndexModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;

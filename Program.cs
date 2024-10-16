@@ -38,6 +38,12 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("NoDemoUserAccess", policy =>
+        policy.RequireAssertion(context =>
+            !context.User.IsInRole("DemoUser")));
+});
 
 var app = builder.Build();
 

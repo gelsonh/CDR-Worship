@@ -123,10 +123,13 @@
                                                 </li>
                                                 <li>
 
-                                                  @{
+ 
+
+@{
     var currentUser = await UserManager.GetUserAsync(User);
-    var isDemoUser = currentUser != null && currentUser.UserName == "demo";
+    var isDemoUser = currentUser != null && await UserManager.IsInRoleAsync(currentUser, "DemoUser");
 }
+
 @if (!isDemoUser)
 {
     <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
