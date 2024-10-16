@@ -36,7 +36,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="~/assets/css/style.css" asp-asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/assets/css/style.css" asp-asp-append-version="true" /> *@
     <link rel="stylesheet" href="~/assets/css/table.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/css/themes.css" asp-append-version="true" />
 
@@ -59,79 +59,92 @@
         <div class="collapse navbar-collapse" id="navbarNav">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link rounded-pill" asp-area="" asp-controller="Home" asp-action="Index"
-                                title="Home">Bienvenida</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link rounded-pill" asp-area="" asp-controller="SongDocuments"
-                                asp-action="Index">Letras</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link rounded-pill" asp-area="" asp-controller="ChordDocuments"
-                                asp-action="Index">Acordes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
-                                asp-action="Index">Lista</a>
-                        </li>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="Home" asp-action="Index"
+                                    title="Home">Bienvenida</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="SongDocuments"
+                                    asp-action="Index">Letras</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="ChordDocuments"
+                                    asp-action="Index">Acordes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
+                                    asp-action="Index">Lista</a>
+                            </li>
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms" asp-action="Index">Mensajes</a>
-                                </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms" asp-action="Index">Mensajes</a>
+                                        </li>
                             }
-                    </ul>
+                        </ul>
                     }
                     else
                     {
-                    <ul class="navbar-nav ms-auto">
-                        <partial name="_LoginPartial" />
-                    </ul>
+                        <ul class="navbar-nav ms-auto">
+                            <partial name="_LoginPartial" />
+                        </ul>
                     }
 
                     @if (SignInManager.IsSignedIn(User))
                     {
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
                                     var user = await UserManager.GetUserAsync(User);
-                                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
-                                        <span class="user-name ms-2">@user?.FirstName</span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                                        <li class="dropdown-header">
-                                            <div class="d-flex align-items-center p-3">
-                                                <i class="bi bi-person-circle me-3" style="font-size: 1.5rem;"></i>
-                                                <div>
-                                                    <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName @user?.LastName</h5>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
-                                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-                                                style="color: var(--gh-theme-900);">
-                                                <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
+                                            <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                    <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+                                                    <circle cx="12" cy="7" r="4"></circle>
+                                                </svg>
+                                                <span class="user-name ms-2">@user?.FirstName</span>
                                             </a>
-                                        </li>
-                                    </ul>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                                <li class="dropdown-header">
+                                                    <div class="d-flex align-items-center p-3">
+                                                        <i class="bi bi-person-circle me-3" style="font-size: 1.5rem;"></i>
+                                                        <div>
+                                                            <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName @user?.LastName</h5>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li>
+
+                                                  @{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var isDemoUser = currentUser != null && currentUser.UserName == "demo";
+}
+@if (!isDemoUser)
+{
+    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
+       asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+       style="color: var(--gh-theme-900);">
+       <i class="bi bi-gear me-2"></i>Cuenta
+    </a>
+}
+                                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                                        style="color: var(--gh-theme-900);">
+                                                        <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
+                                                    </a>
+                                                </li>
+                                            </ul>
                                 }
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
                     }
         </div>
     </div>

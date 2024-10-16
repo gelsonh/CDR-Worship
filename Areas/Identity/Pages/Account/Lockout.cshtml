@@ -4,7 +4,35 @@
     ViewData["Title"] = "Bloqueado";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">Esta cuenta ha sido bloqueada, inténtelo nuevamente más tarde.</p>
+<style>
+    /* Estilos generales para la sección */
+.account-blocked-header {
+    background-color: #f8d7da; /* Color de fondo suave para indicar alerta */
+    padding: 2rem 0;
+    text-align: center;
+}
+
+/* Estilo para el título */
+.account-blocked-header h1 {
+    color: #dc3545; /* Rojo alerta */
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Estilo para el párrafo */
+.account-blocked-header p {
+    font-size: 1.25rem;
+    color: #dc3545; /* Rojo alerta */
+    margin-top: 1rem;
+}
+
+</style>
+
+<header class="account-blocked-header">
+    <div class="container">
+        <h1 class="text-danger">@ViewData["Title"]</h1>
+        <p class="lead text-danger">
+            Esta cuenta ha sido bloqueada. Por favor, inténtelo nuevamente más tarde.
+        </p>
+    </div>
 </header>
