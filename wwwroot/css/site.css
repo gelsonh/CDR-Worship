@@ -147,7 +147,7 @@ footer {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -5px; /* Ajusta el espacio debajo del texto */
+  bottom: -1px; /* Ajusta el espacio debajo del texto */
   height: 4px; /* Grosor de la línea */
   background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
   border-radius: 2px;
