@@ -1,6 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
+﻿#nullable disable
 
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -12,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using CDR_Worship.Services.Interfaces;
 
 namespace CDR_Worship.Areas.Identity.Pages.Account
 {
@@ -23,13 +22,14 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IImageService _imageService;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IImageService imageService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,6 +37,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _imageService = imageService;
         }
 
         /// <summary>
@@ -104,9 +105,9 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
             public string ConfirmPassword { get; set; }
 
-            // [DataType(DataType.Upload)]
-            // [Display(Name = "Profile Picture")]
-            // public IFormFile ProfilePicture { get; set; }
+            [DataType(DataType.Upload)]
+            [Display(Name = "Foto de Perfil")]
+            public IFormFile ImageFormFile { get; set; }
 
         }
 
@@ -131,6 +132,20 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+// Aquí es donde procesamos la imagen subida
+if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
+{
+    user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
+    user.ImageFileType = Path.GetExtension(Input.ImageFormFile.FileName);
+}
+else
+{
+    // Si no se ha subido una imagen, asignamos una imagen predeterminada
+    user.ImageFileData = null; // Puedes dejar esto vacío o asignar una imagen predeterminada desde el servicio de imagen
+    user.ImageFileType = ".png"; // Define la extensión de la imagen predeterminada
+}
+
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

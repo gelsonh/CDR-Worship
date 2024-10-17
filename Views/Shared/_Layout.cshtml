@@ -1,6 +1,10 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using CDR_Worship.Models.Enums
+@using CDR_Worship.Services.Interfaces
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@inject IImageService ImageService
+
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -47,16 +51,16 @@
 <body>
 
     <header>
-   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-    <div class="container-fluid">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-            <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" style="height: 40px;" />
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content("~/assets/img/CDRLogo.png")" alt="Logo" style="height: 40px;" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <ul class="navbar-nav ms-auto">
@@ -78,9 +82,10 @@
                             </li>
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
-                                        <li class="nav-item">
-                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms" asp-action="Index">Mensajes</a>
-                                        </li>
+                                <li class="nav-item">
+                                    <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms"
+                                        asp-action="Index">Mensajes</a>
+                                </li>
                             }
                         </ul>
                     }
@@ -98,60 +103,59 @@
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
                                     var user = await UserManager.GetUserAsync(User);
-                                            <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                    <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
-                                                    <circle cx="12" cy="7" r="4"></circle>
-                                                </svg>
-                                                <span class="user-name ms-2">@user?.FirstName</span>
+                                    // Obtén la imagen del usuario autenticado
+                                    var Image = ImageService.ConvertByteArrayToFile(user?.ImageFileData, user?.ImageFileType,
+                                    DefaultImage.UserImage);
+
+                                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="@Image" alt="Profile Image" class="rounded-circle me-3"
+                                            style="width: 40px; height: 40px; object-fit: cover;">
+                                        <span class="user-name ms-2">@user?.FirstName</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                        <li class="dropdown-header">
+                                            <div class="d-flex align-items-center p-3">
+                                                <img src="@Image" alt="Profile Image" class="rounded-circle me-3"
+                                                    style="width: 40px; height: 40px; object-fit: cover;">
+                                                <div>
+                                                    <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName
+                                                        @user?.LastName</h5>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            @{
+                                                var currentUser = await UserManager.GetUserAsync(User);
+                                                var isDemoUser = currentUser != null && await UserManager.IsInRoleAsync(currentUser,
+                                                "DemoUser");
+                                            }
+
+                                            @if (!isDemoUser)
+                                            {
+                                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
+                                                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                                    style="color: var(--gh-theme-900);">
+                                                    <i class="bi bi-gear me-2"></i>Cuenta
+                                                </a>
+                                            }
+                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                                style="color: var(--gh-theme-900);">
+                                                <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
                                             </a>
-                                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                                                <li class="dropdown-header">
-                                                    <div class="d-flex align-items-center p-3">
-                                                        <i class="bi bi-person-circle me-3" style="font-size: 1.5rem;"></i>
-                                                        <div>
-                                                            <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName @user?.LastName</h5>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li>
-
- 
-
-@{
-    var currentUser = await UserManager.GetUserAsync(User);
-    var isDemoUser = currentUser != null && await UserManager.IsInRoleAsync(currentUser, "DemoUser");
-}
-
-@if (!isDemoUser)
-{
-    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
-       asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-       style="color: var(--gh-theme-900);">
-       <i class="bi bi-gear me-2"></i>Cuenta
-    </a>
-}
-                                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
-                                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-                                                        style="color: var(--gh-theme-900);">
-                                                        <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                        </li>
+                                    </ul>
                                 }
                             </li>
                         </ul>
                     }
-        </div>
-    </div>
-</nav>
+                </div>
+            </div>
+        </nav>
     </header>
 
 
@@ -165,7 +169,8 @@
                 <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
             </div>
             <h5 class="text-dark">CDR Worship</h5>
-            <p class="text-muted">"Vengan, cantemos con júbilo al Señor; aclamemos a la roca de nuestra salvación." - Salmo 95:1 (DHH)</p>
+            <p class="text-muted">"Vengan, cantemos con júbilo al Señor; aclamemos a la roca de nuestra salvación." -
+                Salmo 95:1 (DHH)</p>
             <div class="social-links mb-3">
                 <a href="#" class="text-dark mx-2">
                     <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
@@ -209,7 +214,7 @@
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <!-- Otros scripts aquí -->
- <!-- SweetAlert CDN -->
+    <!-- SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Table -->
