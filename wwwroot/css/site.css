@@ -121,7 +121,7 @@ footer {
 
 /* Enlaces de navegación */
 .nav-link {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
   padding: 10px 15px;
   font-weight: 500;
 }
@@ -129,23 +129,28 @@ footer {
 .navbar-nav .nav-link {
   color: var(--gh-theme-900);
   padding: 0.5rem 1rem;
+  position: relative; /* Para posicionar la línea debajo */
 }
 
 .navbar-nav .nav-link:hover {
-  background-color: rgba(0, 123, 255, 0.1);
   color: var(--gh-theme-600);
-  border-radius: 8px;
 }
 
-/* Estilo para el enlace activo en el navbar */
 .navbar-nav .active .nav-link {
-  background-color: rgba(0, 123, 255, 0.2); /* Fondo ligeramente más intenso */
-  color: var(
-    --gh-theme-600
-  ); /* Mantén el color del texto coherente con el hover */
-  font-weight: bold; /* Aumenta el grosor para resaltar el enlace activo */
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Añade una sombra sutil para resaltarlo más */
+  color: var(--gh-theme-600); /* Color del texto activo */
+  font-weight: bold; /* Hace que el texto activo sea un poco más visible */
+}
+
+/* Línea gruesa debajo del enlace activo */
+.navbar-nav .active .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px; /* Ajusta el espacio debajo del texto */
+  height: 4px; /* Grosor de la línea */
+  background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+  border-radius: 2px;
 }
 
 /* Botones */
