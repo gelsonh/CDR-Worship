@@ -124,6 +124,8 @@ footer {
   transition: color 0.3s ease;
   padding: 10px 15px;
   font-weight: 500;
+  position: relative;
+  display: inline-block;
 }
 
 .navbar-nav .nav-link {
@@ -148,6 +150,7 @@ footer {
   left: 0;
   right: 0;
   bottom: -1px; /* Ajusta el espacio debajo del texto */
+  width: 100%;
   height: 4px; /* Grosor de la línea */
   background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
   border-radius: 2px;
