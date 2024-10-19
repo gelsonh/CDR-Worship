@@ -9,17 +9,15 @@ namespace CDR_Worship.Models
         [Required]
         [Display(Name = "FirstName")]
         [StringLength(50, ErrorMessage ="The {0} must be at least {2}  and max {1} characters long.", MinimumLength =2)]
-
-        public string? FirstName { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "LastName")]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2}  and max {1} characters long.", MinimumLength = 2)]
-
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
 
         [NotMapped]
-        public string? FullName { get { return $"{FirstName} {LastName}"; } }
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
 
         [NotMapped]
         public IFormFile? ImageFormFile { get; set; }
@@ -28,8 +26,12 @@ namespace CDR_Worship.Models
 
         public string? ImageFileType { get; set; }
 
-
-       
-
+        // Constructor sin parámetros
+        public AppUser() 
+        {
+            FirstName = string.Empty;
+            LastName = string.Empty;
+        }
+        
     }
 }
