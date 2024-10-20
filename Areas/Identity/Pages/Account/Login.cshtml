@@ -32,20 +32,39 @@
     /* Form Styles */
     .form-floating .form-control {
         border-radius: 0.5rem;
+        height: 3.5rem;
+        /* Ajusta la altura del campo para que el label grande se vea mejor */
     }
 
+    /* Cambiar el estilo del label cuando no está enfocado */
     .form-floating label {
-        font-size: 0.875rem;
+        font-size: 1.2rem;
+        /* Tamaño inicial más grande */
         color: #6c757d;
+        text-align: center;
+        transform-origin: left top;
+        transition: all 0.3s ease;
     }
 
+    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
+    .form-floating .form-control:focus+label,
+    .form-floating .form-control:not(:placeholder-shown)+label {
+        font-size: 0.875rem;
+        /* Reducir el tamaño al hacer clic */
+        transform: translateY(-1.5rem);
+        /* Mover hacia arriba */
+        color: #007bff;
+        text-align: left;
+        /* Cambia a alineación izquierda cuando está en la parte superior */
+    }
 
-    /* Optional: Add custom focus styles */
+    /* Agregar estilos para el campo de entrada cuando está enfocado */
     .form-control:focus {
         border-color: #007bff;
         box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
     }
 
+    /* Fondo general */
     body {
         background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
     }

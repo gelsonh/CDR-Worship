@@ -89,115 +89,138 @@ namespace CDR_Worship.Data
             await SeedDemoUsersAsync(userManagerSvc, configurationSvc);
         }
   
-        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+       public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+{
+    var roles = new List<string> { nameof(Roles.Admin), nameof(Roles.Moderator), nameof(Roles.DemoUser) };
+
+    foreach (var roleName in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(roleName))
         {
-            //Seed Roles
-            await roleManager.CreateAsync(new IdentityRole(nameof(Roles.Admin)));
-            await roleManager.CreateAsync(new IdentityRole(nameof(Roles.Moderator)));
-            await roleManager.CreateAsync(new IdentityRole(nameof(Roles.DemoUser)));
-        }
-
-        private static async Task SeedAppUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
-        {
-
-            string? adminEmail = configuration["AdminLoginEmail"] ?? Environment.GetEnvironmentVariable("AdminLoginEmail");
-            string? adminPassword = configuration["AdminPwd"] ?? Environment.GetEnvironmentVariable("AdminPwd");
-
-            string? moderatorEmail = configuration["ModeratorLoginEmail"] ?? Environment.GetEnvironmentVariable("ModeratorLoginEmail");
-            string? moderatorPassword = configuration["ModeratorPwd"] ?? Environment.GetEnvironmentVariable("ModeratorPwd");
-
-            try
+            var result = await roleManager.CreateAsync(new IdentityRole(roleName));
+            if (!result.Succeeded)
             {
-                if (!string.IsNullOrEmpty(adminEmail))
+                // Manejar errores en la creación del rol
+                foreach (var error in result.Errors)
                 {
-                    AppUser? adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-                    if (adminUser == null)
-                    {
-                        adminUser = new AppUser()
-                        {
-                            UserName = adminEmail,
-                            Email = adminEmail,
-                            FirstName = "Carlos",
-                            LastName = "Cruz",
-                            EmailConfirmed = true,
-                        };
-
-                        await userManager.CreateAsync(adminUser, adminPassword!);
-                        await userManager.AddToRoleAsync(adminUser, _adminRole!);
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(moderatorEmail))
-                {
-                    AppUser? modUser = await userManager.FindByEmailAsync(moderatorEmail);
-
-                    if (modUser == null)
-                    {
-                        modUser = new AppUser()
-                        {
-                            UserName = moderatorEmail,
-                            Email = moderatorEmail,
-                            FirstName = "Gelson",
-                            LastName = "Hernandez",
-                            EmailConfirmed = true,
-                        };
-
-                        await userManager.CreateAsync(modUser, moderatorPassword!);
-                        await userManager.AddToRoleAsync(modUser, _moderatorRole!);
-                    }
+                    Console.WriteLine($"Error creando rol {roleName}: {error.Description}");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("************* ERROR *************");
-                Console.WriteLine("Error Seeding Default Blog Users.");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("*********************************");
-
-                throw;
-            }
-
-        }
-
-        private static async Task SeedDemoUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
-        {
-        string? demoLoginEmail = configuration["DemoLoginEmail"] ?? Environment.GetEnvironmentVariable("DemoLoginEmail");
-        string? demoLoginPassword = configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
-
-        AppUser demoUser = new AppUser()
-        {
-            UserName = demoLoginEmail,
-            Email = demoLoginEmail,
-            FirstName = "Demo",
-            LastName = "User",
-            EmailConfirmed = true,
-        };
-
-        try
-        {
-
-            AppUser? appUser = await userManager.FindByEmailAsync(demoLoginEmail!);
-
-            if (appUser == null)
-            {
-                await userManager.CreateAsync(demoUser, demoLoginPassword!);
-                
-                await userManager.AddToRoleAsync(demoUser, nameof(Roles.DemoUser));
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("************* ERROR *************");
-            Console.WriteLine("Error Seeding Demo Login User.");
-            Console.WriteLine(ex.Message);
-            Console.WriteLine("*********************************");
-
-            throw;
         }
     }
+}
 
-      public static async Task SeedDefaultChordsAsync(ApplicationDbContext context)
+        private static async Task SeedAppUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
+{
+    string? adminEmail = configuration["AdminLoginEmail"] ?? Environment.GetEnvironmentVariable("AdminLoginEmail");
+    string? adminPassword = configuration["AdminPwd"] ?? Environment.GetEnvironmentVariable("AdminPwd");
+
+    string? moderatorEmail = configuration["ModeratorLoginEmail"] ?? Environment.GetEnvironmentVariable("ModeratorLoginEmail");
+    string? moderatorPassword = configuration["ModeratorPwd"] ?? Environment.GetEnvironmentVariable("ModeratorPwd");
+
+    try
+    {
+        var usersToCreate = new List<(string Email, string Password, string FirstName, string LastName, string Role)>
+        {
+            (adminEmail!, adminPassword!, "Carlos", "Cruz", nameof(Roles.Admin)),
+            (moderatorEmail!, moderatorPassword!, "Gelson", "Hernandez", nameof(Roles.Moderator))
+        };
+
+        foreach (var (email, password, firstName, lastName, role) in usersToCreate)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                var user = await userManager.FindByEmailAsync(email);
+
+                if (user == null)
+                {
+                    user = new AppUser
+                    {
+                        UserName = email,
+                        Email = email,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        EmailConfirmed = true
+                    };
+
+                    var result = await userManager.CreateAsync(user, password);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, role);
+                    }
+                    else
+                    {
+                        // Manejar errores en la creación del usuario
+                        foreach (var error in result.Errors)
+                        {
+                            Console.WriteLine($"Error creando usuario {email}: {error.Description}");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("************* ERROR *************");
+        Console.WriteLine("Error Seeding Default Blog Users.");
+        Console.WriteLine(ex.Message);
+        Console.WriteLine("*********************************");
+
+        throw;
+    }
+}
+
+        private static async Task SeedDemoUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
+{
+    string? demoLoginEmail = configuration["DemoLoginEmail"] ?? Environment.GetEnvironmentVariable("DemoLoginEmail");
+    string? demoLoginPassword = configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
+
+    try
+    {
+        if (!string.IsNullOrEmpty(demoLoginEmail))
+        {
+            var demoUser = await userManager.FindByEmailAsync(demoLoginEmail);
+
+            if (demoUser == null)
+            {
+                demoUser = new AppUser
+                {
+                    UserName = demoLoginEmail,
+                    Email = demoLoginEmail,
+                    FirstName = "Demo",
+                    LastName = "User",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(demoUser, demoLoginPassword!);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(demoUser, nameof(Roles.DemoUser));
+                }
+                else
+                {
+                    // Manejar errores en la creación del usuario
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"Error creando usuario demo: {error.Description}");
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("************* ERROR *************");
+        Console.WriteLine("Error Seeding Demo Login User.");
+        Console.WriteLine(ex.Message);
+        Console.WriteLine("*********************************");
+
+        throw;
+    }
+}
+
+        public static async Task SeedDefaultChordsAsync(ApplicationDbContext context)
 {
     try
     {

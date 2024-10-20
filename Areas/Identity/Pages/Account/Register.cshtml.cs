@@ -40,29 +40,15 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _imageService = imageService;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+       
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+       
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
 
@@ -95,6 +81,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
             public string ConfirmPassword { get; set; }
 
+            [Required(ErrorMessage = "Por favor, sube una foto de perfil.")]
             [DataType(DataType.Upload)]
             [Display(Name = "Foto de Perfil")]
             public IFormFile ImageFormFile { get; set; }
@@ -108,88 +95,95 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-       public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
+        returnUrl ??= Url.Content("~/");
+        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            if (ModelState.IsValid)
+        if (ModelState.IsValid)
+        {
+        // Crear el usuario con las propiedades adicionales
+        var user = new AppUser
+        {
+            UserName = Input.Email,
+            Email = Input.Email,
+            FirstName = Input.FirstName,
+            LastName = Input.LastName
+        };
+
+        // Procesar la imagen subida
+        if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
+        {
+            // Validar la imagen (tipo y tamaño)
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var extension = Path.GetExtension(Input.ImageFormFile.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(extension))
             {
-                var user = CreateUser();
-
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
-// Aquí es donde procesamos la imagen subida
-if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
-{
-    user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
-    user.ImageFileType = Path.GetExtension(Input.ImageFormFile.FileName);
-}
-else
-{
-    // Si no se ha subido una imagen, asignamos una imagen predeterminada
-    user.ImageFileData = null; // Puedes dejar esto vacío o asignar una imagen predeterminada desde el servicio de imagen
-    user.ImageFileType = ".png"; // Define la extensión de la imagen predeterminada
-}
-
-
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("El usuario ha creado una nueva cuenta con contraseña.");
-
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId, code, returnUrl },
-                        protocol: Request.Scheme);
-
-
-
-
-                    await _emailSender.SendEmailAsync(
-                        Input.Email,
-                        "Confirma tu correo electrónico",
-                        $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>presione aquí</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelError("Input.ImageFormFile", "Tipo de archivo no permitido. Solo se permiten imágenes en formato JPG, JPEG, PNG o GIF.");
+                return Page();
             }
 
-            // Si llegamos hasta aquí, algo falló; volvemos a mostrar el formulario
-            return Page();
+            if (Input.ImageFormFile.Length > 2 * 1024 * 1024) // 2 MB
+            {
+                ModelState.AddModelError("Input.ImageFormFile", "El tamaño del archivo no debe exceder 2 MB.");
+                return Page();
+            }
+
+            // Convertir la imagen a byte array y guardar en el usuario
+            user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
+            user.ImageFileType = extension;
+        }
+        else
+        {
+            // No se subió una imagen, dejamos ImageFileData como null
+            user.ImageFileData = null;
+            user.ImageFileType = null;
         }
 
-       private AppUser CreateUser()
-{
-    return new AppUser
-    {
-        FirstName = Input.FirstName,
-        LastName = Input.LastName
-    };
+        // Crear el usuario en el sistema
+        var result = await _userManager.CreateAsync(user, Input.Password);
+
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("El usuario ha creado una nueva cuenta con contraseña.");
+
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId, code, returnUrl },
+                protocol: Request.Scheme);
+
+            await _emailSender.SendEmailAsync(
+                Input.Email,
+                "Confirma tu correo electrónico",
+                $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
+
+            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+            {
+                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+            }
+            else
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+    }
+
+    // Si llegamos hasta aquí, algo falló; volvemos a mostrar el formulario
+    return Page();
 }
 
         private IUserEmailStore<AppUser> GetEmailStore()

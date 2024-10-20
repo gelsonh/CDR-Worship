@@ -7,7 +7,7 @@
 
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
 
 
@@ -66,52 +66,61 @@
             <div class="col-md-6 col-lg-4">
                 <div class="card box-shadow">
                     <div class="card-body p-4">
-                       <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
-    <h2 class="text-center mb-4">Registro</h2>
-    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+                            enctype="multipart/form-data">
+                            <h2 class="text-center mb-4">Registro</h2>
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-    <div class="form-floating mb-3">
-        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="Nombre" />
-        <label asp-for="Input.FirstName">Nombre</label>
-        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-    </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.FirstName" class="form-control" aria-required="true"
+                                    placeholder="Nombre" />
+                                <label asp-for="Input.FirstName">Nombre</label>
+                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                            </div>
 
-    <div class="form-floating mb-3">
-        <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Apellido" />
-        <label asp-for="Input.LastName">Apellido</label>
-        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-    </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.LastName" class="form-control" aria-required="true"
+                                    placeholder="Apellido" />
+                                <label asp-for="Input.LastName">Apellido</label>
+                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                            </div>
 
-    <div class="form-floating mb-3">
-        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="nombre@ejemplo.com" />
-        <label asp-for="Input.Email">Correo Electrónico</label>
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
-    </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username"
+                                    aria-required="true" placeholder="nombre@ejemplo.com" />
+                                <label asp-for="Input.Email">Correo Electrónico</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
 
-    <div class="form-floating mb-3">
-        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
-        <label asp-for="Input.Password">Contraseña</label>
-        <span asp-validation-for="Input.Password" class="text-danger"></span>
-    </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password"
+                                    aria-required="true" placeholder="Contraseña" />
+                                <label asp-for="Input.Password">Contraseña</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
 
-    <div class="form-floating mb-3">
-        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirmar Contraseña" />
-        <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-    </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password"
+                                    aria-required="true" placeholder="Confirmar Contraseña" />
+                                <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
 
-    <!-- Campo de carga de imagen de perfil -->
-    <div class="form-floating mb-3">
-        <input asp-for="Input.ImageFormFile" class="form-control" type="file" />
-        <label asp-for="Input.ImageFormFile">Foto de Perfil</label>
-        <span asp-validation-for="Input.ImageFormFile" class="text-danger"></span>
-    </div>
+                            <div class="mb-3">
+                                <label asp-for="Input.ImageFormFile" class="form-label">Foto de Perfil</label>
+                                <input asp-for="Input.ImageFormFile" class="form-control" type="file"
+                                    accept="image/*" />
+                                <span asp-validation-for="Input.ImageFormFile" class="text-danger"></span>
+                            </div>
 
-    <div class="button-container" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <button id="registerSubmit" type="submit" class="btn btn-lg btn-color btn-primary w-100">Registrarse</button>
-        <a href="@Url.Action("Index", "Home")" class="btn btn-color btn-danger w-100">Cancelar</a>
-    </div>
-</form>
+                            <div class="button-container"
+                                style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                <button id="registerSubmit" type="submit"
+                                    class="btn btn-lg btn-color btn-primary w-100">Registrarse</button>
+                                <a href="@Url.Action("Index", "Home")"
+                                    class="btn btn-color btn-danger w-100">Cancelar</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
