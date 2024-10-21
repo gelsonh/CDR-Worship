@@ -112,6 +112,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             LastName = Input.LastName
         };
 
+          _logger.LogInformation($"El correo electrónico proporcionado es: {Input.Email}");
         // Procesar la imagen subida
         if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
         {

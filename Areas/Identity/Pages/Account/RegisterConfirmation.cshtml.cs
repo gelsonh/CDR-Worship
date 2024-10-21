@@ -21,7 +21,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _sender = sender;
         }
 
-       public string? Email { get; set; } = string.Empty; // Valor predeterminado
+        public string? Email { get; set; } = string.Empty; // Valor predeterminado
         public bool DisplayConfirmAccountLink { get; set; }
         public string? EmailConfirmationUrl { get; set; } = string.Empty; // Valor predeterminado
 
