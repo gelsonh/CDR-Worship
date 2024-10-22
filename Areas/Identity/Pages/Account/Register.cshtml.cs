@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using CDR_Worship.Services.Interfaces;
+using SendGrid.Helpers.Mail;
 
 namespace CDR_Worship.Areas.Identity.Pages.Account
 {
