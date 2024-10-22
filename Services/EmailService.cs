@@ -1,11 +1,9 @@
 ﻿using CDR_Worship.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Threading.Tasks;
+
 
 namespace CDR_Worship.Services
 {
