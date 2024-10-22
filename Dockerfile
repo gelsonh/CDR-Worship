@@ -9,7 +9,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Restaurar dependencias con verbosidad detallada
-RUN dotnet restore "CDR-Worship.csproj" --verbosity detailed
 
 # Copiar el archivo de proyecto y restaurar dependencias
 COPY ["CDR-Worship.csproj", "./"]
