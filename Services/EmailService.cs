@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-
+using System;
+using System.Threading.Tasks;
 
 namespace CDR_Worship.Services
 {
@@ -29,11 +30,18 @@ namespace CDR_Worship.Services
                     return;
                 }
 
-                // Configurar SendGrid con la API Key de tus configuraciones
-                var apiKey = _emailSettings.EmailPassword; // Aquí pones tu API Key de SendGrid
+                // Verificar si la API Key de SendGrid está disponible
+                var apiKey = _emailSettings.SendGridApiKey;
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    _logger.LogError("La clave API de SendGrid es nula o vacía.");
+                    throw new ArgumentNullException(nameof(apiKey), "La clave API no puede ser nula.");
+                }
+
+                // Configurar el cliente de SendGrid
                 var client = new SendGridClient(apiKey);
 
-                // Crear el remitente y el destinatario
+                // Crear el remitente y destinatario
                 var from = new EmailAddress(_emailSettings.EmailAddress, "CDR Worship");
                 var to = new EmailAddress(email);
 
@@ -43,9 +51,15 @@ namespace CDR_Worship.Services
                 // Enviar el correo electrónico
                 var response = await client.SendEmailAsync(msg);
 
+                // Verificar el estado de la respuesta
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    _logger.LogError($"Error al enviar correo electrónico: {response.StatusCode}");
+                    var responseBody = await response.Body.ReadAsStringAsync();
+                    _logger.LogError($"Error al enviar correo electrónico. Código de estado: {response.StatusCode}, Respuesta: {responseBody}");
+                }
+                else
+                {
+                    _logger.LogInformation("Correo enviado exitosamente.");
                 }
             }
             catch (Exception ex)

@@ -2,12 +2,7 @@
 {
     public class EmailSettings
     {
-        public string? EmailAddress { get; set; }
-
-        public string? EmailPassword { get; set; }
-
-        public string? EmailHost { get; set; }
-
-        public int EmailPort { get; set; }
+        public string? EmailAddress { get; set; } // Remitente de los correos electrónicos
+        public string? SendGridApiKey { get; set; } // Clave API de SendGrid
     }
 }
