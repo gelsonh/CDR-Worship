@@ -96,14 +96,13 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-        {
-            
-        returnUrl ??= Url.Content("~/");
-        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+       public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+{
+    returnUrl ??= Url.Content("~/");
+    ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-        if (ModelState.IsValid)
-        {
+    if (ModelState.IsValid)
+    {
         // Crear el usuario con las propiedades adicionales
         var user = new AppUser
         {
@@ -113,11 +112,11 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             LastName = Input.LastName
         };
 
-          _logger.LogInformation($"El correo electrónico proporcionado es: {Input.Email}");
+        _logger.LogInformation($"El correo electrónico proporcionado es: {Input.Email}");
+
         // Procesar la imagen subida
         if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
         {
-            // Validar la imagen (tipo y tamaño)
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
             var extension = Path.GetExtension(Input.ImageFormFile.FileName).ToLower();
 
@@ -133,18 +132,10 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            // Convertir la imagen a byte array y guardar en el usuario
             user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
             user.ImageFileType = extension;
         }
-        else
-        {
-            // No se subió una imagen, dejamos ImageFileData como null
-            user.ImageFileData = null;
-            user.ImageFileType = null;
-        }
 
-        // Crear el usuario en el sistema
         var result = await _userManager.CreateAsync(user, Input.Password);
 
         if (result.Succeeded)
@@ -153,7 +144,6 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
 
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
             var callbackUrl = Url.Page(
@@ -162,10 +152,20 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 values: new { area = "Identity", userId, code, returnUrl },
                 protocol: Request.Scheme);
 
-            await _emailSender.SendEmailAsync(
-                Input.Email,
-                "Confirma tu correo electrónico",
-                $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
+            try
+            {
+                await _emailSender.SendEmailAsync(
+                    Input.Email,
+                    "Confirma tu correo electrónico",
+                    $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
+            }
+            catch (Exception ex)
+            {
+                // Agregar error al ModelState si falla el envío del correo
+                ModelState.AddModelError(string.Empty, "Hubo un error al enviar el correo de confirmación. Por favor intenta de nuevo más tarde.");
+                _logger.LogError(ex, "Error enviando el correo de confirmación.");
+                return Page(); // Vuelve a mostrar la página con el error.
+            }
 
             if (_userManager.Options.SignIn.RequireConfirmedAccount)
             {

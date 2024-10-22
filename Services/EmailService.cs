@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Threading.Tasks;
 
 namespace CDR_Worship.Services
 {
@@ -45,7 +43,6 @@ namespace CDR_Worship.Services
                 var from = new EmailAddress(_emailSettings.EmailAddress, "CDR Worship");
                 var to = new EmailAddress(email);
 
-                // Crear el mensaje
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent: null, htmlContent: htmlMessage);
 
                 // Enviar el correo electrónico
