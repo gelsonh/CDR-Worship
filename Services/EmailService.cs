@@ -1,8 +1,8 @@
 ﻿using CDR_Worship.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace CDR_Worship.Services
 {
@@ -21,43 +21,38 @@ namespace CDR_Worship.Services
         {
             try
             {
-                // Verificar si el email es nulo o vacío
                 if (string.IsNullOrEmpty(email))
                 {
                     _logger.LogWarning("La dirección de correo es nula o vacía.");
                     return;
                 }
 
-                // Verificar si la API Key de SendGrid está disponible
-                var apiKey = _emailSettings.SendGridApiKey;
-                if (string.IsNullOrEmpty(apiKey))
+                // Crear el mensaje de correo electrónico
+                var emailMessage = new MimeMessage();
+                emailMessage.From.Add(new MailboxAddress("CDR Worship", _emailSettings.EmailAddress));
+                emailMessage.To.Add(new MailboxAddress("", email));
+                emailMessage.Subject = subject;
+
+                var bodyBuilder = new BodyBuilder
                 {
-                    _logger.LogError("La clave API de SendGrid es nula o vacía.");
-                    throw new ArgumentNullException(nameof(apiKey), "La clave API no puede ser nula.");
+                    HtmlBody = htmlMessage,
+                    TextBody = "Por favor, usa un cliente de correo compatible con HTML para ver este mensaje."
+                };
+                emailMessage.Body = bodyBuilder.ToMessageBody();
+
+                // Enviar el correo electrónico usando el servidor SMTP de SendGrid
+                using (var smtpClient = new SmtpClient())
+                {
+                    await smtpClient.ConnectAsync("smtp.sendgrid.net", 587, MailKit.Security.SecureSocketOptions.StartTls);
+
+                    // Autenticación con SendGrid usando la API Key como contraseña
+                    await smtpClient.AuthenticateAsync("apikey", _emailSettings.SendGridApiKey);
+
+                    await smtpClient.SendAsync(emailMessage);
+                    await smtpClient.DisconnectAsync(true);
                 }
 
-                // Configurar el cliente de SendGrid
-                var client = new SendGridClient(apiKey);
-
-                // Crear el remitente y destinatario
-                var from = new EmailAddress(_emailSettings.EmailAddress, "CDR Worship");
-                var to = new EmailAddress(email);
-
-                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent: null, htmlContent: htmlMessage);
-
-                // Enviar el correo electrónico
-                var response = await client.SendEmailAsync(msg);
-
-                // Verificar el estado de la respuesta
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    var responseBody = await response.Body.ReadAsStringAsync();
-                    _logger.LogError($"Error al enviar correo electrónico. Código de estado: {response.StatusCode}, Respuesta: {responseBody}");
-                }
-                else
-                {
-                    _logger.LogInformation("Correo enviado exitosamente.");
-                }
+                _logger.LogInformation("Correo enviado exitosamente a {Email}.", email);
             }
             catch (Exception ex)
             {
