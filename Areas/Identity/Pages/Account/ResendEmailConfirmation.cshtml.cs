@@ -1,12 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
+﻿#nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using CDR_Worship.Models;
 using Microsoft.AspNetCore.Identity;
@@ -29,23 +25,14 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+      
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+      
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -55,7 +42,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         {
         }
 
-        public async Task<IActionResult> OnPostAsync()
+         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -69,6 +56,12 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 return Page();
             }
 
+            if (await _userManager.IsEmailConfirmedAsync(user))
+            {
+                ModelState.AddModelError(string.Empty, "El correo electrónico ya ha sido confirmado.");
+                return Page();
+            }
+
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -77,10 +70,12 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
+
+            // Envío del correo asegurando que se usa UTF-8 y un mensaje descriptivo
             await _emailSender.SendEmailAsync(
                 Input.Email,
-                "Confirma tu correo electrónico",
-                $"Por favor, confirme su cuenta mediante <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>haciendo clic aquí</a>.");
+                "Confirmación de correo electrónico en CDR Worship",
+                $"Hola {user.UserName},<br><br>Por favor, confirma tu cuenta haciendo clic en el siguiente enlace: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Confirmar mi cuenta</a>.<br><br>Gracias por unirte a CDR Worship.");
 
             ModelState.AddModelError(string.Empty, "Se ha enviado un correo electrónico de verificación. Por favor, revise su correo electrónico.");
             return Page();
