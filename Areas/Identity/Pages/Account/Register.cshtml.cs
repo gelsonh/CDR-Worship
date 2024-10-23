@@ -155,9 +155,19 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             try
             {
                 await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Confirma tu correo electrónico",
-                    $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
+    Input.Email,
+    "Confirma tu cuenta en CDR Worship",
+    $@"
+        <h1>Bienvenido a CDR Worship, {Input.FirstName}!</h1>
+        <p>Gracias por registrarte en nuestra plataforma. Para completar tu registro y acceder a todas nuestras funciones, por favor confirma tu correo electrónico haciendo clic en el enlace a continuación:</p>
+        <p><a href='{HtmlEncoder.Default.Encode(callbackUrl)}' style='color: #ffffff; background-color: #007bff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Confirma tu cuenta</a></p>
+        <p>Si no puedes hacer clic en el botón, copia y pega el siguiente enlace en tu navegador:</p>
+        <p>{HtmlEncoder.Default.Encode(callbackUrl)}</p>
+        <p>Si no te has registrado en CDR Worship, por favor ignora este correo.</p>
+        <br/>
+        <p>¡Nos alegra mucho tenerte con nosotros!</p>
+        <p>Saludos cordiales,<br/>Equipo de CDR Worship</p>
+    ");
             }
             catch (Exception ex)
             {

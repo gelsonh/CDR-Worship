@@ -52,10 +52,10 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                 protocol: Request.Scheme);
 
-            await _sender.SendEmailAsync(
-                email,
-                "Confirma tu correo electrónico",
-                $"Por favor, confirme su cuenta mediante <a href='{EmailConfirmationUrl}'>clicking here</a>.");
+            // await _sender.SendEmailAsync(
+            //     email,
+            //     "Confirma tu correo electrónico",
+            //     $"Por favor, confirme su cuenta mediante <a href='{EmailConfirmationUrl}'>haciendo clic aquí</a>.");
 
             return Page();
         }
