@@ -121,39 +121,53 @@ footer {
 
 /* Enlaces de navegación */
 .nav-link {
-  transition: color 0.3s ease;
+  color: var(--gh-theme-900);
   padding: 10px 15px;
   font-weight: 500;
   position: relative;
   display: inline-block;
+  transition: color 0.3s ease, font-weight 0.3s ease;
 }
 
-.navbar-nav .nav-link {
-  color: var(--gh-theme-900);
-  padding: 0.5rem 1rem;
-  position: relative; /* Para posicionar la línea debajo */
-}
-
-.navbar-nav .nav-link:hover {
-  color: var(--gh-theme-600);
-}
-
-.navbar-nav .active .nav-link {
-  color: var(--gh-theme-600); /* Color del texto activo */
-  font-weight: bold; /* Hace que el texto activo sea un poco más visible */
-}
-
-/* Línea gruesa debajo del enlace activo */
-.navbar-nav .active .nav-link::after {
+/* Línea bajo el enlace (oculta inicialmente) */
+.nav-link::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px; /* Ajusta el espacio debajo del texto */
-  width: 100%;
-  height: 4px; /* Grosor de la línea */
+  left: 50%;
+  transform: translateX(-50%) scaleX(0); /* Centrar la línea y ocultarla */
+  bottom: 2px;
+  width: 80%; /* Ajusta el ancho para que no sea demasiado largo */
+  height: 4px;
   background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
   border-radius: 2px;
+  transition: transform 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Estilo en el hover */
+.nav-link:hover {
+  color: var(--gh-theme-600);
+  font-weight: bold;
+}
+
+/* Mostrar la línea en hover */
+.nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1); /* Aparece completamente en hover */
+}
+
+/* Estilo en active */
+.active .nav-link {
+  color: var(--gh-theme-600);
+  font-weight: bold;
+}
+
+/* Mantener la línea en active */
+.active .nav-link::after {
+  transform: translateX(-50%) scaleX(1); /* La línea aparece completamente en active */
+}
+
+/* Ajustar el ancho del <li> para que sea del mismo tamaño que el enlace */
+.nav-item {
+  display: inline-block;
 }
 
 /* Botones */
@@ -341,6 +355,11 @@ footer {
   .dropdown-menu {
     padding: 0.75rem;
     min-width: 200px;
+  }
+
+  .nav-link::after {
+    width: 65%;
+    bottom: 5px;
   }
 }
 
