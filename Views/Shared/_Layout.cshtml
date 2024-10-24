@@ -29,6 +29,10 @@
     {
         ViewData["ActivePage"] = "Sms";
     }
+    else if (currentController == "Songs" && currentAction == "Index")
+    {
+        ViewData["ActivePage"] = "Songs";
+    }
     else
     {
         ViewData["ActivePage"] = "_Layout"; // Valor predeterminado o para páginas sin correspondencia
@@ -109,6 +113,10 @@
                                 <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
                                     asp-action="Index">Lista</a>
                             </li>
+                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Songs" ? "active" : "")">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="Songs"
+                                    asp-action="Index">Ensayo</a>
+                            </li>
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
                                 <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Sms" ? "active" : "")">
@@ -116,6 +124,7 @@
                                         asp-action="Index">Mensajes</a>
                                 </li>
                             }
+
                         </ul>
                     }
                     else
@@ -280,6 +289,9 @@
     <!-- Otros scripts aquí -->
     <!-- SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Howler CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
     <!-- Table -->
     <script>

@@ -1,0 +1,155 @@
+@model IEnumerable<CDR_Worship.Models.SongAudio>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    .text-muted {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    .gradient-icon {
+        background: linear-gradient(90deg, #007bff, #00bfff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center my-5">
+                <div class="no-lista-container box-shadow p-4 mx-auto">
+                    <h5 class="mb-3">No hay videos disponibles</h5>
+                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                    {
+                        <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añadir Nuevo Video</a>
+                    }
+
+                </div>
+            </div>
+        }
+        else
+        {
+            @* Sección de información sobre los videos *@
+            <div class="info-section mb-5">
+                <h4 class="text-center">Bienvenido a la Lista de Videos</h4>
+                <p class="text-center">
+                    Aquí puedes visualizar todos los videos de las canciones para los próximos eventos.
+                    Mantente al tanto de las tonalidades y detalles de las canciones para estar siempre preparado.
+                </p>
+            </div>
+
+            @foreach (var song in Model)
+            {
+                <div class="col-md-4 my-3">
+                    <div class="card h-100 box-shadow">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="card-title mb-4"
+                                style="font-size: 1.5rem; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem;">
+                                @song.SongName
+                            </div>
+
+                            <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
+                                <p class="d-flex align-items-center" style="font-size: 1.2rem;">
+                                    <i class="bi bi-music-note me-2 gradient-icon" style="font-size: 1.4rem;"></i>
+                                    <strong>Tono:</strong>
+                                    <span class="ms-2">@(song.Chord?.ChordName ?? "No disponible")</span>
+                                </p>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(song.YouTubeUrl) && song.YouTubeUrl.Contains("="))
+                            {
+                                var videoId = song.YouTubeUrl.Split('=')[1];
+                                <div class="ratio ratio-16x9 mb-3">
+                                    <iframe src="https://www.youtube.com/embed/@videoId" title="YouTube video"
+                                        allowfullscreen></iframe>
+                                </div>
+                            }
+                            else
+                            {
+                                <p><strong>Video:</strong> No disponible</p>
+                            }
+
+                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
+                           User.IsInRole("DemoUser")))
+                            {
+                                <div class="mt-auto text-center">
+                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary btn-sm">Editar</a>
+                                    <form asp-action="Delete" asp-route-id="@song.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-color btn-danger btn-sm">Eliminar</button>
+                                    </form>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
+        {
+            <div class="text-center my-4">
+                <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nuevo Video</a>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal 4 -->
+<div class="modal fade" id="adviceModal4" tabindex="-1" aria-labelledby="adviceModalLabel4" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adviceModalLabel4">¡RECUERDEN!</h5>
+            </div>
+            <div class="modal-body text-center">
+
+                <p><strong>Consejos para usar los videos en la práctica:</strong></p>
+                <ul class="list-unstyled">
+                    <li>- Mira los videos en casa y familiarízate con las canciones antes de los ensayos.</li>
+                    <li>- Usa los videos para perfeccionar los detalles de cada parte vocal e instrumental.</li>
+                    <li>- Presta atención a los cambios de tonalidad y ajuste según las voces en los videos.</li>
+                </ul>
+                <p><em>Sigamos creciendo en excelencia para Dios, utilizando estos recursos para mejorar en cada canción
+                        que
+                        interpretamos.</em></p>
+                <p><strong>Gracias por su dedicación y esfuerzo. Cada uno de ustedes es una bendición para Casa del
+                        Rey.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-color btn-outline-secondary"
+                    data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+<!-- Advice Modal Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Verificar si el modal ya se ha mostrado usando sessionStorage
+        if (!sessionStorage.getItem('modal4Shown')) {
+            // Agregar un retraso antes de mostrar el modal (3 segundos)
+            setTimeout(function () {
+                var adviceModal4 = new bootstrap.Modal(document.getElementById('adviceModal4'));
+
+                // Mostrar el modal
+                adviceModal4.show();
+
+                // Guardar en sessionStorage que el modal ya se mostró
+                sessionStorage.setItem('modal4Shown', 'true');
+            }, 3000); // 3000 milisegundos = 3 segundos de retraso
+        }
+    });
+</script>
+}

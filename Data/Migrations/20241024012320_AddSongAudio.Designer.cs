@@ -3,6 +3,7 @@ using System;
 using CDR_Worship.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CDR_Worship.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241024012320_AddSongAudio")]
+    partial class AddSongAudio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,30 +404,6 @@ namespace CDR_Worship.Migrations
                     b.ToTable("SongAttachments");
                 });
 
-            modelBuilder.Entity("CDR_Worship.Models.SongAudio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ChordId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SongName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("YouTubeUrl")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChordId");
-
-                    b.ToTable("SongAudios");
-                });
-
             modelBuilder.Entity("CDR_Worship.Models.SongDocument", b =>
                 {
                     b.Property<int>("Id")
@@ -705,15 +684,6 @@ namespace CDR_Worship.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("Song");
-                });
-
-            modelBuilder.Entity("CDR_Worship.Models.SongAudio", b =>
-                {
-                    b.HasOne("CDR_Worship.Models.Chord", "Chord")
-                        .WithMany()
-                        .HasForeignKey("ChordId");
-
-                    b.Navigation("Chord");
                 });
 
             modelBuilder.Entity("CDR_Worship.Models.SongDocument", b =>

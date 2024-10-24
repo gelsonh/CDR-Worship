@@ -1,0 +1,94 @@
+@model CDR_Worship.Models.ViewModel.SongAudioViewModel
+
+
+<style>
+    /* Form Styles */
+    .form-floating .form-control,
+    .form-floating .form-select {
+        border-radius: 0.5rem;
+        height: 3.5rem;
+    }
+
+    /* Estilo inicial del label */
+    .form-floating label {
+        font-size: 1.2rem;
+        color: #6c757d;
+        text-align: center;
+        transform-origin: left top;
+        transition: all 0.3s ease;
+    }
+
+    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
+    .form-floating .form-control:focus+label,
+    .form-floating .form-control:not(:placeholder-shown)+label,
+    .form-floating input[type="date"]:focus+label,
+    .form-floating input[type="date"]:valid+label,
+    .form-floating .form-select:focus+label,
+    .form-floating .form-select:not([value=""])+label {
+        font-size: 0.875rem;
+        transform: translateY(-1.5rem);
+        color: #007bff;
+        text-align: left;
+    }
+
+    /* Estilos específicos para el campo de fecha */
+    .form-floating.date-field label {
+        font-size: 0.875rem;
+        transform: translateY(-1.5rem);
+        color: #007bff;
+        text-align: left;
+        transition: none;
+    }
+
+    /* Agregar estilos para el input de fecha cuando está enfocado */
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card box-shadow" style="max-width: 600px; width: 100%;">
+
+        <div class="card-body p-5">
+            <h1 class="text-center mb-5" style="font-weight: 700; font-size: 1.8rem;">Subir Video</h1>
+
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-4" role="alert"></div>
+
+                <div class="form-floating mb-4">
+                    <input type="text" asp-for="SongName" class="form-control rounded-3"
+                        placeholder="Nombre de la Canción" />
+                    <label asp-for="SongName" class="form-label">Nombre de la Canción:</label>
+                    <span asp-validation-for="SongName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <input type="text" asp-for="YouTubeUrl" class="form-control rounded-3"
+                        placeholder="URL de YouTube" />
+                    <label asp-for="YouTubeUrl" class="form-label">URL de YouTube:</label>
+                    <span asp-validation-for="YouTubeUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-4">
+                    <select asp-for="ChordId" class="form-select rounded-3"
+                        asp-items="@(new SelectList(Model.Chords, "Id", "ChordName"))">
+                        <option value="">Seleccionar Tonalidad</option>
+                    </select>
+                    <label asp-for="ChordId" class="form-label">Tonalidad:</label>
+                    <span asp-validation-for="ChordId" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-color btn-primary mx-2">Guardar</button>
+                    <a asp-action="Index" class="btn btn-color btn-outline-secondary mx-2">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

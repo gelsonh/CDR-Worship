@@ -20,6 +20,9 @@ namespace CDR_Worship.Data
         public DbSet<Member> Members { get; set; } = default!;
 
         public DbSet<Sms> Sms { get; set; } = default!;
+
+        public DbSet<SongAudio> SongAudios { get; set; } = default!;
+
         // public DbSet<Calendar> Calendars { get; set; } = default!;
         // public DbSet<CalendarDay> CalendarDays { get; set; } = default!;
         
