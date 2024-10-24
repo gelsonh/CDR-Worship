@@ -150,14 +150,26 @@ public async Task<IActionResult> Create([Bind("Name, Description, StartDate, End
             _context.Add(scheduledSong);
             await _context.SaveChangesAsync();
 
-            // Verificar si se necesitan enviar SMS (puedes ajustar la lógica como antes)
-            var scheduledSongsCount = await _context.ScheduledSongs.CountAsync();
-            if (scheduledSongsCount >= 3)
-            {
-                var messageLink = "https://cdr-worship-production.up.railway.app/";
-                var messageBody = $"🎶 ¡El setlist está listo! 🎶 Puedes revisarlo aquí: {messageLink} 🙌 ¡Dios les bendiga y gracias por su dedicación! 🙏";
-                _smsService.SendSms(messageBody);
-            }
+            // Variable para controlar el envío del mensaje, esta podría ser almacenada en una base de datos o estado persistente
+bool messageSent = false; // Deberías inicializarla según tu lógica de estado (quizás en la sesión o la base de datos)
+
+// Verificar el número de canciones programadas
+var scheduledSongsCount = await _context.ScheduledSongs.CountAsync();
+
+if (scheduledSongsCount == 3 && !messageSent)
+{
+    var messageLink = "https://cdr-worship-production.up.railway.app/";
+    var messageBody = $"🎶 ¡El setlist está listo! 🎶 Puedes revisarlo aquí: {messageLink} 🙌 ¡Dios les bendiga y gracias por su dedicación! 🙏";
+    _smsService.SendSms(messageBody);
+
+    // Marcar que el mensaje ha sido enviado
+    messageSent = true;
+}
+else if (scheduledSongsCount < 3)
+{
+    // Restablecer la bandera si el número de canciones baja de 3
+    messageSent = false;
+}
 
             return RedirectToAction("Index");
         }
