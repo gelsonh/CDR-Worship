@@ -115,7 +115,7 @@
                             </li>
                             <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Songs" ? "active" : "")">
                                 <a class="nav-link rounded-pill" asp-area="" asp-controller="Songs"
-                                    asp-action="Index">Ensayo</a>
+                                    asp-action="Index">Video</a>
                             </li>
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
