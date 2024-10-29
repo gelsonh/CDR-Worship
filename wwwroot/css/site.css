@@ -10,6 +10,7 @@
   --gh-dark-color: #333; /* Texto oscuro */
   --gh-light-color: #605e5c; /* Texto claro */
   --gh-background-color: rgba(250, 250, 250, 0.8); /* Fondo claro */
+  --gh-light-text-color: #f8f9fa; /* Texto muy claro */
 
   /* Paleta de colores */
   --gh-theme-core: hsla(210, 100%, 80%, 1); /* Azul */
@@ -20,7 +21,7 @@
   --gh-theme-500: hsla(0, 100%, 50%, 1); /* Rojo oscuro */
   --gh-theme-600: hsla(210, 100%, 60%, 1); /* Azul oscuro */
   --gh-theme-700: hsla(0, 0%, 20%, 1); /* Gris oscuro tipo carbón */
-  --gh-theme-800: hsla(0, 2%, 60%, 0.8); /* Gris claro */
+  --gh-theme-800: hsla(0, 0%, 40%, 1); /* Gris medio */
   --gh-theme-900: var(--gh-dark-color); /* Texto oscuro */
 
   /* Paleta azul-rojo adicional */
@@ -661,6 +662,10 @@ footer {
 
   .warning-icon {
     margin-bottom: 0.5rem;
+  }
+
+  .comments-section {
+    margin-top: 5rem;
   }
 }
 

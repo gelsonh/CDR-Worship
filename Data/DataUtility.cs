@@ -11,8 +11,8 @@ namespace CDR_Worship.Data
     public static class DataUtility
     {
 
-        private const string? _adminRole = "Admin";
-        private const string? _moderatorRole = "Moderator";
+        // private const string? _adminRole = "Admin";
+        // private const string? _moderatorRole = "Moderator";
 
 
         public static string GetConnectionString(IConfiguration configuration)

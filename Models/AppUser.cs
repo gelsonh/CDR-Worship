@@ -26,6 +26,10 @@ namespace CDR_Worship.Models
 
         public string? ImageFileType { get; set; }
 
+          // Nueva propiedad para almacenar la ruta o base64 de la imagen procesada
+        [NotMapped]
+        public string? ImageFilePath { get; set; }
+
         // Constructor sin parámetros
         public AppUser() 
         {

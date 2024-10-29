@@ -68,20 +68,23 @@
                                     <span class="ms-2">@song.StartDate.ToString("MM/dd/yyyy")</span>
                                 </p>
                             </div>
-                            @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
-                           User.IsInRole("DemoUser")))
-                            {
-                                <div class="mt-auto text-center">
-                                    <a asp-action="Edit" asp-route-id="@song.Id"
-                                        class="btn btn-primary btn-color btn-sm me-2 px-3 py-1">
-                                        Editar
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@song.Id"
-                                        class="btn btn-danger btn-color btn-sm px-3 py-1">
-                                        Eliminar
-                                    </a>
-                                </div>
-                            }
+
+<div class="mt-auto text-center">
+    <!-- Botón Ver Comentarios, visible para todos -->
+    <a asp-action="Details" asp-route-id="@song.Id" class="btn btn-color btn-outline-secondary btn-sm px-3 py-1">Comentarios</a>
+
+    <!-- Bloque de botones Editar y Eliminar, solo visible para usuarios autenticados con roles específicos -->
+    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("DemoUser")))
+    {
+        <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-primary btn-color btn-sm mx-2 px-3 py-1">
+            Editar
+        </a>
+        <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-danger btn-color btn-sm px-3 py-1">
+            Eliminar
+        </a>
+    }
+</div>
+                            
                         </div>
                     </div>
                 </div>

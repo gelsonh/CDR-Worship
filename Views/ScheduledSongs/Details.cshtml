@@ -1,30 +1,371 @@
-﻿@model CDR_Worship.Models.ScheduledSong
+﻿@using System.Security.Claims
+@using CDR_Worship.Models.Enums
+@using CDR_Worship.Services.Interfaces
+@inject IImageService _imageService
+@model CDR_Worship.Models.ScheduledSong
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de la Canción Programada";
 }
 
-<h1>Details</h1>
+<!-- Estilos personalizados -->
+<style>
+    .gradient-icon {
+        background: linear-gradient(90deg, #007bff, #00bfff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
-<div>
-    <h4>ScheduledSong</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-    </dl>
+    /* Sección de comentarios */
+    .comments-section {
+        background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        color: var(--gh-light-text-color);
+    }
+
+    .comments-list {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .comment {
+        background-color: var(--gh-theme-800);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        color: var(--gh-light-text-color);
+    }
+
+    .comment .profile-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .comment .user-name {
+        font-weight: bold;
+        color: var(--gh-primary-color);
+    }
+
+    .comment .comment-time {
+        font-size: 0.85rem;
+        color: var(--gh-light-text-color);
+    }
+
+    .comment .comment-text {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .comment-actions .like-count {
+        font-size: smaller;
+        color: var(--gh-light-text-color);
+    }
+
+    .comment .comment-actions .btn {
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+        background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+        border: none;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .comment .comment-actions .btn:hover {
+        background-color: var(--gh-theme-400);
+    }
+
+    .message-input-form {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+        border-radius: 30px;
+        padding: 10px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-input-form textarea {
+        flex-grow: 1;
+        border: none;
+        resize: none;
+        height: 40px;
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+        color: var(--gh-light-color);
+        margin-right: 15px;
+    }
+
+    .message-input-form textarea:focus {
+        outline: none;
+        background-color: var(--gh-theme-800);
+    }
+
+    /* Estilos específicos para el botón circular */
+    .circular-btn {
+        background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+        border: none;
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        padding: 0;
+    }
+
+    .circular-btn i {
+        font-size: 1rem;
+    }
+
+    .circular-btn:hover {
+        background-color: var(--gh-theme-800);
+    }
+
+    .form-control-comment {
+        width: 0%;
+    }
+
+    .no-comments-color {
+        color: var(--gh-theme-800);
+    }
+
+    /* Asegurar que el textarea tenga un overflow oculto y una altura mínima */
+    #newCommentText {
+        overflow-y: hidden;
+        /* Ocultar la barra de desplazamiento vertical */
+        min-height: 40px;
+        /* Altura mínima deseada */
+        resize: none;
+        /* Opcional: Desactivar el cambio de tamaño manual */
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Detalles de la canción (lado izquierdo) -->
+        <div class="col-md-4 my-3">
+            <div class="card box-shadow">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="card-title mb-4"
+                        style="font-size: 1.5rem; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem;">
+                        @Model.Name
+                    </div>
+
+                    <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
+                        <p class="d-flex align-items-center" style="font-size: 1.2rem;">
+                            <i class="bi bi-person-fill me-2 gradient-icon" style="font-size: 1.4rem;"></i>
+                            <strong>Cantante:</strong>
+                            <span class="ms-2">@Model.LeadSinger?.MemberName</span>
+                        </p>
+                    </div>
+
+                    <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
+                        <p class="d-flex align-items-center" style="font-size: 1.2rem;">
+                            <i class="bi bi-calendar-event-fill me-2 gradient-icon" style="font-size: 1.4rem;"></i>
+                            <strong>Fecha:</strong>
+                            <span class="ms-2">@Model.StartDate.ToString("MM/dd/yyyy")</span>
+                        </p>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <a asp-action="Index" class="btn btn-color btn-outline-secondary">Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de comentarios (lado derecho) -->
+        <div class="col-md-8">
+            <div class="comments-section">
+
+                <div class="comments-list">
+                    @if (Model.Comments != null && Model.Comments.Any())
+                    {
+                        <!-- Renderizado de los comentarios -->
+                        @foreach (var comment in Model.Comments.Where(c => c.ParentCommentId == null))
+                        {
+                            <div class="comment">
+                                <div class="d-flex align-items-start">
+                                    <img src="@(_imageService.ConvertByteArrayToFile(comment.User?.ImageFileData, comment.User?.ImageFileType, DefaultImage.UserImage))"
+                                        alt="@comment.User?.FirstName's profile picture" class="profile-image" />
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-name">@comment.User?.FirstName</div>
+                                            <div class="comment-time ms-2" data-utc="@comment.FormattedDate"></div>
+
+                                        </div>
+                                        <div class="comment-text">@comment.Comment</div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div id="no-comments-message">
+                            <p class="no-comments-color">No hay comentarios para esta canción programada.</p>
+                        </div>
+                    }
+                </div>
+                <form id="newCommentForm" method="post" class="message-input-form">
+                    <input type="hidden" name="ScheduledSongId" value="@Model.Id" />
+                    <textarea class="form-control-comment" name="Comment" id="newCommentText"
+                        placeholder="Escribe un mensaje" required></textarea>
+                    <button type="button" id="submitCommentBtn" class="circular-btn">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    <script>
+
+        // Seleccionar el textarea por su ID
+        var textarea = document.getElementById('newCommentText');
+
+        // Añadir un evento 'input' para ajustar la altura cuando el usuario escriba
+        textarea.addEventListener('input', autoResize, false);
+
+        // Función para autoajustar la altura del textarea
+        function autoResize() {
+            // Reiniciar la altura para que el scrollHeight se calcule correctamente
+            this.style.height = 'auto';
+            // Establecer la altura al scrollHeight
+            this.style.height = this.scrollHeight + 'px';
+        }
+
+        document.getElementById('submitCommentBtn').addEventListener('click', function () {
+            var commentText = document.getElementById('newCommentText').value;
+
+            if (commentText.trim() === '') {
+                alert('Por favor, escribe un comentario.');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("Create", "DocumentComments")',
+                type: 'POST',
+                data: {
+                    Comment: commentText,
+                    ScheduledSongId: '@Model.Id',
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    document.getElementById('newCommentText').value = '';
+
+                    var commentsList = document.querySelector('.comments-list');
+                    if (!commentsList) {
+                        commentsList = document.createElement('div');
+                        commentsList.className = 'comments-list';
+                        document.querySelector('.comments-section').prepend(commentsList);
+                    }
+
+                    var noCommentsMessage = document.getElementById('no-comments-message');
+                    if (noCommentsMessage) {
+                        noCommentsMessage.style.display = 'none';
+                    }
+
+                    // Usar el tiempo formateado correctamente
+                    var commentTime = new Date(response.commentCreated).toLocaleString('es-ES', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        hour12: true
+                    });
+
+                    // Al agregar un nuevo comentario
+
+                    var newCommentHtml = `
+
+        <div class="comment">
+            <div class="d-flex align-items-start">
+                <img src="${response.commentUserImage}" alt="Profile Image" class="profile-image">
+                <div>
+                    <div class="d-flex align-items-center">
+                        <div class="user-name">${response.commentUserName}</div>
+                        <div class="comment-time ms-2">${commentTime}</div>
+                    </div>
+                    <div class="comment-text">${response.commentText}</div>
+
+                    <!-- Resto del código -->
+                </div>
+            </div>
+        </div>`;
+                    commentsList.insertAdjacentHTML('beforeend', newCommentHtml);
+                    commentsList.scrollTop = commentsList.scrollHeight;
+                },
+                error: function () {
+                    alert('Error al enviar el comentario.');
+                }
+            });
+        });
+
+        // Modificar la función likeComment
+        function likeComment(commentId, button) {
+            $.ajax({
+                url: '@Url.Action("LikeComment", "DocumentComments")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ DocumentCommentId: commentId }),
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    // Solo deshabilitar el botón
+                    button.disabled = true;
+                },
+                error: function () {
+                    alert('Error al procesar el "Me Gusta".');
+                }
+            });
+        }
+
+        // Función para convertir fechas UTC a la hora local
+        function formatUtcDateToLocal(utcDateString) {
+            var utcDate = new Date(utcDateString);
+            return utcDate.toLocaleString('es-ES', {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true  // Formato de 12 horas con AM/PM
+            });
+        }
+
+        // Convierte todas las fechas de los comentarios cuando la página carga o se hace refresh
+        document.addEventListener('DOMContentLoaded', function () {
+            // Convierte las fechas de los comentarios
+            document.querySelectorAll('.comment-time').forEach(function (element) {
+                var utcDate = element.getAttribute('data-utc');
+                var localDate = formatUtcDateToLocal(utcDate);
+                element.textContent = localDate;
+            });
+        });
+
+    </script>
+}

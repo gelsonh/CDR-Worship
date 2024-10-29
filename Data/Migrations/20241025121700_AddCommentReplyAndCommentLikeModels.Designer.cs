@@ -3,6 +3,7 @@ using System;
 using CDR_Worship.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CDR_Worship.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241025121700_AddCommentReplyAndCommentLikeModels")]
+    partial class AddCommentReplyAndCommentLikeModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,6 +228,9 @@ namespace CDR_Worship.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("text");
 
+                    b.Property<int>("CommentId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("DocumentCommentId")
                         .HasColumnType("integer");
 
@@ -279,9 +285,6 @@ namespace CDR_Worship.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FormattedDate")
-                        .HasColumnType("text");
 
                     b.Property<int>("Likes")
                         .HasColumnType("integer");

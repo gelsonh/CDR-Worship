@@ -3,6 +3,7 @@ using System;
 using CDR_Worship.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CDR_Worship.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241024165012_AddCommentsToScheduledSong")]
+    partial class AddCommentsToScheduledSong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,54 +217,6 @@ namespace CDR_Worship.Migrations
                     b.ToTable("ChordDocuments");
                 });
 
-            modelBuilder.Entity("CDR_Worship.Models.CommentLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("DocumentCommentId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("LikedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("DocumentCommentId");
-
-                    b.ToTable("CommentLikes");
-                });
-
-            modelBuilder.Entity("CDR_Worship.Models.CommentReply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ParentCommentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ReplyText")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ScheduledSongId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CommentReplies");
-                });
-
             modelBuilder.Entity("CDR_Worship.Models.DocumentComment", b =>
                 {
                     b.Property<int>("Id")
@@ -280,23 +235,12 @@ namespace CDR_Worship.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("FormattedDate")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Likes")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ScheduledSongId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("ParentCommentId");
 
                     b.HasIndex("ScheduledSongId");
 
@@ -722,40 +666,17 @@ namespace CDR_Worship.Migrations
                     b.Navigation("Chord");
                 });
 
-            modelBuilder.Entity("CDR_Worship.Models.CommentLike", b =>
-                {
-                    b.HasOne("CDR_Worship.Models.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("AppUserId");
-
-                    b.HasOne("CDR_Worship.Models.DocumentComment", "DocumentComment")
-                        .WithMany()
-                        .HasForeignKey("DocumentCommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DocumentComment");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CDR_Worship.Models.DocumentComment", b =>
                 {
                     b.HasOne("CDR_Worship.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("CDR_Worship.Models.DocumentComment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
-
                     b.HasOne("CDR_Worship.Models.ScheduledSong", "ScheduledSong")
                         .WithMany("Comments")
                         .HasForeignKey("ScheduledSongId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ParentComment");
 
                     b.Navigation("ScheduledSong");
 
@@ -906,11 +827,6 @@ namespace CDR_Worship.Migrations
             modelBuilder.Entity("CDR_Worship.Models.ChordDocument", b =>
                 {
                     b.Navigation("ChordAttachments");
-                });
-
-            modelBuilder.Entity("CDR_Worship.Models.DocumentComment", b =>
-                {
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("CDR_Worship.Models.ScheduledSong", b =>

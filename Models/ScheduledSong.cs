@@ -73,6 +73,7 @@ public string? FileType { get; set; }
         // Navigation properties
         public virtual Chord? Chord { get; set; }
         public virtual Member? Member { get; set; }
+        
 
         // Propiedades de navegación para los roles de los miembros
      
@@ -95,14 +96,12 @@ public string? FileType { get; set; }
     
         public virtual Member? Drummer { get; set; }
 
-
-        //public virtual ICollection<SongComment> Comments { get; set; } = new HashSet<SongComment>();
+// Relación con los comentarios
+        public virtual ICollection<DocumentComment> Comments { get; set; } = new List<DocumentComment>();
 
         public virtual ICollection<SongDocument> Songs { get; set; } = new HashSet<SongDocument>();
 
         public virtual ICollection<ChordDocument> ChordDocuments { get; set; } = new HashSet<ChordDocument>();
-
-       
     }
 
 }

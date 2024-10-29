@@ -4,6 +4,8 @@ using CDR_Worship.Data;
 using CDR_Worship.Models;
 using CDR_Worship.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using CDR_Worship.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace CDR_Worship.Controllers
@@ -11,19 +13,29 @@ namespace CDR_Worship.Controllers
     public class ScheduledSongsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
+
         private readonly IScheduledSongsService _scheduledSongService;
         private readonly ISongDocumentService _songDocumentService;
         private readonly IChordDocumentService _chordDocumentService;
 
         private readonly ISmsService _smsService;
+        private readonly ICommentService _commentService;
+        private readonly IImageService _imageService;
+        private readonly IDateTimeService _dateTimeService;
 
-        public ScheduledSongsController(ApplicationDbContext context, IScheduledSongsService scheduledSongService, ISongDocumentService songDocumentService, IChordDocumentService chordDocumentService, ISmsService smsService)
+
+        public ScheduledSongsController(ApplicationDbContext context, UserManager<AppUser> userManager, IScheduledSongsService scheduledSongService, ISongDocumentService songDocumentService, IChordDocumentService chordDocumentService, ISmsService smsService, ICommentService commentService, IImageService imageService, IDateTimeService dateTimeService)
         {
             _context = context;
+            _userManager = userManager;
             _scheduledSongService = scheduledSongService;
             _songDocumentService = songDocumentService;
             _chordDocumentService = chordDocumentService;
             _smsService = smsService;
+            _commentService = commentService;
+            _imageService = imageService;
+            _dateTimeService = dateTimeService;
             
         }
 
@@ -81,21 +93,89 @@ namespace CDR_Worship.Controllers
         // GET: ScheduledSongs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var scheduledSong = await _context.ScheduledSongs
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (scheduledSong == null)
-            {
-                return NotFound();
-            }
-
-            return View(scheduledSong);
+         if (id == null)
+        {
+        return NotFound();
         }
 
+    var scheduledSong = await _context.ScheduledSongs
+    .Include(s => s.LeadSinger)
+    .Include(s => s.Comments)
+        .ThenInclude(c => c.User)
+    .Include(s => s.Comments)
+        .ThenInclude(c => c.Likes)
+            .ThenInclude(l => l.User) // Incluir los usuarios que han dado "Me Gusta" a los comentarios
+    .Include(s => s.Comments)
+        .ThenInclude(c => c.Replies)
+            .ThenInclude(r => r.User)
+    .Include(s => s.Comments)
+        .ThenInclude(c => c.Replies)
+            .ThenInclude(r => r.Likes)
+                .ThenInclude(l => l.User) // Incluir los usuarios que han dado "Me Gusta" a las respuestas
+    .AsSplitQuery()
+    .FirstOrDefaultAsync(m => m.Id == id);
+
+    if (scheduledSong == null)
+    {
+        return NotFound();
+    }
+
+   // Obtener el ID del usuario actual
+var userId = _userManager.GetUserId(User);
+
+// Para cada comentario, verificar si el usuario ha dado "Me Gusta"
+foreach (var comment in scheduledSong.Comments)
+{
+    // Mantener la fecha UTC y enviarla tal cual
+    comment.FormattedDate = comment.Created.ToString("o"); // Formato ISO 8601 (UTC)
+
+    // Procesar las imágenes de los usuarios en los comentarios
+    if (comment.User != null)
+    {
+        comment.User.ImageFilePath = _imageService.ConvertByteArrayToFile(
+            comment.User.ImageFileData!,
+            comment.User.ImageFileType!,
+            DefaultImage.UserImage);
+    }
+
+    // Verificar si el usuario actual ha dado "Me Gusta" a este comentario
+    comment.HasUserLiked = await _context.CommentLikes
+        .AnyAsync(cl => cl.DocumentCommentId == comment.Id && cl.AppUserId == userId);
+
+    // Obtener el número total de "Me Gusta" del comentario
+    comment.LikesCount = await _context.CommentLikes
+        .CountAsync(cl => cl.DocumentCommentId == comment.Id);
+
+    // Procesar las respuestas del comentario
+    if (comment.Replies != null)
+    {
+        foreach (var reply in comment.Replies)
+        {
+            // Mantener la fecha UTC en las respuestas también
+            reply.FormattedDate = reply.Created.ToString("o");
+
+            // Procesar las imágenes de los usuarios en las respuestas
+            if (reply.User != null)
+            {
+                reply.User.ImageFilePath = _imageService.ConvertByteArrayToFile(
+                    reply.User.ImageFileData!,
+                    reply.User.ImageFileType!,
+                    DefaultImage.UserImage);
+            }
+
+            // Verificar si el usuario actual ha dado "Me Gusta" a esta respuesta
+            reply.HasUserLiked = await _context.CommentLikes
+                .AnyAsync(cl => cl.DocumentCommentId == reply.Id && cl.AppUserId == userId);
+
+            // Obtener el número total de "Me Gusta" de la respuesta
+            reply.LikesCount = await _context.CommentLikes
+                .CountAsync(cl => cl.DocumentCommentId == reply.Id);
+        }
+    }
+}
+
+    return View(scheduledSong);
+}
         // GET: ScheduledSongs/Create
         public async Task<IActionResult> Create()
         {
