@@ -234,6 +234,15 @@
                         <i class="bi bi-arrow-up"></i>
                     </button>
                 </form>
+                <!-- Sonido de Comentarios -->
+                <div class="d-flex justify-content-center align-items-center mt-2">
+                    <div class="sound-toggle">
+                        <label>
+                            <input type="checkbox" id="soundToggle" checked>
+                            Sonido de Notificaciones
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -241,7 +250,271 @@
 
 @section Scripts {
     <script>
+        // Objeto para almacenar nuevos comentarios por scheduleSongId
+        let newComments = {};
 
+        // Cargar notificaciones desde localStorage al iniciar
+        document.addEventListener('DOMContentLoaded', function () {
+            const storedComments = localStorage.getItem('newComments');
+            if (storedComments) {
+                newComments = JSON.parse(storedComments);
+                updateNotificationBadge();
+                updateNotificationDropdown();
+            }
+        });
+
+        // Obtener referencia al interruptor de sonido
+        const soundToggle = document.getElementById('soundToggle');
+
+        if (!soundToggle) {
+            console.error('Elemento con id "soundToggle" no encontrado en el DOM.');
+        } else {
+            const newCommentSound = new Audio('/sounds/new-comment.wav');
+            newCommentSound.preload = 'auto';
+            newCommentSound.volume = 0.5;
+
+            soundToggle.addEventListener('change', function () {
+                console.log(this.checked ? "Notificaciones sonoras activadas." : "Notificaciones sonoras desactivadas.");
+            });
+
+
+            // Flag para detectar si la pestaña está activa
+            let isPageVisible = true;
+
+            // Variable para contar las notificaciones pendientes de sonido
+            let pendingSoundNotifications = 0;
+
+            // Escuchar cambios en la visibilidad de la página
+            document.addEventListener("visibilitychange", function () {
+                isPageVisible = !document.hidden;
+                if (isPageVisible && pendingSoundNotifications > 0) {
+                    // Reproduce el sonido si hay notificaciones pendientes al regresar a la página
+                    playNotificationSound();
+                    pendingSoundNotifications = 0; // Reiniciar el contador de notificaciones pendientes
+                }
+            });
+
+            // Función para reproducir el sonido de notificación
+            function playNotificationSound() {
+                if (soundToggle.checked) {
+                    if (!newCommentSound.paused) {
+                        newCommentSound.currentTime = 0;
+                    }
+                    newCommentSound.play().catch(function (error) {
+                        console.error('Error al reproducir el sonido:', error);
+                    });
+                }
+            }
+
+
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/commentHub")
+                .build();
+
+            connection.start().then(function () {
+                console.log("Conectado al Hub de Comentarios");
+            }).catch(function (err) {
+                return console.error('Error al conectar con SignalR:', err.toString());
+            });
+
+            // Escuchar el método "ReceiveComment" enviado desde el servidor
+            connection.on("ReceiveComment", function (commentData) {
+                console.log("Comentario recibido:", commentData);
+
+                var utcDate = new Date(commentData.commentCreated);
+                if (isNaN(utcDate.getTime())) {
+                    console.error('Fecha inválida:', commentData.commentCreated);
+                    return;
+                }
+                var localDate = utcDate.toLocaleString('es-ES', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+
+                const noCommentsMessage = document.getElementById('no-comments-message');
+                if (noCommentsMessage) {
+                    noCommentsMessage.style.display = 'none';
+                }
+
+                var newCommentHtml = `
+                                    <div class="comment mb-3">
+                                        <div class="d-flex align-items-start">
+                                            <img src="${commentData.commentUserImage}" alt="Profile Image" class="profile-image me-3">
+                                            <div>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="user-name fw-bold">${commentData.commentUserName}</div>
+                                                    <div class="comment-time ms-2 text-muted">${localDate}</div>
+                                                </div>
+                                                <div class="comment-text">${commentData.commentText}</div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                var commentsList = document.querySelector('.comments-list');
+                if (!commentsList) {
+                    commentsList = document.createElement('div');
+                    commentsList.className = 'comments-list';
+                    document.querySelector('.comments-section').prepend(commentsList);
+                }
+
+                commentsList.insertAdjacentHTML('beforeend', newCommentHtml);
+                commentsList.scrollTop = commentsList.scrollHeight;
+
+                const scheduleSongId = commentData.scheduleSongId;
+
+                if (!newComments[scheduleSongId]) {
+                    newComments[scheduleSongId] = { count: 0, comments: [] };
+                }
+
+                newComments[scheduleSongId].count += 1;
+                newComments[scheduleSongId].comments.push(commentData);
+
+                // Guardar en localStorage
+                localStorage.setItem('newComments', JSON.stringify(newComments));
+
+                updateNotificationBadge();
+                updateNotificationDropdown();
+
+                // Reproducir el sonido de inmediato si la página está visible
+                if (isPageVisible) {
+                    playNotificationSound();
+                } else {
+                    // Si la página está en segundo plano, acumula la notificación pendiente
+                    pendingSoundNotifications += 1;
+                }
+            });
+        }
+
+        // Función para actualizar el badge de notificaciones
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            const totalNewComments = Object.values(newComments).reduce((acc, curr) => acc + curr.count, 0);
+            badge.style.display = totalNewComments > 0 ? 'inline-block' : 'none';
+            badge.textContent = totalNewComments > 99 ? '99+' : totalNewComments;
+        }
+
+        // Función para actualizar el dropdown de notificaciones
+        function updateNotificationDropdown() {
+            const notificationItems = document.getElementById('notificationItems');
+            notificationItems.innerHTML = '';
+
+            const scheduleSongIds = Object.keys(newComments);
+            if (scheduleSongIds.length === 0) {
+                const noNotificationsItem = document.createElement('li');
+                noNotificationsItem.classList.add('dropdown-item', 'text-center');
+                noNotificationsItem.textContent = 'No hay nuevos comentarios.';
+                notificationItems.appendChild(noNotificationsItem);
+            } else {
+                scheduleSongIds.forEach(scheduleSongId => {
+                    const schedule = newComments[scheduleSongId];
+                    const scheduleSongName = schedule.comments[0].name;
+
+                    const scheduleTitle = document.createElement('li');
+                    scheduleTitle.classList.add('dropdown-header');
+                    scheduleTitle.textContent = `- ${scheduleSongName} -`;
+                    notificationItems.appendChild(scheduleTitle);
+
+                    schedule.comments.forEach(comment => {
+                        const commentItem = document.createElement('li');
+                        const commentLink = document.createElement('a');
+                        commentLink.classList.add('dropdown-item');
+                        commentLink.href = `/ScheduledSongs/Details/${scheduleSongId}`;
+                        commentLink.textContent = `${comment.commentUserName}: ${truncateText(comment.commentText, 50)}`;
+                        commentItem.appendChild(commentLink);
+                        notificationItems.appendChild(commentItem);
+                    });
+
+                    const divider = document.createElement('li');
+                    divider.innerHTML = '<hr class="dropdown-divider">';
+                    notificationItems.appendChild(divider);
+                });
+
+                if (notificationItems.lastChild && notificationItems.lastChild.tagName === 'LI' && notificationItems.lastChild.firstChild.tagName === 'HR') {
+                    notificationItems.removeChild(notificationItems.lastChild);
+                }
+            }
+        }
+
+        // Escuchar el evento de pasar el mouse sobre el icono de notificaciones para mostrar el dropdown
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        const dropdownMenu = notificationDropdown.nextElementSibling;
+
+        notificationDropdown.addEventListener('mouseenter', function () {
+            const dropdown = new bootstrap.Dropdown(notificationDropdown);
+            dropdown.show();
+        });
+
+        notificationDropdown.addEventListener('mouseleave', function () {
+            const dropdown = new bootstrap.Dropdown(notificationDropdown);
+            dropdown.hide();
+        });
+
+        dropdownMenu.addEventListener('mouseenter', function () {
+            const dropdown = new bootstrap.Dropdown(notificationDropdown);
+            dropdown.show();
+        });
+
+        dropdownMenu.addEventListener('mouseleave', function () {
+            const dropdown = new bootstrap.Dropdown(notificationDropdown);
+            dropdown.hide();
+        });
+
+        // Marcar como visto solo en la página de detalles
+        document.addEventListener('DOMContentLoaded', function () {
+            const path = window.location.pathname;
+            const match = path.match(/\/ScheduledSongs\/Details\/(\d+)/);
+
+            if (match && match[1]) {
+                const scheduleSongId = match[1];
+                if (newComments[scheduleSongId]) {
+                    delete newComments[scheduleSongId];
+                    localStorage.setItem('newComments', JSON.stringify(newComments));
+                    updateNotificationBadge();
+                    updateNotificationDropdown();
+                }
+            }
+        });
+
+        function truncateText(text, maxLength) {
+            return text.length <= maxLength ? text : text.substring(0, maxLength) + '...';
+        }
+
+        // Función para enviar un nuevo comentario
+        document.getElementById('submitCommentBtn').addEventListener('click', function () {
+            var commentText = document.getElementById('newCommentText').value;
+
+            if (commentText.trim() === '') {
+                alert('Por favor, escribe un comentario.');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("Create", "DocumentComments")',
+                type: 'POST',
+                contentType: 'application/json', // Enviar datos en formato JSON
+                data: JSON.stringify({
+                    Comment: commentText,
+                    ScheduledSongId: '@Model.Id'
+                }),
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Incluir el token anti-falsificación en los encabezados
+                },
+                success: function (response) {
+                    // Limpiar el textarea
+                    document.getElementById('newCommentText').value = '';
+                    // No agregar el comentario aquí para evitar duplicación
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error al enviar el comentario:', error);
+                    console.log('Detalles del error:', xhr.responseText);
+                    alert('Error al enviar el comentario.');
+                }
+            });
+        });
         // Seleccionar el textarea por su ID
         var textarea = document.getElementById('newCommentText');
 
@@ -255,74 +528,6 @@
             // Establecer la altura al scrollHeight
             this.style.height = this.scrollHeight + 'px';
         }
-
-        document.getElementById('submitCommentBtn').addEventListener('click', function () {
-            var commentText = document.getElementById('newCommentText').value;
-
-            if (commentText.trim() === '') {
-                alert('Por favor, escribe un comentario.');
-                return;
-            }
-
-            $.ajax({
-                url: '@Url.Action("Create", "DocumentComments")',
-                type: 'POST',
-                data: {
-                    Comment: commentText,
-                    ScheduledSongId: '@Model.Id',
-                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                },
-                success: function (response) {
-                    document.getElementById('newCommentText').value = '';
-
-                    var commentsList = document.querySelector('.comments-list');
-                    if (!commentsList) {
-                        commentsList = document.createElement('div');
-                        commentsList.className = 'comments-list';
-                        document.querySelector('.comments-section').prepend(commentsList);
-                    }
-
-                    var noCommentsMessage = document.getElementById('no-comments-message');
-                    if (noCommentsMessage) {
-                        noCommentsMessage.style.display = 'none';
-                    }
-
-                    // Usar el tiempo formateado correctamente
-                    var commentTime = new Date(response.commentCreated).toLocaleString('es-ES', {
-                        weekday: 'short',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        hour12: true
-                    });
-
-                    // Al agregar un nuevo comentario
-
-                    var newCommentHtml = `
-
-        <div class="comment">
-            <div class="d-flex align-items-start">
-                <img src="${response.commentUserImage}" alt="Profile Image" class="profile-image">
-                <div>
-                    <div class="d-flex align-items-center">
-                        <div class="user-name">${response.commentUserName}</div>
-                        <div class="comment-time ms-2">${commentTime}</div>
-                    </div>
-                    <div class="comment-text">${response.commentText}</div>
-
-                    <!-- Resto del código -->
-                </div>
-            </div>
-        </div>`;
-                    commentsList.insertAdjacentHTML('beforeend', newCommentHtml);
-                    commentsList.scrollTop = commentsList.scrollHeight;
-                },
-                error: function () {
-                    alert('Error al enviar el comentario.');
-                }
-            });
-        });
 
         // Modificar la función likeComment
         function likeComment(commentId, button) {

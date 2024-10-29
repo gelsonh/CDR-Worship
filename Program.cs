@@ -35,6 +35,9 @@ builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IAudioService, AudioService>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
 
+// Agregar SignalR
+builder.Services.AddSignalR();
+
 // Bind the email settings to the EmailSettings object
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
@@ -80,5 +83,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.MapHub<CommentHub>("/commentHub"); // Mapear el hub de SignalR
+
 
 app.Run();

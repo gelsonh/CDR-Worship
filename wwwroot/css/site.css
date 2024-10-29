@@ -746,3 +746,14 @@ footer {
   visibility: visible;
   opacity: 1;
 }
+
+/* Asegura que el badge está correctamente posicionado */
+#notificationBadge {
+  font-size: 0.75rem;
+}
+
+/* Limita el alto del dropdown y permite el scroll si hay muchas notificaciones */
+#notificationItems {
+  max-height: 400px;
+  overflow-y: auto;
+}

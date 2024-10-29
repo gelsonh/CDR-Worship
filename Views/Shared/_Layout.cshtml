@@ -136,21 +136,47 @@
 
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <ul class="navbar-nav ms-auto">
+                        <ul class="navbar-nav ms-auto d-flex align-items-center">
+                            <!-- Icono de Notificaciones -->
+                            <li class="nav-item dropdown me-3">
+                                <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-bell-fill" style="font-size: 1.5rem;"></i>
+                                    <!-- Badge de Notificaciones -->
+                                    <span id="notificationBadge"
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        style="display: none;">
+                                        0
+                                        <span class="visually-hidden">nuevos comentarios</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown"
+                                    style="width: 300px;">
+                                    <li class="dropdown-header">Nuevos Comentarios</li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <div id="notificationItems">
+                                        <li class="dropdown-item text-center">No hay nuevos comentarios.</li>
+                                    </div>
+                                </ul>
+                            </li>
+
+                            <!-- Dropdown del Usuario -->
                             <li class="nav-item dropdown">
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
                                     var user = await UserManager.GetUserAsync(User);
-                                    // Obtén la imagen del usuario autenticado
                                     var Image = ImageService.ConvertByteArrayToFile(user?.ImageFileData, user?.ImageFileType,
                                     DefaultImage.UserImage);
 
-                                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center" href="#"
+                                        id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <img src="@Image" alt="Profile Image" class="rounded-circle me-1"
                                             style="width: 40px; height: 40px; object-fit: cover;" />
                                         <span class="user-name ms-1">@user?.FirstName</span>
                                     </a>
+
                                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
                                         <li class="dropdown-header">
                                             <div class="d-flex align-items-center p-3">
@@ -276,6 +302,9 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
 
+    <!-- SignalR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js"></script>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -292,6 +321,7 @@
 
     <!-- Howler CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+
 
     <!-- Table -->
     <script>
@@ -354,8 +384,6 @@
             setTimeout(hideLoading, 300); // Oculta el loading después de 2 segundos (puedes modificar este tiempo)
         });
     </script>
-
-
 
     @await RenderSectionAsync("Scripts", required: false)
 

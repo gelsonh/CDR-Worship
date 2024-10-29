@@ -5,6 +5,8 @@ using CDR_Worship.Services.Interfaces;
 using CDR_Worship.Models.Enums;
 using CDR_Worship.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using System.ComponentModel.DataAnnotations;
 
 namespace CDR_Worship.Controllers
 {
@@ -15,58 +17,90 @@ namespace CDR_Worship.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IImageService _imageService;
         private readonly IDateTimeService _dateTimeService;
+        private readonly IHubContext<CommentHub> _hubContext;
+        
 
-        public DocumentCommentsController(ApplicationDbContext context, ICommentService commentService, UserManager<AppUser> userManager, IImageService imageService, IDateTimeService dateTimeService)
+        public DocumentCommentsController(ApplicationDbContext context, ICommentService commentService, UserManager<AppUser> userManager, IImageService imageService, IDateTimeService dateTimeService, IHubContext<CommentHub> hubContext)
         {
             _context = context;
             _commentService = commentService;
             _userManager = userManager;
             _imageService = imageService;
             _dateTimeService = dateTimeService;
+            _hubContext = hubContext;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DocumentComment model)
-{
-    if (!ModelState.IsValid)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([FromBody] DocumentComment model)
     {
-        return BadRequest();
+        if (!ModelState.IsValid)
+        {
+            // Retornar los errores del ModelState para depuración
+            return BadRequest(ModelState);
+        }
+
+        var userId = _userManager.GetUserId(User);
+
+        // Crear el nuevo comentario
+        var comment = new DocumentComment
+        {
+            Comment = model.Comment,
+            ScheduledSongId = model.ScheduledSongId,
+            Created = DateTime.UtcNow,
+            AppUserId = userId
+        };
+
+        // Obtener el nombre de la canción programada
+var scheduledSongName = await _context.ScheduledSongs
+    .Where(s => s.Id == model.ScheduledSongId)
+    .Select(s => s.Name)
+    .FirstOrDefaultAsync();
+
+if (string.IsNullOrEmpty(scheduledSongName))
+{
+    Console.WriteLine($"No se encontró el nombre de la canción para ScheduledSongId: {model.ScheduledSongId}");
+    return NotFound("La canción programada no se encontró.");
+}
+
+        await _commentService.AddCommentAsync(comment);
+
+        // Obtener los datos de la imagen del usuario
+        var user = await _userManager.FindByIdAsync(userId!);
+        var userImage = _imageService.ConvertByteArrayToFile(user?.ImageFileData, user?.ImageFileType, DefaultImage.UserImage);
+
+        // Preparar los datos del comentario para enviar a los clientes
+        // Crear el objeto CommentData
+        var commentData = new CommentData
+{
+    CommentId = comment.Id,
+    ScheduleSongId = comment.ScheduledSongId,
+    Name = scheduledSongName, // Asegurarse de que este valor esté asignado correctamente
+    CommentText = comment.Comment,
+    CommentUserName = user?.FirstName,
+    CommentCreated = comment.Created.ToString("o"),
+    CommentUserImage = userImage
+};
+
+Console.WriteLine($"CommentData Name: {commentData.Name}"); // Verificación final antes de enviar
+
+
+        // Notificar a todos los clientes conectados sobre el nuevo comentario
+        await _hubContext.Clients.All.SendAsync("ReceiveComment", commentData);
+
+        // Devolver la respuesta al cliente que hizo la solicitud
+        return Ok(commentData);
     }
 
-    var userId = _userManager.GetUserId(User);
+public class CreateCommentModel
+{
+    [Required]
+    public string? Comment { get; set; }
 
-    // Crear el nuevo comentario
-    var comment = new DocumentComment
-    {
-        Comment = model.Comment,
-        ScheduledSongId = model.ScheduledSongId,
-        Created = DateTime.UtcNow,
-        AppUserId = userId
-    };
-
-    await _commentService.AddCommentAsync(comment);
-
- // Convertir la fecha a la hora local del servidor antes de enviarla al frontend
-    var localTime = TimeZoneInfo.ConvertTimeFromUtc(comment.Created, TimeZoneInfo.Local); // Correcto uso de la conversión a hora local
-
-    // Formatear la fecha usando el servicio
-    // var formattedDate = _dateTimeService.FormatCommentDate(comment.Created);
-
-    // Obtener los datos de la imagen del usuario
-    var user = await _userManager.FindByIdAsync(userId!);
-    var userImage = _imageService.ConvertByteArrayToFile(user?.ImageFileData, user?.ImageFileType, DefaultImage.UserImage);
-
-    // Devolver la respuesta con la fecha formateada
-    return Ok(new
-    {
-        commentId = comment.Id,
-        commentText = comment.Comment,
-        commentCreated = comment.Created.ToString("o"),  // Formato ISO 8601
-        commentUserName = user?.FirstName,
-        commentUserImage = userImage
-    });
+    [Required]
+    public int ScheduledSongId { get; set; }
 }
+
         
         [HttpPost]
         [ValidateAntiForgeryToken]
