@@ -264,22 +264,18 @@
             $.ajax({
                 url: '@Url.Action("Create", "DocumentComments")',
                 type: 'POST',
-                contentType: 'application/json',
+                contentType: 'application/json', // Enviar datos en formato JSON
                 data: JSON.stringify({
                     Comment: commentText,
                     ScheduledSongId: '@Model.Id'
                 }),
                 headers: {
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Incluir el token anti-falsificación en los encabezados
                 },
                 success: function (response) {
-                    // Emite a SignalR para notificar a otras vistas de la nueva creación del comentario
-                    connection.invoke("ReceiveComment", response).catch(function (err) {
-                        console.error('Error al emitir a SignalR:', err);
-                    });
-
-                    // Limpia el área de entrada de comentarios
+                    // Limpiar el textarea
                     document.getElementById('newCommentText').value = '';
+                    // No agregar el comentario aquí para evitar duplicación
                 },
                 error: function (xhr, status, error) {
                     console.error('Error al enviar el comentario:', error);
@@ -288,8 +284,6 @@
                 }
             });
         });
-
-
         // Seleccionar el textarea por su ID
         var textarea = document.getElementById('newCommentText');
 
