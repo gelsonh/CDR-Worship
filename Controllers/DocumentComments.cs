@@ -62,7 +62,7 @@ namespace CDR_Worship.Controllers
     {
         commentId = comment.Id,
         commentText = comment.Comment,
-        commentCreated = localTime.ToString("MM-dd HH:mm"),  // Usar la fecha formateada
+        commentCreated = comment.Created.ToString("o"),  // Formato ISO 8601
         commentUserName = user?.FirstName,
         commentUserImage = userImage
     });
