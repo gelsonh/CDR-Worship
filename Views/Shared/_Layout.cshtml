@@ -140,7 +140,7 @@
                             <!-- Icono de Notificaciones -->
                             <li class="nav-item dropdown me-3">
                                 <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                     <i class="bi bi-bell-fill" style="font-size: 1.5rem;"></i>
                                     <!-- Badge de Notificaciones -->
                                     <span id="notificationBadge"
@@ -150,8 +150,8 @@
                                         <span class="visually-hidden">nuevos comentarios</span>
                                     </span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown"
-                                    style="width: 300px;">
+                                <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
+                                    aria-labelledby="notificationDropdown" style="width: 300px;">
                                     <li class="dropdown-header">Nuevos Comentarios</li>
                                     <li>
                                         <hr class="dropdown-divider">
@@ -321,6 +321,8 @@
 
     <!-- Howler CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+
+    
 
 
     <script>
