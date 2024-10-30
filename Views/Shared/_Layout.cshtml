@@ -137,10 +137,10 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <ul class="navbar-nav ms-auto d-flex align-items-center">
-                            <!-- Icono de Notificaciones -->
-                            <li class="nav-item dropdown me-3">
+                            <!-- Notificaciones solo en tablet y PC (md y superior) -->
+                            <li class="nav-item dropdown d-none d-md-block me-3">
                                 <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
-                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-bell-fill" style="font-size: 1.5rem;"></i>
                                     <!-- Badge de Notificaciones -->
                                     <span id="notificationBadge"
@@ -229,17 +229,45 @@
 
     <footer class="footer mt-auto bg-light py-5 shadow-lg">
         <div class="container-fluid text-center">
+
+            <!-- Icono de Notificaciones solo en móvil -->
+            <div class="dropdown d-md-none mb-3">
+                <a class="text-dark position-relative" href="#" id="footerNotificationDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.8rem;">
+                    <i class="bi bi-bell-fill"></i>
+                    <!-- Badge de Notificaciones -->
+                    <span id="footerNotificationBadge"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="display: none;">
+                        0
+                        <span class="visually-hidden">nuevos comentarios</span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
+                    aria-labelledby="footerNotificationDropdown"
+                    style="width: 100%; max-width: 300px; margin-top: 10px;">
+                    <li class="dropdown-header">Nuevos Comentarios</li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <div id="notificationItemsFooter">
+                        <li class="dropdown-item text-center">No hay nuevos comentarios.</li>
+                    </div>
+                </ul>
+            </div>
+
             <div class="mb-4">
                 <img src="~/assets/img/CDRLogo.png" alt="Logo" style="height: 50px; width: auto;" />
             </div>
             <h5 class="text-dark">CDR Worship</h5>
             <p class="text-muted">"Vengan, cantemos con júbilo al Señor; aclamemos a la roca de nuestra salvación." -
                 Salmo 95:1 (DHH)</p>
+
+            <!-- Redes Sociales -->
             <div class="social-links mb-3">
                 <a href="#" class="text-dark mx-2">
                     <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
                 </a>
-
                 <a href="#" class="text-dark mx-2">
                     <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
                 </a>
@@ -247,6 +275,8 @@
                     <i class="bi bi-youtube" style="font-size: 1.5rem;"></i>
                 </a>
             </div>
+
+            <!-- Información de Derechos -->
             <div class="text-dark">
                 <span>Creado por Gelson Hernandez</span>
                 <br />
@@ -322,9 +352,26 @@
     <!-- Howler CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
-    
+    <!-- Footer Notification -->
+    <script>
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            const footerBadge = document.getElementById('footerNotificationBadge');
+            const totalNewComments = Object.values(newComments).reduce((acc, curr) => acc + curr.count, 0);
 
+            if (totalNewComments > 0) {
+                badge.style.display = 'inline-block';
+                footerBadge.style.display = 'inline-block';
+                badge.textContent = totalNewComments > 99 ? '99+' : totalNewComments;
+                footerBadge.textContent = totalNewComments > 99 ? '99+' : totalNewComments;
+            } else {
+                badge.style.display = 'none';
+                footerBadge.style.display = 'none';
+            }
+        }
+    </script>
 
+    <!-- Notificaciones de Comentarios -->
     <script>
         // Objeto para almacenar nuevos comentarios por scheduleSongId
         let newComments = {};
