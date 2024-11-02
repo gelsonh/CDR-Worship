@@ -7,7 +7,7 @@ namespace CDR_Worship.Models
 {
     public class CommentReply
     {
-        
+
         public int Id { get; set; }
         public int ParentCommentId { get; set; }
         public string? ReplyText { get; set; }

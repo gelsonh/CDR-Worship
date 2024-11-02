@@ -26,22 +26,22 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         public string? EmailConfirmationUrl { get; set; } = string.Empty; // Valor predeterminado
 
 
-        public async Task<IActionResult> OnGetAsync(string email, string returnUrl )
+        public async Task<IActionResult> OnGetAsync(string email, string returnUrl)
         {
             if (email == null)
-    {
-        return RedirectToPage("/Index");
-    }
-    returnUrl = returnUrl ?? Url.Content("~/");
+            {
+                return RedirectToPage("/Index");
+            }
+            returnUrl = returnUrl ?? Url.Content("~/");
 
-    var user = await _userManager.FindByEmailAsync(email);
-    if (user == null)
-    {
-        return NotFound($"No se puede cargar el usuario con correo electrónico '{email}'.");
-    }
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound($"No se puede cargar el usuario con correo electrónico '{email}'.");
+            }
 
-    Email = email; // El compilador ahora entiende que email no es null aquí
-    DisplayConfirmAccountLink = false;
+            Email = email; // El compilador ahora entiende que email no es null aquí
+            DisplayConfirmAccountLink = false;
 
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

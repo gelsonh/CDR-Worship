@@ -16,7 +16,7 @@ namespace CDR_Worship.Services.Interfaces
         public Task<SongAttachment?> GetSongAttachmentByIdAsync(int? songAttachmentId);
 
         public Task<List<Member>> GetMembersByRoleAsync(BandMembers role);
-     
+
         public Task<List<Member>> GetLeadSingersAsync();
 
         public Task<List<Member>> GetBackingVocalistsAsync();

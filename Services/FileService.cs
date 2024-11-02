@@ -18,8 +18,8 @@ namespace CDR_Worship.Services
             if ((fileData == null || fileData.Length == 0))
             {
                 switch (fileType)
-                {               
-                    case DefaultImage.UserImage: return _defaultAppUserImageSrc;  
+                {
+                    case DefaultImage.UserImage: return _defaultAppUserImageSrc;
                 }
             }
 

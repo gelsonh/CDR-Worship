@@ -18,15 +18,15 @@ namespace CDR_Worship.Models
         [Required(ErrorMessage = "Es obligatorio")]
         public string? Name { get; set; }
 
-      
+
         public string? SongName { get; set; }
 
-        
+
         public string? Description { get; set; }
 
 
-      
-       // Propiedades para fechas
+
+        // Propiedades para fechas
         public DateTime Created
         {
             get => _created;
@@ -46,14 +46,14 @@ namespace CDR_Worship.Models
         }
 
         public DateTime? Updated
-{
-    get => _updated;
-    set => _updated = value.HasValue ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc) : (DateTime?)null;
-}
+        {
+            get => _updated;
+            set => _updated = value.HasValue ? DateTime.SpecifyKind(value.Value, DateTimeKind.Utc) : (DateTime?)null;
+        }
 
-public byte[]? FileData { get; set; }
-public string? FileName { get; set; }
-public string? FileType { get; set; }
+        public byte[]? FileData { get; set; }
+        public string? FileName { get; set; }
+        public string? FileType { get; set; }
 
 
         public int? ChordId { get; set; }
@@ -73,30 +73,30 @@ public string? FileType { get; set; }
         // Navigation properties
         public virtual Chord? Chord { get; set; }
         public virtual Member? Member { get; set; }
-        
+
 
         // Propiedades de navegación para los roles de los miembros
-     
+
         public virtual Member? LeadSinger { get; set; }
 
-       
+
         public virtual Member? BackingVocalist { get; set; }
 
-      
+
         public virtual Member? BackingVocalistTwo { get; set; }
 
         public virtual Member? LeadGuitarist { get; set; }
 
-      
+
         public virtual Member? SecondGuitarist { get; set; }
 
- 
+
         public virtual Member? Bassist { get; set; }
 
-    
+
         public virtual Member? Drummer { get; set; }
 
-// Relación con los comentarios
+        // Relación con los comentarios
         public virtual ICollection<DocumentComment> Comments { get; set; } = new List<DocumentComment>();
 
         public virtual ICollection<SongDocument> Songs { get; set; } = new HashSet<SongDocument>();

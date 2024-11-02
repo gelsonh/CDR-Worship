@@ -16,7 +16,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account.Manage
 {
 
     [Authorize(Policy = "NoDemoUserAccess")]
-        public class IndexModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
@@ -66,10 +66,10 @@ namespace CDR_Worship.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             [Display(Name = "First Name")]
-             public string FirstName { get; set; }
+            public string FirstName { get; set; }
 
-             [Display(Name ="Last Name")]
-             public string LastName { get; set; }
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
 
             [DataType(DataType.Upload)]
             [Display(Name = "Foto de Perfil")]
@@ -82,7 +82,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            
+
 
             Username = userName;
 
@@ -93,9 +93,9 @@ namespace CDR_Worship.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 ImageFormFile = null // Se inicializa en null, pero puede ser manejado en la vista        
             };
-                
-                // Aquí puedes cargar la imagen existente
-                ViewData["Image"] = _imageService.ConvertByteArrayToFile(user.ImageFileData, user.ImageFileType, DefaultImage.UserImage);
+
+            // Aquí puedes cargar la imagen existente
+            ViewData["Image"] = _imageService.ConvertByteArrayToFile(user.ImageFileData, user.ImageFileType, DefaultImage.UserImage);
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -111,60 +111,60 @@ namespace CDR_Worship.Areas.Identity.Pages.Account.Manage
         }
 
         public async Task<IActionResult> OnPostAsync()
-{
-    var user = await _userManager.GetUserAsync(User);
-    if (user == null)
-    {
-        return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-    }
-
-    if (!ModelState.IsValid)
-    {
-        await LoadAsync(user);
-        return Page();
-    }
-
-    // Actualización del número de teléfono
-    var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-    if (Input.PhoneNumber != phoneNumber)
-    {
-        var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-        if (!setPhoneResult.Succeeded)
         {
-            StatusMessage = "Unexpected error when trying to set phone number.";
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await LoadAsync(user);
+                return Page();
+            }
+
+            // Actualización del número de teléfono
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            if (Input.PhoneNumber != phoneNumber)
+            {
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                if (!setPhoneResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    return RedirectToPage();
+                }
+            }
+
+            // Actualización de nombre
+            if (Input.FirstName != user.FirstName || Input.LastName != user.LastName)
+            {
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+            }
+
+            // Manejar la subida de la imagen
+            if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
+            {
+                user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
+                user.ImageFileType = Path.GetExtension(Input.ImageFormFile.FileName);
+
+                // Depurar para verificar que la imagen se ha guardado correctamente
+                Console.WriteLine($"Image uploaded: {user.ImageFileData?.Length} bytes");
+            }
+
+            // Guardar cambios en el usuario
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = "Unexpected error when trying to update profile.";
+                return RedirectToPage();
+            }
+
+            // Refrescar sesión del usuario
+            await _signInManager.RefreshSignInAsync(user);
+            StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
-    }
-
-    // Actualización de nombre
-    if (Input.FirstName != user.FirstName || Input.LastName != user.LastName)
-    {
-        user.FirstName = Input.FirstName;
-        user.LastName = Input.LastName;
-    }
-
-    // Manejar la subida de la imagen
-    if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
-    {
-        user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
-        user.ImageFileType = Path.GetExtension(Input.ImageFormFile.FileName);
-
-           // Depurar para verificar que la imagen se ha guardado correctamente
-    Console.WriteLine($"Image uploaded: {user.ImageFileData?.Length} bytes");
-    }
-
-    // Guardar cambios en el usuario
-    var updateResult = await _userManager.UpdateAsync(user);
-    if (!updateResult.Succeeded)
-    {
-        StatusMessage = "Unexpected error when trying to update profile.";
-        return RedirectToPage();
-    }
-
-    // Refrescar sesión del usuario
-    await _signInManager.RefreshSignInAsync(user);
-    StatusMessage = "Your profile has been updated";
-    return RedirectToPage();
-}
     }
 }

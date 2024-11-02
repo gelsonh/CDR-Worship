@@ -8,7 +8,7 @@ namespace CDR_Worship.Services
     public class SongDocumentService : ISongDocumentService
     {
 
-        private readonly  ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         public SongDocumentService(ApplicationDbContext context)
         {
             _context = context;
@@ -56,7 +56,7 @@ namespace CDR_Worship.Services
                 }
 
                 SongDocument? songDocument = await _context.SongDocuments
-                  
+
                     .Include(t => t.SongAttachments)
                     .FirstOrDefaultAsync(t => t.Id == songDocumentId);
 
@@ -73,7 +73,7 @@ namespace CDR_Worship.Services
             try
             {
                 var songDocuments = await _context.SongDocuments
-                    .Include(cd => cd.SongAttachments)                
+                    .Include(cd => cd.SongAttachments)
                     .ToListAsync();
 
                 return songDocuments;
@@ -85,6 +85,6 @@ namespace CDR_Worship.Services
             }
         }
 
-     
+
     }
 }

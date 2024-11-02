@@ -41,11 +41,11 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _imageService = imageService;
         }
 
-       
+
         [BindProperty]
         public InputModel Input { get; set; }
 
-       
+
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -64,13 +64,13 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             [StringLength(50, ErrorMessage = "El {0} debe tener al menos {2} y máximo {1} caracteres.", MinimumLength = 2)]
 
             public string LastName { get; set; }
-        
+
             [Required]
             [EmailAddress]
             [Display(Name = "Correo Electronico")]
             public string Email { get; set; }
 
-         
+
             [Required]
             [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} y máximo {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -96,68 +96,68 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-       public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-{
-    returnUrl ??= Url.Content("~/");
-    ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-    if (ModelState.IsValid)
-    {
-        // Crear el usuario con las propiedades adicionales
-        var user = new AppUser
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            UserName = Input.Email,
-            Email = Input.Email,
-            FirstName = Input.FirstName,
-            LastName = Input.LastName
-        };
+            returnUrl ??= Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-        _logger.LogInformation($"El correo electrónico proporcionado es: {Input.Email}");
-
-        // Procesar la imagen subida
-        if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
-        {
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            var extension = Path.GetExtension(Input.ImageFormFile.FileName).ToLower();
-
-            if (!allowedExtensions.Contains(extension))
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Input.ImageFormFile", "Tipo de archivo no permitido. Solo se permiten imágenes en formato JPG, JPEG, PNG o GIF.");
-                return Page();
-            }
+                // Crear el usuario con las propiedades adicionales
+                var user = new AppUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName
+                };
 
-            if (Input.ImageFormFile.Length > 2 * 1024 * 1024) // 2 MB
-            {
-                ModelState.AddModelError("Input.ImageFormFile", "El tamaño del archivo no debe exceder 2 MB.");
-                return Page();
-            }
+                _logger.LogInformation($"El correo electrónico proporcionado es: {Input.Email}");
 
-            user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
-            user.ImageFileType = extension;
-        }
+                // Procesar la imagen subida
+                if (Input.ImageFormFile != null && Input.ImageFormFile.Length > 0)
+                {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var extension = Path.GetExtension(Input.ImageFormFile.FileName).ToLower();
 
-        var result = await _userManager.CreateAsync(user, Input.Password);
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        ModelState.AddModelError("Input.ImageFormFile", "Tipo de archivo no permitido. Solo se permiten imágenes en formato JPG, JPEG, PNG o GIF.");
+                        return Page();
+                    }
 
-        if (result.Succeeded)
-        {
-            _logger.LogInformation("El usuario ha creado una nueva cuenta con contraseña.");
+                    if (Input.ImageFormFile.Length > 2 * 1024 * 1024) // 2 MB
+                    {
+                        ModelState.AddModelError("Input.ImageFormFile", "El tamaño del archivo no debe exceder 2 MB.");
+                        return Page();
+                    }
 
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    user.ImageFileData = await _imageService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
+                    user.ImageFileType = extension;
+                }
 
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId, code, returnUrl },
-                protocol: Request.Scheme);
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
-            try
-            {
-                await _emailSender.SendEmailAsync(
-    Input.Email,
-    "Confirma tu cuenta en CDR Worship",
-    $@"
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("El usuario ha creado una nueva cuenta con contraseña.");
+
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId, code, returnUrl },
+                        protocol: Request.Scheme);
+
+                    try
+                    {
+                        await _emailSender.SendEmailAsync(
+            Input.Email,
+            "Confirma tu cuenta en CDR Worship",
+            $@"
         <h1>Bienvenido a CDR Worship, {Input.FirstName}!</h1>
         <p>Gracias por registrarte en nuestra plataforma. Para completar tu registro y acceder a todas nuestras funciones, por favor confirma tu correo electrónico haciendo clic en el enlace a continuación:</p>
         <p><a href='{HtmlEncoder.Default.Encode(callbackUrl)}' style='color: #ffffff; background-color: #007bff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Confirma tu cuenta</a></p>
@@ -168,35 +168,35 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         <p>¡Nos alegra mucho tenerte con nosotros!</p>
         <p>Saludos cordiales,<br/>Equipo de CDR Worship</p>
     ");
-            }
-            catch (Exception ex)
-            {
-                // Agregar error al ModelState si falla el envío del correo
-                ModelState.AddModelError(string.Empty, "Hubo un error al enviar el correo de confirmación. Por favor intenta de nuevo más tarde.");
-                _logger.LogError(ex, "Error enviando el correo de confirmación.");
-                return Page(); // Vuelve a mostrar la página con el error.
+                    }
+                    catch (Exception ex)
+                    {
+                        // Agregar error al ModelState si falla el envío del correo
+                        ModelState.AddModelError(string.Empty, "Hubo un error al enviar el correo de confirmación. Por favor intenta de nuevo más tarde.");
+                        _logger.LogError(ex, "Error enviando el correo de confirmación.");
+                        return Page(); // Vuelve a mostrar la página con el error.
+                    }
+
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+                    }
+                    else
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
-            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-            {
-                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
-            }
-            else
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return LocalRedirect(returnUrl);
-            }
+            // Si llegamos hasta aquí, algo falló; volvemos a mostrar el formulario
+            return Page();
         }
-
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
-    }
-
-    // Si llegamos hasta aquí, algo falló; volvemos a mostrar el formulario
-    return Page();
-}
 
         private IUserEmailStore<AppUser> GetEmailStore()
         {

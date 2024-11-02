@@ -14,13 +14,13 @@ namespace CDR_Worship.Models
 
     // Clase para estructurar los datos del comentario
     public class CommentData
-{
-    public int CommentId { get; set; }
-    public int ScheduleSongId { get; set; }
-    public string? Name { get; set; }  // Nombre de la canción
-    public string? CommentText { get; set; }
-    public string? CommentUserName { get; set; }
-    public string? CommentCreated { get; set; }
-    public string? CommentUserImage { get; set; }
-}
+    {
+        public int CommentId { get; set; }
+        public int ScheduleSongId { get; set; }
+        public string? Name { get; set; }  // Nombre de la canción
+        public string? CommentText { get; set; }
+        public string? CommentUserName { get; set; }
+        public string? CommentCreated { get; set; }
+        public string? CommentUserImage { get; set; }
+    }
 }

@@ -25,11 +25,11 @@ namespace CDR_Worship.Data
         public DbSet<DocumentComment> DocumentComments { get; set; } = default!;
         public DbSet<CommentLike> CommentLikes { get; set; } = default!;
         public DbSet<CommentReply> CommentReplies { get; set; } = default!;
-        
+
 
 
         // public DbSet<Calendar> Calendars { get; set; } = default!;
         // public DbSet<CalendarDay> CalendarDays { get; set; } = default!;
-        
+
     }
 }

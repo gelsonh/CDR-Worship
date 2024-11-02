@@ -1,55 +1,20 @@
 ﻿@model CDR_Worship.Models.SongDocument
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Subir Archivo";
 }
 
 
-<style>
-    /* Form Styles */
-    .form-floating .form-control,
-    .form-floating .form-select {
-        border-radius: 0.5rem;
-        height: 3.5rem;
-        /* Ajusta la altura del campo para que el label grande se vea mejor */
-    }
 
-    /* Cambiar el estilo del label cuando no está enfocado */
-    .form-floating label {
-        font-size: 1.2rem;
-        /* Tamaño inicial más grande */
-        color: #6c757d;
-        text-align: center;
-        transform-origin: left top;
-        transition: all 0.3s ease;
-    }
-
-    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
-    .form-floating .form-control:focus+label,
-    .form-floating .form-control:not(:placeholder-shown)+label {
-        font-size: 0.875rem;
-        /* Reducir el tamaño al hacer clic */
-        transform: translateY(-1.5rem);
-        /* Mover hacia arriba */
-        color: #007bff;
-        text-align: left;
-        /* Cambia a alineación izquierda cuando está en la parte superior */
-    }
-
-    /* Agregar estilos para el input cuando está enfocado */
-    .form-control:focus,
-    .form-select:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-    }
-</style>
-
-<div class="container my-5">
+<div class="container-xxl my-5">
 
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card box-shadow">
-                <div class="card-body">
+            <div class="form-container">
+                <div class="card-body p-2">
+                    <h1 class="card-title text-center">@ViewData["Title"]</h1>
+                    <hr />
+
                     <form asp-action="Create" asp-controller="SongDocuments" enctype="multipart/form-data"
                         method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
@@ -60,7 +25,6 @@
 
                         <div class="form-group my-3">
                             <div class="card p-3">
-                                <h3 class="h5">Subir Archivos</h3>
                                 <div class="drop_box border border-dotted p-2 text-center">
                                     <label class="btn btn-primary btn-sm btn-color m-0">
                                         <input name="FormFile" type="file" class="form-control-file d-none" id="fileID"
@@ -87,8 +51,8 @@
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
-                        <div class="form-floating mt-4">
-                            <button type="submit" class="btn btn-color btn-primary">Subir Canción</button>
+                        <div class="form-group mt-3 text-center">
+                            <button type="submit" class="btn btn-color btn-primary">Subir</button>
                             <a asp-action="Index" class="btn btn-color btn-outline-secondary ml-2">Volver</a>
                         </div>
                     </form>

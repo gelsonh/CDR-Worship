@@ -26,7 +26,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _logger = logger;
             _configuration = configuration;
         }
-     
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -102,13 +102,13 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null, string demoLoginEmail = null)
-       {
-           returnUrl ??= Url.Content("~/");
+        {
+            returnUrl ??= Url.Content("~/");
 
-           // Asegúrate de que _signInManager está correctamente inicializado
-           ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            // Asegúrate de que _signInManager está correctamente inicializado
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-           if (!string.IsNullOrEmpty(demoLoginEmail))
+            if (!string.IsNullOrEmpty(demoLoginEmail))
             {
                 string email = _configuration[demoLoginEmail] ?? Environment.GetEnvironmentVariable(demoLoginEmail);
                 string password = _configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
@@ -146,8 +146,8 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                     return Page();
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
                 }
             }
 

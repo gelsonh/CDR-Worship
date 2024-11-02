@@ -42,7 +42,7 @@ public class ImageService : IImageService
     {
         // Construir la ruta completa usando Path.Combine
         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _defaultImageFilePath);
-        
+
         if (!File.Exists(filePath))
         {
             throw new FileNotFoundException("Default image file not found.");

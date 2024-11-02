@@ -5,75 +5,41 @@
 }
 
 
-<style>
-    /* Form Styles */
-    .form-floating .form-control,
-    .form-floating .form-select {
-        border-radius: 0.5rem;
-        height: 3.5rem;
-        /* Ajusta la altura del campo para que el label grande se vea mejor */
-    }
-
-    /* Cambiar el estilo del label cuando no está enfocado */
-    .form-floating label {
-        font-size: 1.2rem;
-        /* Tamaño inicial más grande */
-        color: #6c757d;
-        text-align: center;
-        transform-origin: left top;
-        transition: all 0.3s ease;
-    }
-
-    /* Cambiar el estilo del label cuando el campo está enfocado o lleno */
-    .form-floating .form-control:focus+label,
-    .form-floating .form-control:not(:placeholder-shown)+label {
-        font-size: 0.875rem;
-        /* Reducir el tamaño al hacer clic */
-        transform: translateY(-1.5rem);
-        /* Mover hacia arriba */
-        color: #007bff;
-        text-align: left;
-        /* Cambia a alineación izquierda cuando está en la parte superior */
-    }
-
-    /* Agregar estilos para el input cuando está enfocado */
-    .form-control:focus,
-    .form-select:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
-    }
-</style>
 
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card box-shadow" style="max-width: 600px; width: 100%;">
+<div class="container-xxl d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-container">
 
-        <div class="card-body p-5">
-            <h1 class="text-center mb-5" style="font-weight: 700; font-size: 1.8rem;">@ViewData["Title"]</h1>
+        <div class="card-body p-2">
+            <h1 class="card-title text-center">@ViewData["Title"]</h1>
+            <hr />
 
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
-                <input type="hidden" asp-for="Id" />
+            <div class="justify-content-center">
 
-                <div class="form-floating mb-4">
-                    <input type="text" asp-for="SongName" class="form-control rounded-3" id="SongName"
-                        placeholder=" " />
-                    <label for="SongName" class="form-label">Nombre de la Canción</label>
-                    <span asp-validation-for="SongName" class="text-danger"></span>
-                </div>
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+                    <input type="hidden" asp-for="Id" />
 
-                <div class="form-floating mb-4">
-                    <input type="text" asp-for="Description" class="form-control rounded-3" id="Description"
-                        placeholder=" " />
-                    <label for="Description" class="form-label">Nombre del Artista o Grupo</label>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                    <div class="form-floating mb-4">
+                        <input type="text" asp-for="SongName" class="form-control rounded-3" id="SongName"
+                            placeholder=" " />
+                        <label for="SongName" class="form-label">Nombre de la Canción</label>
+                        <span asp-validation-for="SongName" class="text-danger"></span>
+                    </div>
 
-                <div class="d-flex justify-content-center mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg btn-color mx-2">Guardar</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg btn-color">Volver</a>
-                </div>
-            </form>
+                    <div class="form-floating mb-4">
+                        <input type="text" asp-for="Description" class="form-control rounded-3" id="Description"
+                            placeholder=" " />
+                        <label for="Description" class="form-label">Nombre del Artista o Grupo</label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg btn-color mx-2">Guardar</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-lg btn-color">Volver</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

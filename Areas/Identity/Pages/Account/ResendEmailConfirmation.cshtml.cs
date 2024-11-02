@@ -25,14 +25,14 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-      
+
         [BindProperty]
         public InputModel Input { get; set; }
 
-      
+
         public class InputModel
         {
-            
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -42,7 +42,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         {
         }
 
-         public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {

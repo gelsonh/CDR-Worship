@@ -8,7 +8,7 @@ namespace CDR_Worship.Models
     {
         [Required]
         [Display(Name = "FirstName")]
-        [StringLength(50, ErrorMessage ="The {0} must be at least {2}  and max {1} characters long.", MinimumLength =2)]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2}  and max {1} characters long.", MinimumLength = 2)]
         public string FirstName { get; set; }
 
         [Required]
@@ -26,16 +26,16 @@ namespace CDR_Worship.Models
 
         public string? ImageFileType { get; set; }
 
-          // Nueva propiedad para almacenar la ruta o base64 de la imagen procesada
+        // Nueva propiedad para almacenar la ruta o base64 de la imagen procesada
         [NotMapped]
         public string? ImageFilePath { get; set; }
 
         // Constructor sin parámetros
-        public AppUser() 
+        public AppUser()
         {
             FirstName = string.Empty;
             LastName = string.Empty;
         }
-        
+
     }
 }

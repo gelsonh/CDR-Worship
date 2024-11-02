@@ -14,9 +14,9 @@ namespace CDR_Worship.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ISongDocumentService _songDocumentService;
         private readonly IFileService _fileService;
-        
 
-        public SongDocumentsController(ApplicationDbContext context,UserManager<AppUser> userManager, ISongDocumentService songDocumentService,IFileService fileService)
+
+        public SongDocumentsController(ApplicationDbContext context, UserManager<AppUser> userManager, ISongDocumentService songDocumentService, IFileService fileService)
         {
             _context = context;
             _userManager = userManager;
@@ -43,75 +43,77 @@ namespace CDR_Worship.Controllers
             }
         }
 
-      public async Task<IActionResult> Download(int id)
-{
-    var songDocument = await _songDocumentService.GetSongDocumentByIdAsync(id);
-
-    if (songDocument != null && songDocument.FileData != null && songDocument.FileName != null)
-    {
-        // Obtener el tipo de contenido adecuado para el archivo según su extensión
-        string ext = Path.GetExtension(songDocument.FileName).ToLowerInvariant();
-        string contentType = ext switch
+        public async Task<IActionResult> Download(int id)
         {
-            ".pdf" => "application/pdf",
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".png" => "image/png",
-            ".gif" => "image/gif",
-            ".txt" => "text/plain",
-            ".doc" => "application/msword",
-            ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            ".xls" => "application/vnd.ms-excel",
-            ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            _ => "application/octet-stream" // Tipo genérico
-        };
+            var songDocument = await _songDocumentService.GetSongDocumentByIdAsync(id);
 
-        // Retornar el archivo para su descarga
-        return File(songDocument.FileData, contentType, songDocument.FileName);
-    }
+            if (songDocument != null && songDocument.FileData != null && songDocument.FileName != null)
+            {
+                // Obtener el tipo de contenido adecuado para el archivo según su extensión
+                string ext = Path.GetExtension(songDocument.FileName).ToLowerInvariant();
+                string contentType = ext switch
+                {
+                    ".pdf" => "application/pdf",
+                    ".jpg" or ".jpeg" => "image/jpeg",
+                    ".png" => "image/png",
+                    ".gif" => "image/gif",
+                    ".txt" => "text/plain",
+                    ".doc" => "application/msword",
+                    ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    ".xls" => "application/vnd.ms-excel",
+                    ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    _ => "application/octet-stream" // Tipo genérico
+                };
 
-    return NotFound();
-}
+                // Retornar el archivo para su descarga
+                return File(songDocument.FileData, contentType, songDocument.FileName);
+            }
 
-      public async Task<IActionResult> ViewDocument(int id)
-{
-    var songDocument = await _songDocumentService.GetSongDocumentByIdAsync(id);
-
-    if (songDocument != null && songDocument.FileData != null)
-    {
-        // Ensure the file name is not null or empty
-        if (string.IsNullOrEmpty(songDocument.FileName))
-        {
-            return BadRequest("File name not found.");
+            return NotFound();
         }
 
-        // Get the file extension and determine the MIME type
-        string ext = Path.GetExtension(songDocument.FileName!).ToLowerInvariant();
-
-        // MIME type mapping based on file extension
-        string contentType = ext switch
+        public async Task<IActionResult> ViewDocument(int id)
         {
-            ".pdf" => "application/pdf",
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".png" => "image/png",
-            ".gif" => "image/gif",
-            ".txt" => "text/plain",
-            ".doc" => "application/msword",
-            ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            ".xls" => "application/vnd.ms-excel",
-            ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            ".mp3" => "audio/mpeg",  
-            ".mp4" => "video/mp4",  
-            _ => "application/octet-stream"
-        };
+            var songDocument = await _songDocumentService.GetSongDocumentByIdAsync(id);
 
-        // Return the file as a response with the appropriate content type
-        // Removed the file name to allow inline display rather than download
-        return File(songDocument.FileData, contentType);
-    }
+            if (songDocument != null && songDocument.FileData != null)
+            {
+                // Ensure the file name is not null or empty
+                if (string.IsNullOrEmpty(songDocument.FileName))
+                {
+                    return BadRequest("File name not found.");
+                }
 
-    // If no document or file data is found, return NotFound
-    return NotFound("Document not found or missing file data.");
-}
+                // Get the file extension and determine the MIME type
+                string ext = Path.GetExtension(songDocument.FileName!).ToLowerInvariant();
+
+                // MIME type mapping based on file extension
+                string contentType = ext switch
+                {
+                    ".pdf" => "application/pdf",
+                    ".jpg" or ".jpeg" => "image/jpeg",
+                    ".png" => "image/png",
+                    ".gif" => "image/gif",
+                    ".txt" => "text/plain",
+                    ".doc" => "application/msword",
+                    ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    ".xls" => "application/vnd.ms-excel",
+                    ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    ".mp3" => "audio/mpeg",
+                    ".mp4" => "video/mp4",
+                    _ => "application/octet-stream"
+                };
+
+                // Ensure the browser tries to display the file inline rather than download it
+                Response.Headers["Content-Disposition"] = $"inline; filename=\"{songDocument.FileName}\"";
+
+                // Return the file as a response with the appropriate content type
+                return File(songDocument.FileData, contentType);
+            }
+
+            // If no document or file data is found, return NotFound
+            return NotFound("Document not found or missing file data.");
+        }
         // GET: SongDocuments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -139,52 +141,52 @@ namespace CDR_Worship.Controllers
             return View(songDocument);
         }
 
-// POST: SongDocuments/Create
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create(IFormFile FormFile, [Bind("Id,SongName,Description,Created,Updated,ChordDocumentId")] SongDocument songDocument)
-{
-    try
-    {
-        // Verificar si se recibió el archivo adjunto del formulario
-        if (FormFile == null || FormFile.Length == 0)
+        // POST: SongDocuments/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(IFormFile FormFile, [Bind("Id,SongName,Description,Created,Updated,ChordDocumentId")] SongDocument songDocument)
         {
-            ModelState.AddModelError("FormFile", "Please select a file to upload.");
-            return View(songDocument);
-        }
-
-        // Verificar si el modelo es válido
-        if (ModelState.IsValid)
-        {
-            // Procesar el archivo adjunto y almacenarlo en SongDocument
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                await FormFile.CopyToAsync(memoryStream);
-                songDocument.FileData = memoryStream.ToArray(); // Almacena los bytes del archivo
-                songDocument.FileName = FormFile.FileName; // Almacena el nombre del archivo
-                songDocument.FileType = FormFile.ContentType; // Almacena el tipo MIME del archivo
+                // Verificar si se recibió el archivo adjunto del formulario
+                if (FormFile == null || FormFile.Length == 0)
+                {
+                    ModelState.AddModelError("FormFile", "Please select a file to upload.");
+                    return View(songDocument);
+                }
+
+                // Verificar si el modelo es válido
+                if (ModelState.IsValid)
+                {
+                    // Procesar el archivo adjunto y almacenarlo en SongDocument
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await FormFile.CopyToAsync(memoryStream);
+                        songDocument.FileData = memoryStream.ToArray(); // Almacena los bytes del archivo
+                        songDocument.FileName = FormFile.FileName; // Almacena el nombre del archivo
+                        songDocument.FileType = FormFile.ContentType; // Almacena el tipo MIME del archivo
+                    }
+
+                    // Guardar el documento en la base de datos
+                    _context.Add(songDocument);
+                    await _context.SaveChangesAsync();
+
+                    // Redirigir a la vista de índice
+                    return RedirectToAction("Index");
+                }
+
+                return View(songDocument);
             }
-
-            // Guardar el documento en la base de datos
-            _context.Add(songDocument);
-            await _context.SaveChangesAsync();
-
-            // Redirigir a la vista de índice
-            return RedirectToAction("Index");
+            catch (Exception ex)
+            {
+                // Manejar la excepción
+                ModelState.AddModelError(string.Empty, "An error occurred while saving the document.");
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return View(songDocument);
+            }
         }
 
-        return View(songDocument);
-    }
-    catch (Exception ex)
-    {
-        // Manejar la excepción
-        ModelState.AddModelError(string.Empty, "An error occurred while saving the document.");
-        Console.WriteLine($"An error occurred: {ex.Message}");
-        return View(songDocument);
-    }
-}
 
-       
         // GET: SongDocuments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

@@ -14,7 +14,7 @@ namespace CDR_Worship.Controllers
             _logger = logger;
         }
 
-       
+
         public IActionResult Index()
         {
             return View();

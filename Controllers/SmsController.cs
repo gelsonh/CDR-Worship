@@ -24,35 +24,35 @@ namespace CDR_Worship.Controllers
         }
 
         [HttpPost("send")]
-public IActionResult SendSms(Sms model)
-{
-    if (ModelState.IsValid)
-    {
-        if (!string.IsNullOrEmpty(model.Message))
+        public IActionResult SendSms(Sms model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // Usar el servicio para enviar el mensaje a todos los destinatarios
-                _smsService.SendSms(model.Message);
-                _logger.LogInformation("SMS sent to all configured recipients.");
-                
-                // Enviar mensaje de éxito a la vista usando TempData
-                TempData["SuccessMessage"] = "El SMS fue enviado exitosamente a todos los destinatarios.";
-                return RedirectToAction("Index"); // Redirige a la vista Index o actual
+                if (!string.IsNullOrEmpty(model.Message))
+                {
+                    try
+                    {
+                        // Usar el servicio para enviar el mensaje a todos los destinatarios
+                        _smsService.SendSms(model.Message);
+                        _logger.LogInformation("SMS sent to all configured recipients.");
+
+                        // Enviar mensaje de éxito a la vista usando TempData
+                        TempData["SuccessMessage"] = "El SMS fue enviado exitosamente a todos los destinatarios.";
+                        return RedirectToAction("Index"); // Redirige a la vista Index o actual
+                    }
+                    catch (Exception ex)
+                    {
+                        // Enviar mensaje de error a la vista usando TempData
+                        _logger.LogError($"Error al enviar SMS: {ex.Message}");
+                        TempData["ErrorMessage"] = "No se pudo enviar el SMS. Intenta nuevamente.";
+                        return RedirectToAction("Index"); // Redirige a la vista actual
+                    }
+                }
+
+                ModelState.AddModelError("Message", "El mensaje no puede estar vacío.");
             }
-            catch (Exception ex)
-            {
-                // Enviar mensaje de error a la vista usando TempData
-                _logger.LogError($"Error al enviar SMS: {ex.Message}");
-                TempData["ErrorMessage"] = "No se pudo enviar el SMS. Intenta nuevamente.";
-                return RedirectToAction("Index"); // Redirige a la vista actual
-            }
+
+            return View("Index", model); // Si hay errores, regresa la vista con el modelo
         }
-
-        ModelState.AddModelError("Message", "El mensaje no puede estar vacío.");
-    }
-
-    return View("Index", model); // Si hay errores, regresa la vista con el modelo
-}
     }
 }

@@ -30,8 +30,8 @@ namespace CDR_Worship.Models
         public int? ParentCommentId { get; set; } // Reference to the parent comment if it's a reply
         public virtual DocumentComment? ParentComment { get; set; }
         public virtual ICollection<DocumentComment> Replies { get; set; } = new List<DocumentComment>();
-          // Aquí, 'Likes' debe ser una colección y no debe tener [NotMapped]
-       public ICollection<CommentLike> Likes { get; set; } = new List<CommentLike>();
+        // Aquí, 'Likes' debe ser una colección y no debe tener [NotMapped]
+        public ICollection<CommentLike> Likes { get; set; } = new List<CommentLike>();
 
         public string? AppUserId { get; set; }
         public virtual AppUser? User { get; set; }

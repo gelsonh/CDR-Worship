@@ -62,33 +62,33 @@ namespace CDR_Worship.Services
         // New Like Methods
 
         // Add a like to a comment, and ensure a user can like only once.
-       public async Task<bool> AddLikeAsync(int documentCommentId, string userId)
-{
-    var existingLike = await _context.CommentLikes
-        .FirstOrDefaultAsync(cl => cl.DocumentCommentId == documentCommentId && cl.AppUserId == userId);
-
-    if (existingLike != null)
-    {
-        // El usuario ya ha dado like a este comentario
-        return false;
-    }
-
-    var comment = await _context.DocumentComments.FindAsync(documentCommentId);
-    if (comment != null)
-    {
-        comment.LikesCount += 1;
-        _context.CommentLikes.Add(new CommentLike
+        public async Task<bool> AddLikeAsync(int documentCommentId, string userId)
         {
-            DocumentCommentId = documentCommentId,
-            AppUserId = userId,
-            LikedOn = DateTime.UtcNow
-        });
-        await _context.SaveChangesAsync();
-        return true;
-    }
+            var existingLike = await _context.CommentLikes
+                .FirstOrDefaultAsync(cl => cl.DocumentCommentId == documentCommentId && cl.AppUserId == userId);
 
-    return false;
-}
+            if (existingLike != null)
+            {
+                // El usuario ya ha dado like a este comentario
+                return false;
+            }
+
+            var comment = await _context.DocumentComments.FindAsync(documentCommentId);
+            if (comment != null)
+            {
+                comment.LikesCount += 1;
+                _context.CommentLikes.Add(new CommentLike
+                {
+                    DocumentCommentId = documentCommentId,
+                    AppUserId = userId,
+                    LikedOn = DateTime.UtcNow
+                });
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
 
         // Remove a like if needed (optional functionality)
         public async Task<bool> RemoveLikeAsync(int commentId, string userId)
@@ -119,6 +119,6 @@ namespace CDR_Worship.Services
                 .AnyAsync(cl => cl.DocumentCommentId == commentId && cl.AppUserId == userId);
         }
 
-        
+
     }
 }

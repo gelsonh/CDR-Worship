@@ -12,24 +12,24 @@ namespace CDR_Worship.Controllers
         private readonly IAudioService _audioService;
         private readonly IChordDocumentService _chordDocumentService;
 
-        public SongsController( ApplicationDbContext context, IAudioService audioService, IChordDocumentService chordDocumentService)
+        public SongsController(ApplicationDbContext context, IAudioService audioService, IChordDocumentService chordDocumentService)
         {
             _context = context;
             _audioService = audioService;
             _chordDocumentService = chordDocumentService;
         }
-       
 
-         // GET: Crear una nueva canción
-    [HttpGet]
-    public async Task<IActionResult> Create()
-    {
-        var viewModel = new SongAudioViewModel
+
+        // GET: Crear una nueva canción
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            Chords = await _chordDocumentService.GetUniqueChordsAsync() // Llenar con acordes únicos
-        };
-        return View(viewModel);
-    }
+            var viewModel = new SongAudioViewModel
+            {
+                Chords = await _chordDocumentService.GetUniqueChordsAsync() // Llenar con acordes únicos
+            };
+            return View(viewModel);
+        }
 
         // POST: Guardar nueva canción
         [HttpPost]
@@ -48,26 +48,26 @@ namespace CDR_Worship.Controllers
         }
 
         // GET: Editar una canción
-    [HttpGet]
-    public async Task<IActionResult> Edit(int id)
-    {
-        var songAudio = await _audioService.GetSongAudioByIdAsync(id);
-        if (songAudio == null)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
-            return NotFound();
+            var songAudio = await _audioService.GetSongAudioByIdAsync(id);
+            if (songAudio == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new SongAudioViewModel
+            {
+                Id = songAudio.Id,
+                SongName = songAudio.SongName,
+                YouTubeUrl = songAudio.YouTubeUrl,
+                ChordId = songAudio.ChordId,
+                Chords = await _chordDocumentService.GetUniqueChordsAsync() // Llenar con acordes únicos
+            };
+
+            return View(viewModel);
         }
-
-        var viewModel = new SongAudioViewModel
-        {
-            Id = songAudio.Id,
-            SongName = songAudio.SongName,
-            YouTubeUrl = songAudio.YouTubeUrl,
-            ChordId = songAudio.ChordId,
-            Chords = await _chordDocumentService.GetUniqueChordsAsync() // Llenar con acordes únicos
-        };
-
-        return View(viewModel);
-    }
 
         // POST: Guardar cambios de una canción existente
         [HttpPost]

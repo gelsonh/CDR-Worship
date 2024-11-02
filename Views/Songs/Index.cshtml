@@ -15,9 +15,22 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
+
+    /* Estilo para videos embebidos */
+    .video-frame {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .video-frame:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
 </style>
 
-<div class="container my-5">
+<div class="container-xxl my-5">
     <div class="row">
         @if (!Model.Any())
         {
@@ -64,7 +77,7 @@
                             @if (!string.IsNullOrEmpty(song.YouTubeUrl) && song.YouTubeUrl.Contains("="))
                             {
                                 var videoId = song.YouTubeUrl.Split('=')[1];
-                                <div class="ratio ratio-16x9 mb-3">
+                                <div class="ratio ratio-16x9 mb-3 video-frame">
                                     <iframe src="https://www.youtube.com/embed/@videoId" title="YouTube video"
                                         allowfullscreen></iframe>
                                 </div>
@@ -84,10 +97,10 @@
                                     </form>
                                 </div>
                             }
-
                         </div>
                     </div>
                 </div>
+
             }
         }
 

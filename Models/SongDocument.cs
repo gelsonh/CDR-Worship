@@ -55,7 +55,7 @@ namespace CDR_Worship.Models
 
 
         public virtual ICollection<SongAttachment> SongAttachments { get; set; } = new HashSet<SongAttachment>();
-       
+
 
     }
 }
