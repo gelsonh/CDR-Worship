@@ -284,6 +284,27 @@ footer {
   color: #fff;
 }
 
+/* Estilo responsive para dropdown */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+  }
+
+  .dropdown-item {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .dropdown-header {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
+
 /* Responsividad */
 @media (max-width: 768px) {
   .user-dropdown {
@@ -451,4 +472,59 @@ footer {
 
 .info-section {
   padding: 20px;
+}
+
+/* Estilo para dropdown de notificaciones */
+.notification-dropdown {
+  width: 300px;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+  border: none;
+  background-color: #fff;
+}
+
+.notification-dropdown .dropdown-header {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gh-theme-600);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gh-gray-core);
+}
+
+.notification-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--gh-dark-color);
+  transition: background-color 0.3s ease;
+}
+
+.notification-dropdown .dropdown-item:hover {
+  background-color: var(--gh-theme-150);
+}
+
+.notification-dropdown .notification-icon {
+  font-size: 1.25rem;
+  margin-right: 0.75rem;
+  color: var(--gh-theme-600);
+}
+
+/* Responsividad para dropdown de notificaciones */
+@media (max-width: 768px) {
+  .notification-dropdown {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .notification-dropdown .dropdown-header {
+    font-size: 0.9rem;
+  }
+
+  .notification-dropdown .dropdown-item {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
 }
