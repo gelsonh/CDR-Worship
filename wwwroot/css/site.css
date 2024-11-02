@@ -97,12 +97,15 @@ main > .container {
 }
 
 .form-floating .form-control,
-.form-floating .form-select {
+.form-floating .form-control,
+.form-floating .form-select,
+.form-floating input[type="date"] {
   border-radius: 0.5rem;
-  height: 3.5rem;
+  height: auto;
+  padding: 0.75rem;
 }
 
-.form-floating label {
+.form-floating.label {
   font-size: 1.2rem;
   color: #6c757d;
   text-align: center;
@@ -112,8 +115,8 @@ main > .container {
 
 .form-floating .form-control:focus + label,
 .form-floating .form-control:not(:placeholder-shown) + label,
-.form-floating input[type="date"]:focus + label,
-.form-floating input[type="date"]:valid + label,
+.form-floating input:focus + label,
+.form-floating input:not(:placeholder-shown) + label,
 .form-floating .form-select:focus + label,
 .form-floating .form-select:not([value=""]) + label {
   font-size: 0.875rem;
@@ -123,7 +126,8 @@ main > .container {
 }
 
 .form-control:focus,
-.form-select:focus {
+.form-select:focus,
+input:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
 }
