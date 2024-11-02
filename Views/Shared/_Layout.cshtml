@@ -96,128 +96,124 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                                    <ul class="navbar-nav ms-auto">
-                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Home" ? "active" : "")">
-                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="Home" asp-action="Index"
-                                                title="Home">Bienvenida</a>
-                                        </li>
-                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "SongDocuments" ? "active" : "")">
-                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="SongDocuments"
-                                                asp-action="Index">Letras</a>
-                                        </li>
-                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ChordDocuments" ? "active" : "")">
-                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="ChordDocuments"
-                                                asp-action="Index">Acordes</a>
-                                        </li>
-                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ScheduledSongs" ? "active" : "")">
-                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
-                                                asp-action="Index">Lista</a>
-                                        </li>
-                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Songs" ? "active" : "")">
-                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="Songs"
-                                                asp-action="Index">Video</a>
-                                        </li>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Home" ? "active" : "")">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="Home" asp-action="Index"
+                                    title="Home">Bienvenida</a>
+                            </li>
+                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "SongDocuments" ? "active" : "")">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="SongDocuments"
+                                    asp-action="Index">Letras</a>
+                            </li>
+                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ChordDocuments" ? "active" : "")">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="ChordDocuments"
+                                    asp-action="Index">Acordes</a>
+                            </li>
+                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ScheduledSongs" ? "active" : "")">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
+                                    asp-action="Index">Lista</a>
+                            </li>
+                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Songs" ? "active" : "")">
+                                <a class="nav-link rounded-pill" asp-area="" asp-controller="Songs"
+                                    asp-action="Index">Video</a>
+                            </li>
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
-                                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Sms" ? "active" : "")">
-                                                            <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms"
-                                                                asp-action="Index">Mensajes</a>
-                                                        </li>
+                                <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Sms" ? "active" : "")">
+                                    <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms"
+                                        asp-action="Index">Mensajes</a>
+                                </li>
                             }
-
-                                    </ul>
+                        </ul>
                     }
                     else
                     {
-                                    <ul class="navbar-nav ms-auto">
-                                        <partial name="_LoginPartial" />
-                                    </ul>
+                        <ul class="navbar-nav ms-auto">
+                            <partial name="_LoginPartial" />
+                        </ul>
                     }
 
                     @if (SignInManager.IsSignedIn(User))
                     {
-                                    <ul class="navbar-nav ms-auto d-flex align-items-center">
-                                        <!-- Notificaciones solo en tablet y PC (md y superior) -->
-                                        <li class="nav-item dropdown d-none d-md-block me-3">
-                                            <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-bell-fill" style="font-size: 1.5rem;"></i>
-                                                <!-- Badge de Notificaciones -->
-                                                <span id="notificationBadge"
-                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                                    style="display: none;">
-                                                    0
-                                                    <span class="visually-hidden">nuevos comentarios</span>
-                                                </span>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
-                                                aria-labelledby="notificationDropdown" style="width: 300px;">
-                                                <li class="dropdown-header">Nuevos Comentarios</li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <div id="notificationItems">
-                                                    <li class="dropdown-item text-center">No hay nuevos comentarios.</li>
-                                                </div>
-                                            </ul>
-                                        </li>
+                        <ul class="navbar-nav ms-auto d-flex align-items-center">
+                            <!-- Notificaciones solo en tablet y PC (md y superior) -->
+                            <li class="nav-item dropdown d-none d-md-block me-3">
+                                <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-bell-fill" style="font-size: 1.5rem;"></i>
+                                    <!-- Badge de Notificaciones -->
+                                    <span id="notificationBadge"
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        style="display: none;">
+                                        0
+                                        <span class="visually-hidden">nuevos comentarios</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
+                                    aria-labelledby="notificationDropdown" style="width: 300px;">
+                                    <li class="dropdown-header">Nuevos Comentarios</li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <div id="notificationItems">
+                                        <li class="dropdown-item text-center">No hay nuevos comentarios.</li>
+                                    </div>
+                                </ul>
+                            </li>
 
-                                        <!-- Dropdown del Usuario -->
-                                        <li class="nav-item dropdown">
+                            <!-- Dropdown del Usuario -->
+                            <li class="nav-item dropdown">
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
                                     var user = await UserManager.GetUserAsync(User);
                                     var Image = ImageService.ConvertByteArrayToFile(user?.ImageFileData, user?.ImageFileType,
                                     DefaultImage.UserImage);
-
-                                                            <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center" href="#"
-                                                                id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <img src="@Image" alt="Profile Image" class="rounded-circle me-1"
-                                                                    style="width: 40px; height: 40px; object-fit: cover;" />
-                                                                <span class="user-name ms-1">@user?.FirstName</span>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                                                                <li class="dropdown-header">
-                                                                    <div class="d-flex align-items-center p-3">
-                                                                        <img src="@Image" alt="Profile Image" class="rounded-circle me-3"
-                                                                            style="width: 60px; height: 60px; object-fit: cover;">
-                                                                        <div>
-                                                                            <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName
+                                    <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center" href="#"
+                                        id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="@Image" alt="Profile Image" class="rounded-circle me-1"
+                                            style="width: 40px; height: 40px; object-fit: cover;" />
+                                        <span class="user-name ms-1">@user?.FirstName</span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                        <li class="dropdown-header">
+                                            <div class="d-flex align-items-center p-3">
+                                                <img src="@Image" alt="Profile Image" class="rounded-circle me-3"
+                                                    style="width: 60px; height: 60px; object-fit: cover;">
+                                                <div>
+                                                    <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName
                                                         @user?.LastName</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <hr class="dropdown-divider">
-                                                                </li>
-                                                                <li>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
                                             @{
-                                                var currentUser = await UserManager.GetUserAsync(User);
-                                                var isDemoUser = currentUser != null && await UserManager.IsInRoleAsync(currentUser,
-                                                "DemoUser");
+                                                var currentUser = await UserManager.GetUserAsync(User); var isDemoUser =
+                                            currentUser != null && await UserManager.IsInRoleAsync(currentUser, "DemoUser");
                                             }
-
                                             @if (!isDemoUser)
                                             {
-                                                                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"
-                                                                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-                                                                                        style="color: var(--gh-theme-900);">
-                                                                                        <i class="bi bi-gear me-2"></i>Cuenta
-                                                                                    </a>
+                                                <a class="dropdown-item mb-2" asp-area="Identity" asp-page="/Account/Manage/Index"
+                                                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                                    style="color: var(--gh-theme-900);">
+                                                    <i class="bi bi-gear me-2"></i>Cuenta
+                                                </a>
                                             }
-                                                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
-                                                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-                                                                        style="color: var(--gh-theme-900);">
-                                                                        <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                }
+                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                                style="color: var(--gh-theme-900);">
+                                                <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
+                                            </a>
                                         </li>
                                     </ul>
+                                }
+                            </li>
+                        </ul>
                     }
                 </div>
+
             </div>
         </nav>
     </header>
