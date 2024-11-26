@@ -82,7 +82,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
             public string ConfirmPassword { get; set; }
 
-            [Required(ErrorMessage = "Por favor, sube una foto de perfil.")]
+            // [Required(ErrorMessage = "Por favor, sube una foto de perfil.")]
             [DataType(DataType.Upload)]
             [Display(Name = "Foto de Perfil")]
             public IFormFile ImageFormFile { get; set; }
