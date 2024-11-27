@@ -202,7 +202,7 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         {
             if (!_userManager.SupportsUserEmail)
             {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
+                throw new NotSupportedException("La interfaz de usuario predeterminada requiere una tienda de usuarios con soporte por correo electrónico.");
             }
             return (IUserEmailStore<AppUser>)_userStore;
         }
