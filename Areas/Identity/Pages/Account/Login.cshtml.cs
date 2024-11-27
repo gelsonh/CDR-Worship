@@ -19,12 +19,14 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
 
         private readonly IConfiguration _configuration;
+        private readonly UserManager<AppUser> _userManager;
 
-        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger, IConfiguration configuration)
+        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger, IConfiguration configuration, UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
 
@@ -121,34 +123,40 @@ namespace CDR_Worship.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid demo login attempt.");
+                    ModelState.AddModelError(string.Empty, "Intento de inicio de sesión de demostración no válido.");
                     return Page();
                 }
             }
 
             if (ModelState.IsValid)
             {
+                // Verifica si el correo está registrado
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    // El correo no existe
+                    ModelState.AddModelError("Input.Email", "El correo electrónico no está registrado.");
+                    return Page();
+                }
 
+                // Intenta iniciar sesión si el correo es válido
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
+
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Cuenta de usuario bloqueada.");
                     return RedirectToPage("./Lockout");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+
+                // Contraseña incorrecta
+                ModelState.AddModelError("Input.Password", "La contraseña es incorrecta. Intenta de nuevo.");
+                return Page();
             }
 
             // Si llegamos hasta aquí, algo falló, redisplay form
