@@ -105,9 +105,13 @@ namespace CDR_Worship.Services
 
         public async Task<IEnumerable<Chord>> GetUniqueChordsAsync()
         {
-            var chords = await _context.Chords.ToListAsync();
-            return chords.GroupBy(ch => _chordMappingService.MapChordName(ch.ChordName!))
-            .Select(g => g.First());
+            var chords = await _context.Chords
+                .AsNoTracking() // Mejora el rendimiento
+                .GroupBy(ch => ch.ChordName) // Agrupar en la base de datos
+                .Select(g => g.First()) // Seleccionar el primer acorde de cada grupo
+                .ToListAsync();
+
+            return chords;
         }
 
 
