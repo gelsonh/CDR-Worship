@@ -5,12 +5,7 @@ namespace CDR_Worship.Services
 {
     public class ChordMappingService : IChordMappingService
     {
-        /// <summary>
-        /// Maps a chord name to its canonical form using CDRChordMapper.
-        /// </summary>
-        /// <param name="chordName">The chord name to map.</param>
-        /// <returns>The mapped chord name.</returns>
-        /// <exception cref="ArgumentException">Thrown if the chord name is null, empty, or invalid.</exception>
+       
         public string MapChordName(string chordName)
         {
             if (string.IsNullOrWhiteSpace(chordName))
@@ -30,10 +25,6 @@ namespace CDR_Worship.Services
             throw new ArgumentException($"Invalid chord name: {chordName}", nameof(chordName));
         }
 
-        /// <summary>
-        /// Retrieves all canonical chord names from the CDRChordMapper.
-        /// </summary>
-        /// <returns>A collection of all mapped chord names.</returns>
         public IEnumerable<string> GetAllMappedChordNames()
         {
             // Return distinct chord names to ensure no duplicates

@@ -31,6 +31,28 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
+                    <div class="mb-4">
+                        <label for="FileViewer" class="form-label">Vista Previa del Documento</label>
+                        @if (Model.ChordAttachments != null && Model.ChordAttachments.Any())
+                        {
+                            foreach (var attachment in Model.ChordAttachments)
+                            {
+                                <div class="mb-3">
+                                    <!-- Mostrar archivo como iframe -->
+                                    <iframe src="@Url.Action("ShowFile", "ChordDocuments", new { id = attachment.Id })"
+                                        class="w-100 rounded-3" style="height: 300px; border: 1px solid #ddd;"
+                                        frameborder="0"></iframe>
+                                    <!-- Mostrar información del archivo -->
+                                    <p class="mt-2 text-muted">Documento: @attachment.FileName</p>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">No hay documentos asociados.</p>
+                        }
+                    </div>
+
                     <div class="form-floating mb-4 chord-select">
                         <select asp-for="ChordId" class="form-select rounded-3" id="ChordId"
                             asp-items="@ViewBag.ChordId">

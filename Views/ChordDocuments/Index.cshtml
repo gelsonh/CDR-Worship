@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CDR_Worship.Models.ChordDocument>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Acordes";
 }
 
 
@@ -95,10 +95,10 @@
 </a>
                                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                                     {
-                    <a asp-action="Edit" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Editar"
+                    @* <a asp-action="Edit" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Editar"
                         class="mx-2 text-decoration-none">
                         <i class="bi bi-pencil"></i>
-                    </a>
+                    </a> *@
                     <a asp-action="Delete" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Eliminar"
                         class="mx-2 text-decoration-none">
                         <i class="bi bi-trash"></i>

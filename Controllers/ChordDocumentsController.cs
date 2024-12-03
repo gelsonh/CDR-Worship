@@ -16,7 +16,9 @@ namespace CDR_Worship.Controllers
         private readonly IChordDocumentService _chordDocumentService;
         private readonly IFileService _fileService;
         private readonly IChordMappingService _chordMappingService;
+
         private readonly ILogger<ChordDocumentsController> _logger;
+
 
         public ChordDocumentsController(ApplicationDbContext context, UserManager<AppUser> userManager, IChordDocumentService chordDocumentService, IFileService fileService, IChordMappingService chordMappingService, ILogger<ChordDocumentsController> logger)
         {
@@ -30,128 +32,52 @@ namespace CDR_Worship.Controllers
 
 
         // GET: ChordDocuments
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var chordDocuments = await _chordDocumentService.GetAllChordDocumentsAsync();
-                return View(chordDocuments);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving chord documents.");
-                TempData["ErrorMessage"] = "An error occurred while loading the documents.";
-                return RedirectToAction("Error", "Home");
-            }
+            // Obtener todos los documentos de acorde
+            var chordDocuments = await _chordDocumentService.GetAllChordDocumentsAsync();
+
+            // Ordenar los documentos de acorde por nombre de la canción
+            var sortedChordDocuments = chordDocuments.OrderBy(cd => cd.SongName);
+
+            // Pasar los documentos de acorde ordenados a la vista
+            return View(sortedChordDocuments);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddChordAttachment(IFormFile formFile, ChordAttachment chordAttachment)
+
+        public async Task<IActionResult> Download(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(chordAttachment);
-            }
-            var result = await _chordDocumentService.AddChordAttachmentAsync(formFile, chordAttachment, _userManager.GetUserId(User));
-
-            if (result.Success)
-            {
-                ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                return View(chordAttachment);
-            }
-
-            return RedirectToAction("Index");
-        }
-        public async Task<IActionResult> ShowFile(int id)
-        {
-            _logger.LogInformation("Intentando mostrar archivo con ID: {Id}", id);
-
-            var fileResult = await _chordDocumentService.GetAttachmentFileAsync(id);
+            var fileResult = await _chordDocumentService.PrepareFileForDownloadAsync(id);
 
             if (fileResult.HasValue)
             {
-                _logger.LogInformation("Archivo con ID {Id} encontrado. Mostrándolo al usuario.", id);
-                (byte[]? fileData, string contentType, string fileName) = fileResult.Value;
-                Response.Headers.Append("Content-Disposition", $"inline; filename={fileName}");
-                return File(fileData!, contentType);
+                var (fileData, contentType, fileName) = fileResult.Value;
+                return File(fileData!, contentType, fileName);
             }
 
-            _logger.LogWarning("Archivo no encontrado para el ID: {Id}", id);
-            return NotFound("File not found.");
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> Download(int id)
-        {
-            if (id <= 0)
-            {
-                _logger.LogWarning("ID no válido para la descarga: {Id}", id);
-                TempData["ErrorMessage"] = "ID no válido para la descarga.";
-                return RedirectToAction("Index");
-            }
-
-            try
-            {
-                // Obtener el archivo usando el servicio
-                var fileResult = await _chordDocumentService.GetAttachmentFileAsync(id);
-
-                // Verifica si el archivo existe
-                if (fileResult.HasValue)
-                {
-                    var (fileData, contentType, fileName) = fileResult.Value;
-
-                    if (fileData != null && !string.IsNullOrEmpty(contentType) && !string.IsNullOrEmpty(fileName))
-                    {
-                        _logger.LogInformation("Archivo con ID {Id} encontrado y descargado.", id);
-                        return File(fileData, contentType, fileName);
-                    }
-                }
-
-                // Archivo no encontrado
-                _logger.LogWarning("Archivo no encontrado para el ID: {Id}", id);
-                TempData["ErrorMessage"] = "El archivo no se encontró o no está disponible.";
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                // Registrar el error
-                _logger.LogError(ex, "Error al intentar descargar el archivo con ID: {Id}", id);
-                TempData["ErrorMessage"] = "Hubo un error al intentar descargar el archivo. Intenta nuevamente.";
-                return RedirectToAction("Index");
-            }
+            TempData["ErrorMessage"] = "The file does not exist or could not be found.";
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> ViewDocument(int id)
         {
-            _logger.LogInformation("Intentando visualizar documento con ID: {Id}", id);
+            var fileResult = await _chordDocumentService.PrepareFileForViewAsync(id);
 
-            // Obtener el archivo relacionado con el ID
-            var fileResult = await _chordDocumentService.GetAttachmentFileAsync(id);
-
-            // Verificar si el archivo existe
             if (fileResult.HasValue)
             {
-                var (fileData, contentType, fileName) = fileResult.Value;
+                var (fileData, contentType) = fileResult.Value;
 
-                if (fileData != null && !string.IsNullOrEmpty(contentType) && !string.IsNullOrEmpty(fileName))
-                {
-                    _logger.LogInformation("Archivo con ID {Id} encontrado. Mostrándolo.", id);
+                // Ensure the browser tries to display the file inline
+                Response.Headers["Content-Disposition"] = $"inline; filename=\"file\"";
 
-                    // Configurar el encabezado para mostrar el archivo en el navegador
-                    Response.Headers["Content-Disposition"] = $"inline; filename=\"{fileName}\"";
-
-                    // Retornar el archivo con el tipo de contenido correcto
-                    return File(fileData, contentType);
-                }
+                return File(fileData!, contentType);
             }
 
-            // Si no se encuentra el archivo, registrar advertencia y redirigir
-            _logger.LogWarning("Archivo no encontrado para el ID: {Id}", id);
-            TempData["ErrorMessage"] = "El archivo no se encontró o no está disponible.";
-            return RedirectToAction("Index");
+            TempData["ErrorMessage"] = "The file does not exist or could not be found.";
+            return RedirectToAction(nameof(Index));
         }
+
         //GET: ChordDocuments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -176,92 +102,60 @@ namespace CDR_Worship.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            // Obtener una lista de los acordes disponibles
+            var chords = await _chordDocumentService.GetUniqueChordsAsync();
+
+            // Crear una lista desplegable con los acordes
+            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
+
+            // Crear un nuevo objeto ChordDocument y pasarlo a la vista
+            var chordDocument = new ChordDocument(); // Puedes inicializarlo como lo necesites
+            return View(chordDocument);
+        }
+
+
+        private async Task PopulateChordsDropdownAsync()
+        {
             try
             {
+                // Obtener los acordes únicos desde el servicio
                 var chords = await _chordDocumentService.GetUniqueChordsAsync();
 
-                if (!chords.Any())
-                {
-                    TempData["ErrorMessage"] = "No hay acordes disponibles.";
-                    return RedirectToAction("Index");
-                }
-
+                // Crear una lista desplegable con los acordes
                 ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
-                return View(new ChordDocument());
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al cargar la vista de creación.");
-                TempData["ErrorMessage"] = "Se produjo un error al cargar el formulario.";
-                return RedirectToAction("Index");
+                // Manejar errores y registrar información de logs si es necesario
+                _logger.LogError(ex, "Error al llenar la lista de acordes para el dropdown.");
+                ViewBag.ChordId = new SelectList(Enumerable.Empty<SelectListItem>());
+                TempData["ErrorMessage"] = "Hubo un error al cargar los acordes disponibles.";
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile formFile, [Bind("SongName,Description,ChordId")] ChordDocument chordDocument)
+        public async Task<IActionResult> Create(IFormFile formFile, [Bind("Id,SongName,Description,Created,Updated,ChordId")] ChordDocument chordDocument)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                // Validar ModelState
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogWarning("ModelState no es válido. Errores: {Errors}",
-                        string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
-                    await PopulateChordsDropdownAsync();
-                    return View(chordDocument);
-                }
-
-                // Validar archivo subido
-                if (formFile == null || formFile.Length == 0)
-                {
-                    _logger.LogWarning("No se seleccionó un archivo válido.");
-                    ModelState.AddModelError("formFile", "Por favor, selecciona un archivo válido.");
-                    await PopulateChordsDropdownAsync();
-                    return View(chordDocument);
-                }
-
-                // Obtener usuario actual
-                var userId = _userManager.GetUserId(User);
-                if (string.IsNullOrEmpty(userId))
-                {
-                    _logger.LogWarning("Usuario no autenticado al intentar subir un documento.");
-                    TempData["ErrorMessage"] = "Debes iniciar sesión para subir un documento.";
-                    return RedirectToAction("Login", "Account");
-                }
-
-                // Guardar documento
-                var result = await _chordDocumentService.AddChordDocumentAsync(formFile, chordDocument, userId);
-                if (!result.Success)
-                {
-                    _logger.LogWarning("Error al guardar el documento: {ErrorMessage}", result.ErrorMessage);
-                    ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                    await PopulateChordsDropdownAsync();
-                    return View(chordDocument);
-                }
-
-                _logger.LogInformation("Documento guardado correctamente con ID: {Id}", chordDocument.Id);
-                TempData["SuccessMessage"] = "Documento guardado correctamente.";
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al procesar la creación del documento.");
-                TempData["ErrorMessage"] = "Se produjo un error inesperado. Intenta nuevamente.";
                 await PopulateChordsDropdownAsync();
                 return View(chordDocument);
             }
+
+            var userId = _userManager.GetUserId(User);
+            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId);
+
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.ErrorMessage!);
+                await PopulateChordsDropdownAsync();
+                return View(chordDocument);
+            }
+
+            TempData["SuccessMessage"] = "Document and attachment successfully saved.";
+            return RedirectToAction("Index");
         }
-
-        // Método auxiliar para evitar duplicación
-        private async Task PopulateChordsDropdownAsync()
-        {
-            var chords = await _chordDocumentService.GetUniqueChordsAsync();
-            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
-        }
-
-
 
         // GET: ChordDocuments/Edit/5
         [HttpGet]
