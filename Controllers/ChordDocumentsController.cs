@@ -144,7 +144,7 @@ namespace CDR_Worship.Controllers
             }
 
             var userId = _userManager.GetUserId(User);
-            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId);
+            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId!);
 
             if (!result.Success)
             {
