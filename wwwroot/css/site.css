@@ -268,3 +268,10 @@ footer {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
+@media (max-width: 1024px) {
+  .col-md-6 {
+    flex: 0 0 50%; /* Dos tarjetas por fila */
+    max-width: 50%;
+  }
+}
