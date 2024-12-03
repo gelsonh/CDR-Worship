@@ -1,0 +1,91 @@
+.notification-badge {
+  font-size: 0.75rem; /* Tamaño del texto */
+  padding: 0.3em 0.6em; /* Espaciado interno */
+  height: auto; /* Ajustar altura automáticamente */
+  line-height: 1; /* Alineación del texto */
+  display: inline-flex; /* Usar flexbox para centrar */
+  align-items: center; /* Centrar contenido verticalmente */
+  justify-content: center; /* Centrar contenido horizontalmente */
+  width: auto; /* Ajustar ancho automáticamente */
+  min-width: 1.5em; /* Asegurar tamaño mínimo para un aspecto redondo */
+  border-radius: 50%; /* Redondeo completo */
+  background-color: #dc3545; /* Color de fondo (puedes cambiarlo) */
+  color: #fff; /* Color del texto */
+}
+
+/* Dropdown general */
+.notification-dropdown {
+  width: 350px; /* Ajusta el ancho */
+  max-height: 400px; /* Límite de altura para listas largas */
+  overflow-y: auto; /* Scroll si excede la altura */
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+  border: none;
+  background-color: #fff;
+}
+
+/* Título del dropdown */
+.notification-dropdown .dropdown-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333; /* Cambia este color si es necesario */
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+  margin-bottom: 0.75rem;
+}
+
+/* Elementos del dropdown */
+.notification-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaciado entre ícono y texto */
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: #212529;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover para los elementos */
+.notification-dropdown .dropdown-item:hover {
+  background: linear-gradient(135deg, #f8f9fa, hsla(0, 2%, 60%, 0.8), #e3f2fd);
+  color: #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Íconos dentro de los elementos */
+.notification-dropdown .notification-icon {
+  font-size: 1.25rem;
+  color: #007bff;
+}
+
+/* Scrollbar personalizado */
+.notification-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+.notification-dropdown::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+.notification-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Respuesta para dispositivos pequeños */
+@media (max-width: 768px) {
+  .notification-dropdown {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  .notification-dropdown .dropdown-header {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+  .notification-dropdown .dropdown-item {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}
