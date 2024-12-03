@@ -224,6 +224,8 @@ namespace CDR_Worship.Data
         {
             try
             {
+                var existingChordNames = await context.Chords.Select(c => c.ChordName).ToListAsync();
+
                 // Crear la lista de acordes con los nombres correctos, utilizando CDRChordMapper para obtener el nombre
                 IList<Chord> chords = new List<Chord>
         {
@@ -247,6 +249,8 @@ namespace CDR_Worship.Data
 
             new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.G] },
             new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gb] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gbm] },
             new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gsos] },
             new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Gsosm] },
 
@@ -256,14 +260,22 @@ namespace CDR_Worship.Data
             new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Asosm] },
 
             new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.B] },
-            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bm] }
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bm] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bb] },
+            new Chord() { ChordName = CDRChordMapper.ChordNames[CDRChord.Bbm] }
         };
 
-                // Agregar los acordes a tu contexto
-                await context.Chords.AddRangeAsync(chords);
+                var newChords = chords
+                    .Where(c => !existingChordNames.Contains(c.ChordName))
+                    .ToList();
 
-                // Guardar los cambios en tu contexto
-                await context.SaveChangesAsync();
+                if (newChords.Any())
+                {
+                    await context.Chords.AddRangeAsync(newChords);
+                    await context.SaveChangesAsync();
+                }
+
+
             }
             catch (Exception ex)
             {
