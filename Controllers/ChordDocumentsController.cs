@@ -97,64 +97,56 @@ namespace CDR_Worship.Controllers
             return View(chordDocument);
         }
 
-
         // GET: ChordDocuments/Create
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            // Obtener una lista de los acordes disponibles
-            var chords = await _chordDocumentService.GetUniqueChordsAsync();
-
-            // Crear una lista desplegable con los acordes
-            ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
-
-            // Crear un nuevo objeto ChordDocument y pasarlo a la vista
-            var chordDocument = new ChordDocument(); // Puedes inicializarlo como lo necesites
-            return View(chordDocument);
-        }
-
-
-        private async Task PopulateChordsDropdownAsync()
-        {
             try
             {
-                // Obtener los acordes únicos desde el servicio
                 var chords = await _chordDocumentService.GetUniqueChordsAsync();
 
-                // Crear una lista desplegable con los acordes
+                if (!chords.Any())
+                {
+                    TempData["ErrorMessage"] = "No chords available to select.";
+                    return RedirectToAction("Index");
+                }
+
                 ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
+                return View(new ChordDocument());
             }
             catch (Exception ex)
             {
-                // Manejar errores y registrar información de logs si es necesario
-                _logger.LogError(ex, "Error al llenar la lista de acordes para el dropdown.");
-                ViewBag.ChordId = new SelectList(Enumerable.Empty<SelectListItem>());
-                TempData["ErrorMessage"] = "Hubo un error al cargar los acordes disponibles.";
+                _logger.LogError(ex, "Error while loading the Create view.");
+                TempData["ErrorMessage"] = "An error occurred while loading the Create view.";
+                return RedirectToAction("Index");
             }
         }
 
+        // POST: ChordDocuments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile formFile, [Bind("Id,SongName,Description,Created,Updated,ChordId")] ChordDocument chordDocument)
+        public async Task<IActionResult> Create(IFormFile formFile, [Bind("SongName,Description,ChordId")] ChordDocument chordDocument)
         {
             if (!ModelState.IsValid)
             {
-                await PopulateChordsDropdownAsync();
+                var chords = await _chordDocumentService.GetUniqueChordsAsync();
+                ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
                 return View(chordDocument);
             }
 
             var userId = _userManager.GetUserId(User);
-            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId!);
+            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId);
 
             if (!result.Success)
             {
                 ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                await PopulateChordsDropdownAsync();
+                var chords = await _chordDocumentService.GetUniqueChordsAsync();
+                ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
                 return View(chordDocument);
             }
 
-            TempData["SuccessMessage"] = "Document and attachment successfully saved.";
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Document successfully created.";
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ChordDocuments/Edit/5
