@@ -29,9 +29,18 @@ namespace CDR_Worship.Services
 
         public async Task<IEnumerable<Chord>> GetUniqueChordsAsync()
         {
-            var chords = await _context.Chords.ToListAsync();
-            return chords.GroupBy(ch => _chordMappingService.MapChordName(ch.ChordName!))
-            .Select(g => g.First());
+            try
+            {
+                var chords = await _context.Chords.AsNoTracking().ToListAsync();
+                return chords.GroupBy(ch => ch.ChordName) // Agrupa por el nombre del acorde
+                             .Select(g => g.First())     // Selecciona el primer acorde de cada grupo
+                             .OrderBy(ch => ch.ChordName); // Ordena alfabéticamente
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la lista de acordes únicos.");
+                throw new Exception("Hubo un error al obtener los acordes únicos.", ex);
+            }
         }
 
 

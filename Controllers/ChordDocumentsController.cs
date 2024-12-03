@@ -101,24 +101,22 @@ namespace CDR_Worship.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            await PopulateChordsDropdownAsync();
+            return View(new ChordDocument());
+        }
+
+        private async Task PopulateChordsDropdownAsync()
+        {
             try
             {
                 var chords = await _chordDocumentService.GetUniqueChordsAsync();
-
-                if (!chords.Any())
-                {
-                    TempData["ErrorMessage"] = "No chords available to select.";
-                    return RedirectToAction("Index");
-                }
-
                 ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
-                return View(new ChordDocument());
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while loading the Create view.");
-                TempData["ErrorMessage"] = "An error occurred while loading the Create view.";
-                return RedirectToAction("Index");
+                _logger.LogError(ex, "Error al llenar la lista de acordes para el dropdown.");
+                ViewBag.ChordId = new SelectList(Enumerable.Empty<SelectListItem>());
+                TempData["ErrorMessage"] = "Hubo un error al cargar los acordes disponibles.";
             }
         }
 
@@ -129,23 +127,21 @@ namespace CDR_Worship.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var chords = await _chordDocumentService.GetUniqueChordsAsync();
-                ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
+                await PopulateChordsDropdownAsync();
                 return View(chordDocument);
             }
 
             var userId = _userManager.GetUserId(User);
-            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId);
+            var result = await _chordDocumentService.CreateChordDocumentAsync(formFile, chordDocument, userId!);
 
             if (!result.Success)
             {
                 ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                var chords = await _chordDocumentService.GetUniqueChordsAsync();
-                ViewBag.ChordId = new SelectList(chords, "Id", "ChordName");
+                await PopulateChordsDropdownAsync();
                 return View(chordDocument);
             }
 
-            TempData["SuccessMessage"] = "Document successfully created.";
+            TempData["SuccessMessage"] = "Documento creado exitosamente.";
             return RedirectToAction(nameof(Index));
         }
 
