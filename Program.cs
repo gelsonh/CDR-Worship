@@ -34,6 +34,7 @@ builder.Services.AddScoped<IEmailSender, EmailService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IAudioService, AudioService>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
+builder.Services.AddScoped<IChordMappingService, ChordMappingService>();
 
 // Agregar SignalR
 builder.Services.AddSignalR();

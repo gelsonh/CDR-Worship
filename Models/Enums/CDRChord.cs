@@ -18,6 +18,8 @@
         Fsosm,  // F#m
         G,
         Gm,
+        Gb,
+        Gbm,
         Gsos,   // G#
         Gsosm,  // G#m
         A,
@@ -25,8 +27,11 @@
         Asos,   // A#
         Asosm,  // A#m
         B,
-        Bm
+        Bm,
+        Bb,
+        Bbm
     }
+       
 
     public static class CDRChordMapper
     {
@@ -48,6 +53,8 @@
             { CDRChord.Fsosm, "F#m" },
             { CDRChord.G, "G" },
             { CDRChord.Gm, "Gm" },
+            { CDRChord.Gb, "Gb" },
+            { CDRChord.Gbm, "Gbm" },
             { CDRChord.Gsos, "G#" },
             { CDRChord.Gsosm, "G#m" },
             { CDRChord.A, "A" },
@@ -55,7 +62,9 @@
             { CDRChord.Asos, "A#" },
             { CDRChord.Asosm, "A#m" },
             { CDRChord.B, "B" },
-            { CDRChord.Bm, "Bm" }
+            { CDRChord.Bm, "Bm" },
+            { CDRChord.Bb, "Bb"},
+            { CDRChord.Bbm, "Bbm"}
         };
     }
 }

@@ -1,20 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CDR_Worship.Models;
 
 namespace CDR_Worship.Models
 {
     public class ChordDocument
-
     {
         private DateTime _created;
         private DateTime? _updated;
 
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Es obligatorio")]
+        [Required(ErrorMessage = "El nombre de la canción es obligatorio.")]
         public string? SongName { get; set; }
 
-        [Required(ErrorMessage = "Es obligatorio")]
+        [Required(ErrorMessage = "La descripción es obligatoria.")]
         public string? Description { get; set; }
 
         public string? Tempo { get; set; }
@@ -31,17 +29,16 @@ namespace CDR_Worship.Models
             set => _updated = value?.ToUniversalTime();
         }
 
-        // Add these properties for handling file storage
-        public byte[]? FileData { get; set; }  // To store the binary data of the file
+        public byte[]? FileData { get; set; }
+        public string? FileName { get; set; }
+        public string? FileType { get; set; }
 
-        public string? FileName { get; set; }  // To store the name of the file
-
-        public string? FileType { get; set; }  // To store the MIME type of the file
-
+        [Required(ErrorMessage = "Debes seleccionar un acorde.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un acorde válido.")]
         public int ChordId { get; set; }
+
         public int SongDocumentId { get; set; }
 
-        // Navigation properties
         public virtual Chord? Chord { get; set; }
         public virtual ICollection<ChordAttachment> ChordAttachments { get; set; } = new HashSet<ChordAttachment>();
     }
