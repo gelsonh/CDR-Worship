@@ -2,43 +2,35 @@
 
 
 @{
-    ViewData["Title"] = "Enviar Notificación SMS";
+    ViewData["Title"] = "Envio SMS";
 }
 
-<style>
-  
-    /* Form Styles */
-    .form-floating .form-control,
-    .form-floating .form-select {
-        border-radius: 0.5rem;
-    }
-
-    .form-floating label {
-        font-size: 1.1rem;
-        color: #6c757d;
-    }
-
-</style>
 
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card box-shadow">
+            <div class="card shadow-lg border-0">
                 <div class="card-body p-5">
-                    <h2 class="text-center mb-4">Enviar Notificación por SMS</h2>
-
+                    <h2 class="text-center mb-4 fw-bold">Enviar SMS</h2>
                     <form asp-action="SendSms" method="post">
                         <!-- Mensaje -->
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" id="message" name="Message" asp-for="Message"
-                                style="height: 150px;" required></textarea>
-                            <label for="message">Escribe tu mensaje aquí</label>
+                        <div class="form-floating mb-4">
+                            <textarea class="form-control shadow-sm" id="message" name="Message" asp-for="Message"
+                                style="height: 150px;" placeholder="Escribe tu mensaje aquí" required></textarea>
+                            <label for="message">
+                                <i class="bi bi-chat-dots me-2"></i>Escribe tu mensaje aquí
+                            </label>
                             <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
 
                         <!-- Botón de envío -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-color btn-primary btn-lg">Enviar Mensaje</button>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-color btn-primary btn-lg shadow-sm position-relative">
+                                <i class="bi bi-send me-2"></i>
+                                Enviar Mensaje
+                                <span class="spinner-border spinner-border-sm d-none position-absolute end-0 me-3"
+                                    id="loading-spinner"></span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -48,12 +40,15 @@
 </div>
 
 @section Scripts {
-
-
-    <!-- Script para mostrar las alertas basadas en TempData -->
+    <script>
+        document.querySelector("button[type='submit']").addEventListener("click", function () {
+            const spinner = document.getElementById("loading-spinner");
+            spinner.classList.remove("d-none");
+        });
+    </script>
+    <!-- SweetAlert for Notifications -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Verificar si hay un mensaje de éxito
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
@@ -61,11 +56,9 @@
                             icon: 'success',
                         title: '¡Éxito!',
                         text: '@TempData["SuccessMessage"]'
-                                                                                                                                                            });
+                                                            });
             </text>
         }
-
-                // Verificar si hay un mensaje de error
         @if (TempData["ErrorMessage"] != null)
         {
             <text>
@@ -73,13 +66,13 @@
                             icon: 'error',
                         title: 'Error',
                         text: '@TempData["ErrorMessage"]'
-                                                                                                                                                            });
+                                                            });
             </text>
         }
-                                                                            });
+                            });
     </script>
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 }
