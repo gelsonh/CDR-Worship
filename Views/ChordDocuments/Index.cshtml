@@ -24,8 +24,8 @@
             @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") ||
             User.IsInRole("DemoUser")))
             {
-                <a asp-action="Create" asp-controller="ChordDocuments" class="btn btn-color btn-primary btn-sm">Subir Nueva
-                    Canción</a>
+                    <a asp-action="Create" asp-controller="ChordDocuments" class="btn btn-color btn-primary btn-sm">Subir Nueva
+                        Canción</a>
             }
         </div>
 
@@ -69,45 +69,43 @@
                     <tbody id="songTableBody">
                         @foreach (var chordDocument in Model)
                         {
-                            <tr class="align-middle">
-                                <td>@chordDocument.SongName</td>
-                                <td>@chordDocument.Description</td>
-                                <td class="text-center">
+                               <tr class="align-middle">
+        <td>@chordDocument.SongName</td>
+        <td>@chordDocument.Description</td>
+        <td class="text-center">
                                     @if (chordDocument.Chord != null)
                                     {
                                         @chordDocument.Chord.ChordName
                                     }
                                     else
                                     {
-                                        <span>No disponible</span>
+                    <span>No disponible</span>
                                     }
-                                </td>
-                                <td class="text-center">
-                                    <a class="text-decoration-none mx-2"
-                                        href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })"
-                                        data-bs-toggle="tooltip" title="Ver" target="_blank" rel="noopener noreferrer"
-                                        aria-label="Ver documento">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a class="mx-2 text-decoration-none"
-                                        href="@Url.Action("Download", "ChordDocuments", new { id = chordDocument.Id })"
-                                        data-toggle="tooltip" title="Descargar">
-                                        <i class="bi bi-file-earmark-arrow-down"></i>
-                                    </a>
-                                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") ||
-                                   User.IsInRole("Moderator")))
+        </td>
+        <td class="text-center">
+            <a class="text-decoration-none mx-2"
+                href="@Url.Action("ViewDocument", "ChordDocuments", new { id = chordDocument.Id })"
+                data-bs-toggle="tooltip" title="Ver" target="_blank" rel="noopener noreferrer" aria-label="Ver documento">
+                <i class="bi bi-eye"></i>
+            </a>
+         <a class="mx-2 text-decoration-none"
+   href="@Url.Action("Download", "ChordDocuments", new { id = chordDocument.Id })"
+   data-toggle="tooltip" title="Descargar">
+    <i class="bi bi-file-earmark-arrow-down"></i>
+</a>
+                                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                                     {
-                                        <a asp-action="Edit" asp-route-id="@chordDocument.Id" data-toggle="tooltip"
-                                            title="Editar" class="mx-2 text-decoration-none">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a asp-action="Delete" asp-route-id="@chordDocument.Id" data-toggle="tooltip"
-                                            title="Eliminar" class="mx-2 text-decoration-none">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                    <a asp-action="Edit" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Editar"
+                        class="mx-2 text-decoration-none">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@chordDocument.Id" data-toggle="tooltip" title="Eliminar"
+                        class="mx-2 text-decoration-none">
+                        <i class="bi bi-trash"></i>
+                    </a>
                                     }
-                                </td>
-                            </tr>
+        </td>
+    </tr>
                         }
                     </tbody>
                 </table>
@@ -119,7 +117,7 @@
 
 
 <!-- Modal 1 -->
-<div class="modal fade" id="adviceModal1" tabindex="-1" aria-labelledby="adviceModalLabel1" aria-hidden="true">
+<div class="modal fade" id="adviceModal1" tabindex="-1" aria-labelledby="adviceModalLabel1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -144,31 +142,31 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-<!-- Advice Modal Script -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Verificar si el modal ya se ha mostrado usando sessionStorage
-        if (!sessionStorage.getItem('modal1Shown')) {
-            // Agregar un retraso antes de mostrar el modal (3 segundos)
-            setTimeout(function () {
-                var adviceModal1 = new bootstrap.Modal(document.getElementById('adviceModal1'));
+    <!-- Advice Modal Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Verificar si el modal ya se ha mostrado usando sessionStorage
+            if (!sessionStorage.getItem('modal1Shown')) {
+                // Agregar un retraso antes de mostrar el modal (3 segundos)
+                setTimeout(function () {
+                    var adviceModal1 = new bootstrap.Modal(document.getElementById('adviceModal1'));
 
-                // Mostrar el modal
-                adviceModal1.show();
+                    // Mostrar el modal
+                    adviceModal1.show();
 
-                // Guardar en sessionStorage que el modal ya se mostró
-                sessionStorage.setItem('modal1Shown', 'true');
-            }, 3000); // 3000 milisegundos = 3 segundos de retraso
-        }
+                    // Guardar en sessionStorage que el modal ya se mostró
+                    sessionStorage.setItem('modal1Shown', 'true');
+                }, 3000); // 3000 milisegundos = 3 segundos de retraso
+            }
 
-    });
+        });
 
-</script>
+    </script>
 
-<script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
-</script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
 }

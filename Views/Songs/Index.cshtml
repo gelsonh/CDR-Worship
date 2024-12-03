@@ -4,46 +4,20 @@
     ViewData["Title"] = "Index";
 }
 
-<style>
-    .text-muted {
-        font-size: 0.875rem;
-        color: #6c757d;
-    }
-
-    .gradient-icon {
-        background: linear-gradient(90deg, #007bff, #00bfff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    /* Estilo para videos embebidos */
-    .video-frame {
-        border-radius: 1rem;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .video-frame:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-</style>
-
 <div class="container-xxl my-5">
     <div class="row">
         @if (!Model.Any())
         {
-            <div class="col-12 text-center my-5">
-                <div class="no-lista-container box-shadow p-4 mx-auto">
-                    <h5 class="mb-3">No hay videos disponibles</h5>
+            <div class="col-12 text-center mt-5">
+                <div class="col-md-6 col-sm-10 box-shadow p-4 mx-auto">
+                    <h5 class="fs-5 mb-3">No hay videos disponibles</h5>
                     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
                     {
-                        <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añadir Nuevo Video</a>
+                        <a asp-action="Create" class="btn btn-primary btn-color btn-sm px-4 py-2">Añadir Nuevo Video</a>
                     }
-
                 </div>
             </div>
+
         }
         else
         {
@@ -58,20 +32,11 @@
 
             @foreach (var song in Model)
             {
-                <div class="col-md-4 my-3">
+                <div class="col-12 col-sm-6 col-md-4 my-3">
                     <div class="card h-100 box-shadow">
                         <div class="card-body p-4 d-flex flex-column">
-                            <div class="card-title mb-4"
-                                style="font-size: 1.5rem; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem;">
+                            <div class="card-title mb-4 fw-bold fs-5 border-bottom pb-2">
                                 @song.SongName
-                            </div>
-
-                            <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
-                                <p class="d-flex align-items-center" style="font-size: 1.2rem;">
-                                    <i class="bi bi-music-note me-2 gradient-icon" style="font-size: 1.4rem;"></i>
-                                    <strong>Tono:</strong>
-                                    <span class="ms-2">@(song.Chord?.ChordName ?? "No disponible")</span>
-                                </p>
                             </div>
 
                             @if (!string.IsNullOrEmpty(song.YouTubeUrl) && song.YouTubeUrl.Contains("="))
@@ -91,9 +56,10 @@
                            User.IsInRole("DemoUser")))
                             {
                                 <div class="mt-auto text-center">
-                                    <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary btn-sm">Editar</a>
+                                    <a asp-action="Edit" asp-route-id="@song.Id"
+                                        class="btn btn-color btn-primary btn-sm mt-2">Editar</a>
                                     <form asp-action="Delete" asp-route-id="@song.Id" method="post" class="d-inline">
-                                        <button type="submit" class="btn btn-color btn-danger btn-sm">Eliminar</button>
+                                        <button type="submit" class="btn btn-color btn-danger btn-sm mt-2">Eliminar</button>
                                     </form>
                                 </div>
                             }
@@ -114,14 +80,13 @@
 </div>
 
 <!-- Modal 4 -->
-<div class="modal fade" id="adviceModal4" tabindex="-1" aria-labelledby="adviceModalLabel4" aria-hidden="true">
+<div class="modal fade" id="adviceModal4" tabindex="-1" aria-labelledby="adviceModalLabel4">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="adviceModalLabel4">¡RECUERDEN!</h5>
             </div>
             <div class="modal-body text-center">
-
                 <p><strong>Consejos para usar los videos en la práctica:</strong></p>
                 <ul class="list-unstyled">
                     <li>- Mira los videos en casa y familiarízate con las canciones antes de los ensayos.</li>
@@ -129,8 +94,7 @@
                     <li>- Presta atención a los cambios de tonalidad y ajuste según las voces en los videos.</li>
                 </ul>
                 <p><em>Sigamos creciendo en excelencia para Dios, utilizando estos recursos para mejorar en cada canción
-                        que
-                        interpretamos.</em></p>
+                        que interpretamos.</em></p>
                 <p><strong>Gracias por su dedicación y esfuerzo. Cada uno de ustedes es una bendición para Casa del
                         Rey.</strong></p>
             </div>
@@ -150,18 +114,12 @@
 <!-- Advice Modal Script -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Verificar si el modal ya se ha mostrado usando sessionStorage
         if (!sessionStorage.getItem('modal4Shown')) {
-            // Agregar un retraso antes de mostrar el modal (3 segundos)
             setTimeout(function () {
                 var adviceModal4 = new bootstrap.Modal(document.getElementById('adviceModal4'));
-
-                // Mostrar el modal
                 adviceModal4.show();
-
-                // Guardar en sessionStorage que el modal ya se mostró
                 sessionStorage.setItem('modal4Shown', 'true');
-            }, 3000); // 3000 milisegundos = 3 segundos de retraso
+            }, 3000);
         }
     });
 </script>

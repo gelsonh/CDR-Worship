@@ -27,12 +27,14 @@
                             <div class="card p-3">
 
                                 <div class="drop_box border border-dotted p-2 text-center">
-                                    <label class="btn btn-primary btn-sm btn-color m-0">
+                                    <label class="btn btn-primary btn-sm btn-color m-0"
+                                        aria-label="Seleccionar archivo">
                                         <input name="FormFile" type="file" class="form-control-file d-none" id="fileID"
                                             onchange="showFileName()" />
                                         Seleccionar Archivo
                                     </label>
-                                    <p class="mt-2" id="fileNameText">Ningún archivo seleccionado</p>
+                                    <p class="mt-2 text-muted" id="fileNameText">Ningún archivo seleccionado</p>
+                                    <div asp-validation-for="FormFile" class="text-danger"></div>
                                 </div>
                             </div>
                         </div>

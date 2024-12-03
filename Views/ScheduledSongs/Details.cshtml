@@ -146,14 +146,10 @@
         color: var(--gh-theme-800);
     }
 
-    /* Asegurar que el textarea tenga un overflow oculto y una altura mínima */
     #newCommentText {
         overflow-y: hidden;
-        /* Ocultar la barra de desplazamiento vertical */
         min-height: 40px;
-        /* Altura mínima deseada */
         resize: none;
-        /* Opcional: Desactivar el cambio de tamaño manual */
     }
 </style>
 
@@ -251,93 +247,91 @@
 @section Scripts {
     <script>
 
+        // Function to send a new comment asynchronously
+        document.getElementById('submitCommentBtn').addEventListener('click', async function () {
+            const commentText = document.getElementById('newCommentText').value.trim();
 
-        // Función para enviar un nuevo comentario
-        document.getElementById('submitCommentBtn').addEventListener('click', function () {
-            var commentText = document.getElementById('newCommentText').value;
-
-            if (commentText.trim() === '') {
-                alert('Por favor, escribe un comentario.');
+            // Validate comment text
+            if (!commentText) {
+                alert('Please write a comment.');
                 return;
             }
 
-            $.ajax({
-                url: '@Url.Action("Create", "DocumentComments")',
-                type: 'POST',
-                contentType: 'application/json', // Enviar datos en formato JSON
-                data: JSON.stringify({
-                    Comment: commentText,
-                    ScheduledSongId: '@Model.Id'
-                }),
-                headers: {
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Incluir el token anti-falsificación en los encabezados
-                },
-                success: function (response) {
-                    // Limpiar el textarea
+            try {
+                // Send the comment data to the server using fetch
+                const response = await fetch('@Url.Action("Create", "DocumentComments")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        Comment: commentText,
+                        ScheduledSongId: '@Model.Id'
+                    })
+                });
+
+                // Clear input after successful submission
+                if (response.ok) {
                     document.getElementById('newCommentText').value = '';
-                    // No agregar el comentario aquí para evitar duplicación
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error al enviar el comentario:', error);
-                    console.log('Detalles del error:', xhr.responseText);
-                    alert('Error al enviar el comentario.');
+                } else {
+                    console.error('Error submitting the comment:', response.statusText);
+                    alert('Error submitting the comment.');
                 }
-            });
+            } catch (error) {
+                console.error('Request failed:', error);
+                alert('There was an error submitting your comment.');
+            }
         });
-        // Seleccionar el textarea por su ID
-        var textarea = document.getElementById('newCommentText');
 
-        // Añadir un evento 'input' para ajustar la altura cuando el usuario escriba
-        textarea.addEventListener('input', autoResize, false);
-
-        // Función para autoajustar la altura del textarea
-        function autoResize() {
-            // Reiniciar la altura para que el scrollHeight se calcule correctamente
+        // Auto-resize textarea on input
+        const textarea = document.getElementById('newCommentText');
+        textarea.addEventListener('input', function () {
             this.style.height = 'auto';
-            // Establecer la altura al scrollHeight
-            this.style.height = this.scrollHeight + 'px';
-        }
+            this.style.height = `${this.scrollHeight}px`;
+        });
 
-        // Modificar la función likeComment
-        function likeComment(commentId, button) {
-            $.ajax({
-                url: '@Url.Action("LikeComment", "DocumentComments")',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ DocumentCommentId: commentId }),
-                headers: {
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                },
-                success: function (response) {
-                    // Solo deshabilitar el botón
+        // Function to handle "Like" action for a comment
+        async function likeComment(commentId, button) {
+            try {
+                const response = await fetch('@Url.Action("LikeComment", "DocumentComments")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({ DocumentCommentId: commentId })
+                });
+
+                if (response.ok) {
                     button.disabled = true;
-                },
-                error: function () {
-                    alert('Error al procesar el "Me Gusta".');
+                } else {
+                    alert('There was an error processing the "Like" action.');
                 }
-            });
+            } catch (error) {
+                console.error('Request failed:', error);
+                alert('There was an error processing the "Like" action.');
+            }
         }
 
-        // Función para convertir fechas UTC a la hora local
+        // Convert UTC date strings to local time format
         function formatUtcDateToLocal(utcDateString) {
-            var utcDate = new Date(utcDateString);
-            return utcDate.toLocaleString('es-ES', {
+            const utcDate = new Date(utcDateString);
+            return utcDate.toLocaleString('en-US', {
                 weekday: 'short',
                 month: 'short',
                 day: 'numeric',
                 hour: 'numeric',
                 minute: 'numeric',
-                hour12: true  // Formato de 12 horas con AM/PM
+                hour12: true
             });
         }
 
-        // Convierte todas las fechas de los comentarios cuando la página carga o se hace refresh
+        // Convert all comment timestamps on page load
         document.addEventListener('DOMContentLoaded', function () {
-            // Convierte las fechas de los comentarios
-            document.querySelectorAll('.comment-time').forEach(function (element) {
-                var utcDate = element.getAttribute('data-utc');
-                var localDate = formatUtcDateToLocal(utcDate);
-                element.textContent = localDate;
+            document.querySelectorAll('.comment-time').forEach(element => {
+                const utcDate = element.getAttribute('data-utc');
+                element.textContent = formatUtcDateToLocal(utcDate);
             });
         });
 

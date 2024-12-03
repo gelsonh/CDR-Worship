@@ -78,7 +78,9 @@
     <link rel="stylesheet" href="~/assets/css/themes.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
+    <link rel="stylesheet" href="~/css/notificationDropdown.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/loading.css" asp-append-version="true" />
 </head>
 
 <body>
@@ -96,121 +98,147 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Home" ? "active" : "")">
-                                <a class="nav-link rounded-pill" asp-area="" asp-controller="Home" asp-action="Index"
-                                    title="Home">Bienvenida</a>
-                            </li>
-                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "SongDocuments" ? "active" : "")">
-                                <a class="nav-link rounded-pill" asp-area="" asp-controller="SongDocuments"
-                                    asp-action="Index">Letras</a>
-                            </li>
-                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ChordDocuments" ? "active" : "")">
-                                <a class="nav-link rounded-pill" asp-area="" asp-controller="ChordDocuments"
-                                    asp-action="Index">Acordes</a>
-                            </li>
-                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ScheduledSongs" ? "active" : "")">
-                                <a class="nav-link rounded-pill" asp-area="" asp-controller="ScheduledSongs"
-                                    asp-action="Index">Lista</a>
-                            </li>
-                            <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Songs" ? "active" : "")">
-                                <a class="nav-link rounded-pill" asp-area="" asp-controller="Songs"
-                                    asp-action="Index">Video</a>
-                            </li>
+                            <ul class="navbar-nav ms-auto">
+                                <!-- Inicio -->
+                                <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Home" ? "active" : "")">
+                                    <a class="nav-link rounded-pill" asp-controller="Home" asp-action="Index">Inicio</a>
+                                </li>
+
+                                <!-- Canciones Dropdown -->
+                                <li
+                                    class="nav-item dropdown @(ViewData["ActivePage"]?.ToString() == "SongDocuments" || ViewData["ActivePage"]?.ToString() == "ChordDocuments" ? "active" : "")">
+                                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
+                                        id="songsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Documentos <i class="bi bi-caret-down-fill ms-1" style="font-size: 0.8rem;"></i>
+                                    </a>
+                                    <ul class="dropdown-menu shadow-lg border-0 rounded" aria-labelledby="songsDropdown">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center py-2"
+                                                asp-controller="SongDocuments" asp-action="Index">
+                                                <i class="bi bi-people-fill me-2"></i>Voces
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center py-2 mt-1"
+                                                asp-controller="ChordDocuments" asp-action="Index">
+                                                <i class="bi bi-music-note me-2"></i>Acordes
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- Setlist -->
+                                <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "ScheduledSongs" ? "active" : "")">
+                                    <a class="nav-link rounded-pill" asp-controller="ScheduledSongs"
+                                        asp-action="Index">Setlist</a>
+                                </li>
+
+                                <!-- Videos Musicales -->
+                                <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Songs" ? "active" : "")">
+                                    <a class="nav-link rounded-pill" asp-controller="Songs" asp-action="Index">Videos</a>
+                                </li>
+
+                                <!-- Mensajes -->
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
-                                <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Sms" ? "active" : "")">
-                                    <a class="nav-link rounded-pill" asp-area="" asp-controller="Sms"
-                                        asp-action="Index">Mensajes</a>
-                                </li>
+                                        <li class="nav-item @(ViewData["ActivePage"]?.ToString() == "Sms" ? "active" : "")">
+                                            <a class="nav-link rounded-pill" asp-controller="Sms" asp-action="Index">Mensajes</a>
+                                        </li>
                             }
-                        </ul>
+                            </ul>
                     }
                     else
                     {
-                        <ul class="navbar-nav ms-auto">
-                            <partial name="_LoginPartial" />
-                        </ul>
+                            <ul class="navbar-nav ms-auto">
+                                <partial name="_LoginPartial" />
+                            </ul>
                     }
 
+                    <!-- Notificaciones y Usuario -->
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <ul class="navbar-nav ms-auto d-flex align-items-center">
-                            <!-- Notificaciones solo en tablet y PC (md y superior) -->
-                            <li class="nav-item dropdown d-none d-md-block me-3">
-                                <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-bell-fill" style="font-size: 1.5rem;"></i>
-                                    <!-- Badge de Notificaciones -->
-                                    <span id="notificationBadge"
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                        style="display: none;">
-                                        0
-                                        <span class="visually-hidden">nuevos comentarios</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
-                                    aria-labelledby="notificationDropdown" style="width: 300px;">
-                                    <li class="dropdown-header">Nuevos Comentarios</li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <div id="notificationItems">
-                                        <li class="dropdown-item text-center">No hay nuevos comentarios.</li>
-                                    </div>
-                                </ul>
-                            </li>
+                            <ul class="navbar-nav ms-auto d-flex align-items-center">
+                               <!-- Notificaciones -->
+    <li class="nav-item dropdown d-none d-md-block me-3">
+        <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell-fill" style="font-size: 1rem;"></i>
+            <span id="notificationBadge" 
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6 fs-md-5 fs-lg-4" 
+          style="display: none;">
+        0
+        <span class="visually-hidden">Nuevos comentarios</span>
+    </span>
+        </a>
+       <ul class="dropdown-menu dropdown-menu-end notification-dropdown shadow-lg" aria-labelledby="notificationDropdown">
+    <li class="dropdown-header text-center">Notificaciones</li>
+    <div id="notificationItems">
+        <!-- Reemplaza esto dinámicamente -->
+        <li class="dropdown-item d-flex align-items-center">
+            <i class="bi bi-bell-fill notification-icon"></i>
+            <span>Nueva notificación recibida</span>
+        </li>
+        <li class="dropdown-item d-flex align-items-center">
+            <i class="bi bi-envelope notification-icon"></i>
+            <span>Tienes un nuevo mensaje</span>
+        </li>
+    </div>
+ </ul>
+    </li>
 
-                            <!-- Dropdown del Usuario -->
-                            <li class="nav-item dropdown">
+                                <!-- Dropdown del Usuario -->
+                                <li class="nav-item dropdown">
                                 @if (User.Identity?.IsAuthenticated == true)
                                 {
                                     var user = await UserManager.GetUserAsync(User);
                                     var Image = ImageService.ConvertByteArrayToFile(user?.ImageFileData, user?.ImageFileType,
                                     DefaultImage.UserImage);
-                                    <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center" href="#"
-                                        id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="@Image" alt="Profile Image" class="rounded-circle me-1"
-                                            style="width: 40px; height: 40px; object-fit: cover;" />
-                                        <span class="user-name ms-1">@user?.FirstName</span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                                        <li class="dropdown-header">
-                                            <div class="d-flex align-items-center p-3">
-                                                <img src="@Image" alt="Profile Image" class="rounded-circle me-3"
-                                                    style="width: 60px; height: 60px; object-fit: cover;">
-                                                <div>
-                                                    <h5 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName
-                                                        @user?.LastName</h5>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li>
-                                            @{
-                                                var currentUser = await UserManager.GetUserAsync(User); var isDemoUser =
-                                            currentUser != null && await UserManager.IsInRoleAsync(currentUser, "DemoUser");
-                                            }
-                                            @if (!isDemoUser)
-                                            {
-                                                <a class="dropdown-item mb-2" asp-area="Identity" asp-page="/Account/Manage/Index"
-                                                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-                                                    style="color: var(--gh-theme-900);">
-                                                    <i class="bi bi-gear me-2"></i>Cuenta
-                                                </a>
-                                            }
-                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
-                                                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
-                                                style="color: var(--gh-theme-900);">
-                                                <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
+                                            <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center" href="#"
+                                                id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <img src="@Image" alt="Profile Image" class="rounded-circle me-1"
+                                                    style="width: 40px; height: 40px; object-fit: cover;" />
+                                                <span class="user-name ms-1">@user?.FirstName</span>
                                             </a>
-                                        </li>
-                                    </ul>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                                <li class="dropdown-header">
+                                                    <div class="d-flex align-items-center p-3">
+                                                        <img src="@Image" alt="Profile Image" class="rounded-circle me-3"
+                                                            style="width: 40px; height: 40px; object-fit: cover;">
+                                                        <div>
+                                                            <h6 class="mb-0" style="color: var(--gh-theme-600);">@user?.FirstName
+                                                        @user?.LastName</h6>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <hr class="dropdown-divider">
+                                                </li>
+                                                <li>
+                                            @if (User.Identity?.IsAuthenticated == true)
+                                            {
+                                                var currentUser = await UserManager.GetUserAsync(User);
+                                                if (currentUser != null && await UserManager.IsInRoleAsync(currentUser, "DemoUser"))
+                                                {
+                        <span class="dropdown-item text-muted">Cuenta (Restricción de DemoUser)</span>
+                                                }
+                                                else
+                                                {
+                        <a class="dropdown-item mb-2" asp-area="Identity" asp-page="/Account/Manage/Index"
+                            asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                            style="color: var(--gh-theme-900);">
+                            <i class="bi bi-gear me-2"></i>Cuenta
+                        </a>
+                                                }
+                                            }
+                                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"
+                                                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                                                        style="color: var(--gh-theme-900);">
+                                                        <i class="bi bi-box-arrow-left me-2"></i>Cerrar Sesión
+                                                    </a>
+                                                </li>
+                                            </ul>
                                 }
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                     }
                 </div>
 
@@ -223,11 +251,11 @@
         @RenderBody()
     </div>
 
-    <footer class="footer mt-auto bg-light py-5 shadow-lg">
+    <footer class="footer mt-auto py-5 shadow-lg">
         <div class="container-fluid text-center">
 
             <!-- Icono de Notificaciones solo en móvil -->
-            <div class="dropdown d-md-none mb-3">
+            <div class="dropdown-footer d-md-none mb-3">
                 <a class="text-dark position-relative" href="#" id="footerNotificationDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 1.8rem;">
                     <i class="bi bi-bell-fill"></i>
@@ -236,20 +264,17 @@
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                         style="display: none;">
                         0
-                        <span class="visually-hidden">nuevos comentarios</span>
+                        <span class="visually-hidden">Nuevos comentarios</span>
                     </span>
+
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end notification-dropdown"
-                    aria-labelledby="footerNotificationDropdown"
-                    style="width: 100%; max-width: 300px; margin-top: 10px;">
-                    <li class="dropdown-header">Nuevos Comentarios</li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <div id="notificationItemsFooter">
-                        <li class="dropdown-item text-center">No hay nuevos comentarios.</li>
-                    </div>
-                </ul>
+
+                <ul class="dropdown-menu dropdown-menu-end notification-dropdown shadow-lg" aria-labelledby="footerNotificationDropdown">
+        <li class="dropdown-header text-center display-6">Notificaciones</li>
+        <div id="notificationItemsFooter">
+            <li class="dropdown-item text-center">No hay comentarios nuevos.</li>
+        </div>
+    </ul>
             </div>
 
             <div class="mb-4">
@@ -337,7 +362,9 @@
         crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
-    <script src="~/js/site.js" asp-append-version="true"></script>
+ <script src="~/js/notifications.js" asp-append-version="true"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/table.js" asp-append-version="true"></script>
 
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
@@ -348,271 +375,8 @@
     <!-- Howler CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
-    <!-- Footer Notification -->
-    <script>
-        function updateNotificationBadge() {
-            const badge = document.getElementById('notificationBadge');
-            const footerBadge = document.getElementById('footerNotificationBadge');
-            const totalNewComments = Object.values(newComments).reduce((acc, curr) => acc + curr.count, 0);
-
-            if (totalNewComments > 0) {
-                badge.style.display = 'inline-block';
-                footerBadge.style.display = 'inline-block';
-                badge.textContent = totalNewComments > 99 ? '99+' : totalNewComments;
-                footerBadge.textContent = totalNewComments > 99 ? '99+' : totalNewComments;
-            } else {
-                badge.style.display = 'none';
-                footerBadge.style.display = 'none';
-            }
-        }
-    </script>
-
-    <!-- Notificaciones de Comentarios -->
-    <script>
-        // Objeto para almacenar nuevos comentarios por scheduleSongId
-        let newComments = {};
-
-        // Función para reproducir el sonido de notificación
-        function playNotificationSound() {
-            const soundToggle = document.getElementById('soundToggle');
-            if (soundToggle && soundToggle.checked) {
-                const newCommentSound = new Audio('/sounds/new-comment.wav');
-                newCommentSound.volume = 0.5;
-                newCommentSound.play().catch(function (error) {
-                    console.error('Error al reproducir el sonido:', error);
-                });
-            }
-        }
-
-        // Conectar al hub de SignalR en todas las vistas
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/commentHub")
-            .build();
-
-        // Intentar iniciar la conexión de SignalR
-        connection.start().then(() => {
-            console.log("Conectado al Hub de Comentarios");
-        }).catch(err => console.error('Error al conectar con SignalR:', err.toString()));
-
-        // Escuchar el método "ReceiveComment" desde el servidor
-        connection.on("ReceiveComment", function (commentData) {
-            console.log("Comentario recibido:", commentData);
-
-            // Convertir UTC a hora local
-            var utcDate = new Date(commentData.commentCreated);
-            var localDate = utcDate.toLocaleString('es-ES', {
-                weekday: 'short',
-                month: 'short',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                hour12: true
-            });
-
-            // Actualizar el HTML para mostrar el nuevo comentario sin necesidad de refresh
-            var newCommentHtml = `
-        <div class="comment mb-3">
-            <div class="d-flex align-items-start">
-                <img src="${commentData.commentUserImage}" alt="Profile Image" class="profile-image me-3">
-                <div>
-                    <div class="d-flex align-items-center">
-                        <div class="user-name fw-bold">${commentData.commentUserName}</div>
-                        <div class="comment-time ms-2">${localDate}</div>
-                    </div>
-                    <div class="comment-text">${commentData.commentText}</div>
-                </div>
-            </div>
-        </div>`;
-
-            // Insertar el comentario al final de la lista de comentarios
-            var commentsList = document.querySelector('.comments-list');
-            if (!commentsList) {
-                commentsList = document.createElement('div');
-                commentsList.className = 'comments-list';
-                document.querySelector('.comments-section').prepend(commentsList);
-            }
-            commentsList.insertAdjacentHTML('beforeend', newCommentHtml);
-
-            // Auto-scroll hacia el último comentario
-            commentsList.scrollTop = commentsList.scrollHeight;
-
-
-            // Agregar el comentario a la notificación
-            const scheduleSongId = commentData.scheduleSongId;
-            if (!newComments[scheduleSongId]) {
-                newComments[scheduleSongId] = { count: 0, comments: [] };
-            }
-            newComments[scheduleSongId].count += 1;
-            newComments[scheduleSongId].comments.push(commentData);
-
-            localStorage.setItem('newComments', JSON.stringify(newComments));
-            updateNotificationBadge();
-            updateNotificationDropdown();
-
-            playNotificationSound();
-        });
-
-        // Función para actualizar el badge de notificaciones
-        function updateNotificationBadge() {
-            const badge = document.getElementById('notificationBadge');
-            const totalNewComments = Object.values(newComments).reduce((acc, curr) => acc + curr.count, 0);
-            badge.style.display = totalNewComments > 0 ? 'inline-block' : 'none';
-            badge.textContent = totalNewComments > 99 ? '99+' : totalNewComments;
-        }
-
-        // Función para actualizar el dropdown de notificaciones
-        function updateNotificationDropdown() {
-            const notificationItems = document.getElementById('notificationItems');
-            notificationItems.innerHTML = '';
-
-            const scheduleSongIds = Object.keys(newComments);
-            if (scheduleSongIds.length === 0) {
-                const noNotificationsItem = document.createElement('li');
-                noNotificationsItem.classList.add('dropdown-item', 'text-center');
-                noNotificationsItem.textContent = 'No hay nuevos comentarios.';
-                notificationItems.appendChild(noNotificationsItem);
-            } else {
-                scheduleSongIds.forEach(scheduleSongId => {
-                    const schedule = newComments[scheduleSongId];
-                    const scheduleSongName = schedule.comments[0].name;
-
-                    const scheduleTitle = document.createElement('li');
-                    scheduleTitle.classList.add('dropdown-header');
-                    scheduleTitle.textContent = `- ${scheduleSongName} -`;
-                    notificationItems.appendChild(scheduleTitle);
-
-                    schedule.comments.forEach(comment => {
-                        const commentItem = document.createElement('li');
-                        const commentLink = document.createElement('a');
-                        commentLink.classList.add('dropdown-item');
-                        commentLink.href = `/ScheduledSongs/Details/${scheduleSongId}`;
-                        commentLink.textContent = `${comment.commentUserName}: ${truncateText(comment.commentText, 50)}`;
-
-                        // Listener para eliminar notificación cuando se hace clic en el link
-                        commentLink.addEventListener('click', () => {
-                            delete newComments[scheduleSongId];
-                            localStorage.setItem('newComments', JSON.stringify(newComments));
-                            updateNotificationBadge();
-                            updateNotificationDropdown();
-                        });
-
-                        commentItem.appendChild(commentLink);
-                        notificationItems.appendChild(commentItem);
-                    });
-
-                    const divider = document.createElement('li');
-                    divider.innerHTML = '<hr class="dropdown-divider">';
-                    notificationItems.appendChild(divider);
-                });
-                if (notificationItems.lastChild?.firstChild.tagName === 'HR') {
-                    notificationItems.removeChild(notificationItems.lastChild);
-                }
-            }
-        }
-
-        // Función para truncar texto largo
-        function truncateText(text, maxLength) {
-            return text.length <= maxLength ? text : text.substring(0, maxLength) + '...';
-        }
-
-        // Hover para el dropdown de notificaciones
-        const notificationDropdown = document.getElementById('notificationDropdown');
-        const dropdownMenu = notificationDropdown.nextElementSibling;
-
-        notificationDropdown.addEventListener('mouseenter', () => new bootstrap.Dropdown(notificationDropdown).show());
-        notificationDropdown.addEventListener('mouseleave', () => new bootstrap.Dropdown(notificationDropdown).hide());
-        dropdownMenu.addEventListener('mouseenter', () => new bootstrap.Dropdown(notificationDropdown).show());
-        dropdownMenu.addEventListener('mouseleave', () => new bootstrap.Dropdown(notificationDropdown).hide());
-
-        // Cargar notificaciones desde localStorage al iniciar
-        document.addEventListener('DOMContentLoaded', function () {
-            const storedComments = localStorage.getItem('newComments');
-            if (storedComments) {
-                newComments = JSON.parse(storedComments);
-                updateNotificationBadge();
-                updateNotificationDropdown();
-            }
-
-            // Eliminar notificaciones cuando se accede directamente al detalle desde la URL
-            const path = window.location.pathname;
-            const match = path.match(/\/ScheduledSongs\/Details\/(\d+)/);
-            if (match && match[1]) {
-                const scheduleSongId = match[1];
-                if (newComments[scheduleSongId]) {
-                    delete newComments[scheduleSongId];
-                    localStorage.setItem('newComments', JSON.stringify(newComments));
-                    updateNotificationBadge();
-                    updateNotificationDropdown();
-                }
-            }
-        });
-    </script>
-
-
-    <!-- Table -->
-    <script>
-        $(document).ready(function () {
-            // Initialize tooltips in the table if the tooltip plugin is available
-            if ($.fn.tooltip) {
-                $('[data-toggle="tooltip"]').tooltip();
-            }
-
-            // Check if the row count selector and table body exist before manipulating them
-            const rowCountSelect = $('#rowCount');
-            const tableBody = $('#songTableBody');
-            if (rowCountSelect.length && tableBody.length) {
-                const allRows = tableBody.find('tr');
-
-                // Update the table to show only the specified number of rows based on the selected row count
-                function updateTable() {
-                    const rowCount = parseInt(rowCountSelect.val());
-                    allRows.each(function (index, row) {
-                        $(row).toggle(index < rowCount); // Show or hide rows based on the selected number
-                    });
-                }
-
-                // Update the table whenever the row count changes
-                rowCountSelect.on('change', updateTable);
-                updateTable(); // Initial call to set the table based on the current selection
-            }
-
-            // Add search functionality to filter table rows based on user input
-            const searchInput = $('#searchInput');
-            if (searchInput.length && tableBody.length) {
-                searchInput.on('keyup', function () {
-                    const value = searchInput.val().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                    tableBody.find('tr').each(function () {
-                        const row = $(this);
-                        // Normalize row text to remove accents for accurate comparison
-                        const rowText = row.text().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                        // Show or hide rows based on whether the row text contains the search input
-                        row.toggle(rowText.includes(value));
-                    });
-                });
-            }
-        });
-    </script>
-
-    <!-- Función para mostrar el loading -->
-    <script>
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.add('active');
-        }
-
-        // Función para ocultar el loading
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.remove('active');
-        }
-
-        // Simula la carga de contenido
-        document.addEventListener('DOMContentLoaded', function () {
-            showLoading();
-            setTimeout(hideLoading, 300); // Oculta el loading después de 2 segundos (puedes modificar este tiempo)
-        });
-    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
-
 </html>
