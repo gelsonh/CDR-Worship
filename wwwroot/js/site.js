@@ -1,4 +1,15 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// Función para mostrar el overlay de carga
+function showLoading() {
+    document.getElementById('loadingOverlay').classList.add('active');
+}
 
-// Write your JavaScript code.
+// Función para ocultar el overlay de carga
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.remove('active');
+}
+
+// Simula la carga de contenido
+document.addEventListener('DOMContentLoaded', function () {
+    showLoading();
+    setTimeout(hideLoading, 300); // Oculta el loading después de 2 segundos
+});
