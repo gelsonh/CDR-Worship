@@ -97,80 +97,20 @@ namespace CDR_Worship.Controllers
                 return NotFound();
             }
 
-            var scheduledSong = await _context.ScheduledSongs
-            .Include(s => s.LeadSinger)
-            .Include(s => s.Comments)
-                .ThenInclude(c => c.User)
-            .Include(s => s.Comments)
-                .ThenInclude(c => c.Likes)
-                    .ThenInclude(l => l.User) // Incluir los usuarios que han dado "Me Gusta" a los comentarios
-            .Include(s => s.Comments)
-                .ThenInclude(c => c.Replies)
-                    .ThenInclude(r => r.User)
-            .Include(s => s.Comments)
-                .ThenInclude(c => c.Replies)
-                    .ThenInclude(r => r.Likes)
-                        .ThenInclude(l => l.User) // Incluir los usuarios que han dado "Me Gusta" a las respuestas
-            .AsSplitQuery()
-            .FirstOrDefaultAsync(m => m.Id == id);
+            var userId = _userManager.GetUserId(User);
+
+            // Verificar si userId es nulo o vacío
+            if (string.IsNullOrEmpty(userId))
+            {
+                // Manejar el caso de un usuario no autenticado
+                return Unauthorized();
+            }
+
+            var scheduledSong = await _scheduledSongService.GetScheduledSongDetailsAsync(id.Value, userId);
 
             if (scheduledSong == null)
             {
                 return NotFound();
-            }
-
-            // Obtener el ID del usuario actual
-            var userId = _userManager.GetUserId(User);
-
-            // Para cada comentario, verificar si el usuario ha dado "Me Gusta"
-            foreach (var comment in scheduledSong.Comments)
-            {
-                // Mantener la fecha UTC y enviarla tal cual
-                comment.FormattedDate = comment.Created.ToString("o"); // Formato ISO 8601 (UTC)
-
-                // Procesar las imágenes de los usuarios en los comentarios
-                if (comment.User != null)
-                {
-                    comment.User.ImageFilePath = _imageService.ConvertByteArrayToFile(
-                        comment.User.ImageFileData!,
-                        comment.User.ImageFileType!,
-                        DefaultImage.UserImage);
-                }
-
-                // Verificar si el usuario actual ha dado "Me Gusta" a este comentario
-                comment.HasUserLiked = await _context.CommentLikes
-                    .AnyAsync(cl => cl.DocumentCommentId == comment.Id && cl.AppUserId == userId);
-
-                // Obtener el número total de "Me Gusta" del comentario
-                comment.LikesCount = await _context.CommentLikes
-                    .CountAsync(cl => cl.DocumentCommentId == comment.Id);
-
-                // Procesar las respuestas del comentario
-                if (comment.Replies != null)
-                {
-                    foreach (var reply in comment.Replies)
-                    {
-                        // Mantener la fecha UTC en las respuestas también
-                        reply.FormattedDate = reply.Created.ToString("o");
-
-                        // Procesar las imágenes de los usuarios en las respuestas
-                        if (reply.User != null)
-                        {
-                            reply.User.ImageFilePath = _imageService.ConvertByteArrayToFile(
-                                reply.User.ImageFileData!,
-                                reply.User.ImageFileType!,
-                                DefaultImage.UserImage);
-                        }
-
-                        // Verificar si el usuario actual ha dado "Me Gusta" a esta respuesta
-                        reply.HasUserLiked = await _context.CommentLikes
-                            .AnyAsync(cl => cl.DocumentCommentId == reply.Id && cl.AppUserId == userId);
-
-                        // Obtener el número total de "Me Gusta" de la respuesta
-                        reply.LikesCount = await _context.CommentLikes
-                            .CountAsync(cl => cl.DocumentCommentId == reply.Id);
-                    }
-                }
             }
 
             return View(scheduledSong);
@@ -229,25 +169,20 @@ namespace CDR_Worship.Controllers
                     _context.Add(scheduledSong);
                     await _context.SaveChangesAsync();
 
-                    // Variable para controlar el envío del mensaje
-                    bool messageSent = false;
-
                     // Verificar el número de canciones programadas
                     var scheduledSongsCount = await _context.ScheduledSongs.CountAsync();
 
-                    if (scheduledSongsCount == 3 && !messageSent)
+                    // Enviar SMS si hay exactamente 3 canciones programadas y aún no se ha enviado el mensaje
+                    if (scheduledSongsCount == 3 && _smsService.CanSendSms())
                     {
                         var messageLink = "https://cdr-worship-production.up.railway.app/";
                         var messageBody = $"🎶 ¡El setlist está listo! 🎶 Puedes revisarlo aquí: {messageLink} 🙌 ¡Dios les bendiga y gracias por su dedicación! 🙏";
                         _smsService.SendSms(messageBody);
-
-                        // Marcar que el mensaje ha sido enviado
-                        messageSent = true;
                     }
                     else if (scheduledSongsCount < 3)
                     {
-                        // Restablecer la bandera si el número de canciones baja de 3
-                        messageSent = false;
+                        // Restablecer el estado si el conteo baja de 3
+                        _smsService.ResetMessageSentFlag();
                     }
 
                     return RedirectToAction("Index");
