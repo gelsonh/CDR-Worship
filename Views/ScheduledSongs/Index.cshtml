@@ -19,79 +19,84 @@
 
 
 <div class="container-xxl my-5">
-    <div class="row">
-        @if (!Model.Any())
-        {
-            @* No Hay Listas *@
-                <div class="col-12 text-center my-5">
-                    <div class="no-lista-container box-shadow p-4 mx-auto">
-                        <h5 class="mb-3">No hay lista disponibles</h5>
-                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
-                    {
-                                <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añadir Nueva Lista</a>
-                    }
-                    </div>
-                </div>
-        }
-        else
-        {
-            @* Sección de información sobre la tabla *@
-                <div class="info-section mb-5">
-                    <h4 class="text-center">Bienvenido a las Lista de Canciones</h4>
-                    <p class="text-center">
-                        Aquí puedes visualizar todas las lista de canciones para los próximos eventos.
-                        Mantente al tanto de las fechas y detalles para estar siempre preparado.
-                    </p>
-                </div>
-            @foreach (var song in Model)
-            {
-                        <div class="col-12 col-md-6 col-lg-4 my-3">
-            <div class="card box-shadow h-100">
-                <div class="card-body p-4 d-flex flex-column">
-                    <div class="card-title mb-4"
-                        style="font-size: 1.5rem; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem;">
-                                @song.Name
-                    </div>
-
-                    <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
-                        <p class="d-flex align-items-center" style="font-size: 1.2rem;">
-                            <i class="bi bi-person-fill me-2 gradient-icon" style="font-size: 1.4rem;"></i>
-                            <strong>Cantante:</strong>
-                            <span class="ms-2">@song.LeadSinger?.MemberName</span>
-                        </p>
-                    </div>
-
-                    <div class="info-section mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 0.75rem;">
-                        <p class="d-flex align-items-center" style="font-size: 1.2rem;">
-                            <i class="bi bi-calendar-event-fill me-2 gradient-icon" style="font-size: 1.4rem;"></i>
-                            <strong>Fecha:</strong>
-                            <span class="ms-2">@song.StartDate.ToString("MM/dd/yyyy")</span>
-                        </p>
-                    </div>
-
-                    <div class="mt-auto text-center">
-                        <a asp-action="Details" asp-route-id="@song.Id"
-                            class="btn btn-color btn-outline-secondary btn-sm px-3 py-1">Comentarios</a>
-                                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("DemoUser")))
-                                {
-                                <a asp-action="Edit" asp-route-id="@song.Id"
-                                    class="btn btn-primary btn-color btn-sm mx-2 px-3 py-1">Editar</a>
-                                <a asp-action="Delete" asp-route-id="@song.Id"
-                                    class="btn btn-danger btn-color btn-sm px-3 py-1">Eliminar</a>
-                                }
-                    </div>
-                </div>
+    @if (!Model.Any())
+    {
+        <!-- No Hay Listas -->
+        <div class="text-center my-5">
+            <div class="no-lista-container box-shadow p-4 mx-auto">
+                <h5 class="mb-3">No hay listas disponibles</h5>
+                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                {
+                    <a asp-action="Create" class="btn btn-primary btn-color px-5 py-2">Añadir Nueva Lista</a>
+                }
             </div>
         </div>
+    }
+    else
+    {
+        <!-- Información -->
+        <div class="info-section mb-5 text-center">
+            <h4>Bienvenido a las Listas de Canciones</h4>
+            <p>
+                Aquí puedes visualizar todas las listas de canciones para los próximos eventos.
+                Mantente al tanto de las fechas y detalles para estar siempre preparado.
+            </p>
+        </div>
+
+        <!-- Listado de Canciones -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var song in Model)
+            {
+                <div class="col">
+                    <div class="card box-shadow h-100">
+                        <div class="card-body p-3 d-flex flex-column">
+                            <div class="card-title mb-3 border-bottom pb-2">
+                                <strong>@song.Name</strong>
+                                <span class="small text-muted ms-2 d-inline">- @song.Description</span>
+                            </div>
+
+                            <div class="info-section mb-3 border-bottom pb-2">
+                                <p class="d-flex align-items-center mb-0">
+                                    <i class="bi bi-person-fill me-2 gradient-icon"></i>
+                                    <strong>Cantante:</strong>
+                                    <span class="ms-2 text-truncate">@song.LeadSinger?.MemberName</span>
+                                </p>
+                            </div>
+
+                            <div class="info-section mb-3 border-bottom pb-2">
+                                <p class="d-flex align-items-center mb-0">
+                                    <i class="bi bi-calendar-event-fill me-2 gradient-icon"></i>
+                                    <strong>Fecha:</strong>
+                                    <span class="ms-2">@song.StartDate.ToString("MM/dd/yyyy")</span>
+                                </p>
+                            </div>
+
+                            <div class="mt-auto text-center d-flex flex-wrap justify-content-center gap-2 gap-md-3">
+    <a asp-action="Details" asp-route-id="@song.Id" class="btn btn-color btn-outline-secondary btn-sm">
+        Comentarios
+    </a>
+    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("DemoUser")))
+    {
+        <a asp-action="Edit" asp-route-id="@song.Id" class="btn btn-color btn-primary btn-sm">
+            Editar
+        </a>
+        <a asp-action="Delete" asp-route-id="@song.Id" class="btn btn-color btn-danger btn-sm">
+            Eliminar
+        </a>
+    }
+</div>
+                        </div>
+                    </div>
+                </div>
             }
-        }
-    </div>
+        </div>
+    }
 
     @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Moderator")) && Model.Any())
     {
-            <div class="text-center my-4">
-                <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
-            </div>
+        <div class="text-center my-4">
+            <a asp-action="Create" class="btn btn-color btn-primary">Agregar Nueva Programación</a>
+        </div>
     }
 </div>
 
@@ -126,22 +131,22 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <!-- Advice Modal Script -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Verificar si el modal ya se ha mostrado usando sessionStorage
-            if (!sessionStorage.getItem('modal3Shown')) {
-                // Agregar un retraso antes de mostrar el modal (3 segundos)
-                setTimeout(function () {
-                    var adviceModal3 = new bootstrap.Modal(document.getElementById('adviceModal3'));
+<!-- Advice Modal Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Verificar si el modal ya se ha mostrado usando sessionStorage
+        if (!sessionStorage.getItem('modal3Shown')) {
+            // Agregar un retraso antes de mostrar el modal (3 segundos)
+            setTimeout(function () {
+                var adviceModal3 = new bootstrap.Modal(document.getElementById('adviceModal3'));
 
-                    // Mostrar el modal
-                    adviceModal3.show();
+                // Mostrar el modal
+                adviceModal3.show();
 
-                    // Guardar en sessionStorage que el modal ya se mostró
-                    sessionStorage.setItem('modal3Shown', 'true');
-                }, 3000); // 3000 milisegundos = 3 segundos de retraso
-            }
-        });
-    </script>
+                // Guardar en sessionStorage que el modal ya se mostró
+                sessionStorage.setItem('modal3Shown', 'true');
+            }, 3000); // 3000 milisegundos = 3 segundos de retraso
+        }
+    });
+</script>
 }

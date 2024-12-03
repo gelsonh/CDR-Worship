@@ -24,11 +24,19 @@
                     </div>
 
                     <div class="form-floating mb-4">
+                        <input asp-for="Description" class="form-control" placeholder=" " />
+                        <label asp-for="Description" class="control-label">Nombre del Artista/s:</label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
                         <select asp-for="LeadSingerId" class="form-select rounded-3" asp-items="ViewBag.LeadSingers">
                             <option value="">Seleccionar Cantante Principal</option>
                         </select>
                         <label asp-for="LeadSingerId" class="form-label">Cantante Principal:</label>
                     </div>
+
+
 
                     <div class="form-floating mb-4 date-field">
                         <input asp-for="StartDate" type="date" class="form-control rounded-3" />

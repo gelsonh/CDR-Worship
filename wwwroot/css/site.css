@@ -86,7 +86,7 @@ main > .container {
 
 /* Botones */
 .btn-color {
-  padding: 0.5rem 1.25rem;
+  padding: 0.5rem 1.25rem; /* Valores por defecto */
   font-size: 0.875rem;
   font-weight: 500;
   border-radius: 1.5rem;
@@ -98,6 +98,7 @@ main > .container {
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 
 .btn-color:hover {
   transform: translateY(-2px);
@@ -267,11 +268,4 @@ footer {
 .video-frame:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-@media (max-width: 1024px) {
-  .col-md-6 {
-    flex: 0 0 50%; /* Dos tarjetas por fila */
-    max-width: 50%;
-  }
 }
