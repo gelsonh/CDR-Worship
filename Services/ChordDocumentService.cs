@@ -110,7 +110,6 @@ namespace CDR_Worship.Services
                 .GroupBy(ch => ch.ChordName) // Agrupar en la base de datos
                 .Select(g => g.First()) // Seleccionar el primer acorde de cada grupo
                 .ToListAsync();
-
             return chords;
         }
 
