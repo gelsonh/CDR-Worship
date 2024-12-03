@@ -33,6 +33,8 @@ namespace CDR_Worship.Services.Interfaces
 
         public Task<List<Member>> GetDrummersAsync();
 
+        Task<ScheduledSong?> GetScheduledSongDetailsAsync(int id, string userId);
+
     }
 
 }

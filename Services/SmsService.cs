@@ -8,6 +8,7 @@ public class SmsService : ISmsService
     private readonly string? _authToken;
     private readonly string? _fromPhoneNumber;
     private readonly List<string> _recipients;
+    private bool _messageSent = false; // Estado para controlar si el mensaje ya fue enviado
 
     public SmsService(IConfiguration configuration)
     {
@@ -48,5 +49,20 @@ public class SmsService : ISmsService
                 Console.WriteLine($"Failed to send message to {recipient}: {ex.Message}");
             }
         }
+
+        // Actualizar el estado después de enviar el mensaje
+        _messageSent = true;
+    }
+
+    // Método para verificar si se puede enviar el mensaje
+    public bool CanSendSms()
+    {
+        return !_messageSent;
+    }
+
+    // Método para resetear el estado si el conteo baja
+    public void ResetMessageSentFlag()
+    {
+        _messageSent = false;
     }
 }

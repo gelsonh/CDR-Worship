@@ -5,5 +5,9 @@ namespace CDR_Worship.Services.Interfaces
     {
         // Método para enviar el mensaje a todos los destinatarios
         void SendSms(string message);
+
+        public bool CanSendSms();
+
+        public void ResetMessageSentFlag();
     }
 }

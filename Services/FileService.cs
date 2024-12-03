@@ -8,8 +8,7 @@ namespace CDR_Worship.Services
         #region Properties
         private readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
         private readonly string _defaultAppUserImageSrc = "/img/DefaultUserImage.png";
-        //private readonly string _defaultCompanyImageSrc = "/img/DefaultCompanyImage.png";
-        //private readonly string _defaultProjectImageSrc = "/img/DefaultProjectImage.png";
+       
         #endregion
 
         #region Convert Byte Array to File

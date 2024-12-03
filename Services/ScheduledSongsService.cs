@@ -10,10 +10,12 @@ namespace CDR_Worship.Services
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly ICommentService _commentService;
 
-        public ScheduledSongsService(ApplicationDbContext context)
+        public ScheduledSongsService(ApplicationDbContext context, ICommentService commentService)
         {
             _context = context;
+            _commentService = commentService;
         }
 
         public async Task<List<ScheduledSong>> GetAllScheduledSongsAsync()
@@ -184,6 +186,30 @@ namespace CDR_Worship.Services
                                  .GroupBy(m => m.MemberName)
                                  .Select(group => group.First())
                                  .ToListAsync();
+        }
+
+        public async Task<ScheduledSong?> GetScheduledSongDetailsAsync(int id, string userId)
+        {
+            var scheduledSong = await _context.ScheduledSongs
+            .Include(s => s.LeadSinger)
+            .Include(s => s.Comments).ThenInclude(c => c.User)
+            .Include(s => s.Comments).ThenInclude(c => c.Likes)
+            .Include(s => s.Comments).ThenInclude(c => c.Replies).ThenInclude(r => r.User)
+            .Include(s => s.Comments).ThenInclude(c => c.Replies).ThenInclude(r => r.Likes)
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(m => m.Id == id);
+            if (scheduledSong == null) return null;
+
+            foreach (var comment in scheduledSong.Comments)
+            {
+                await _commentService.ProcessCommentAsync(comment, userId);
+                if (comment.Replies != null)
+                {
+                    await  _commentService.ProcessRepliesAsync(comment.Replies, userId);
+                }
+
+            }
+            return scheduledSong;
         }
 
     }
